@@ -42,7 +42,7 @@ export function Services() {
                     className="size-7 text-offwhite transition-transform duration-300 group-hover:-translate-y-0.5"
                     strokeWidth={1.25}
                   />
-                  <span className="font-mono text-label text-grey">{service.number}</span>
+                  <span className="text-small font-medium tabular-nums text-grey">{service.number}</span>
                 </div>
                 <h3 className="mt-10 text-title">{service.title}</h3>
                 <p className="mt-3 text-body text-grey">{service.description}</p>

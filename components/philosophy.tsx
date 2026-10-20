@@ -56,7 +56,7 @@ export function Philosophy() {
                   <Icon aria-hidden className="size-5 md:size-6" strokeWidth={1.4} />
                 </span>
                 <div className="pt-1 md:mt-5 md:pt-0">
-                  <p className="font-mono text-label font-medium uppercase">
+                  <p className="text-small font-semibold">
                     <span className="text-grey">0{i + 1} </span>
                     {label}
                   </p>
@@ -74,7 +74,7 @@ export function Philosophy() {
           {principles.map((p, i) => (
             <div key={p.title} className="reveal">
               <dt className="flex items-baseline gap-3 font-display text-title font-semibold">
-                <span className="font-mono text-label font-normal text-grey">0{i + 1}</span>
+                <span className="text-small font-medium tabular-nums text-grey">0{i + 1}</span>
                 {p.title}
               </dt>
               <dd className="mt-3 text-body text-grey">{p.body}</dd>

@@ -33,7 +33,7 @@ export function Approach() {
             >
               {/* Step marker on the timeline */}
               <span aria-hidden className="absolute -left-[3px] top-1 size-[5px] bg-lime lg:-top-[3px] lg:left-0" />
-              <span className="font-mono text-xs font-medium tracking-[0.12em] text-grey">0{i + 1}</span>
+              <span className="text-small font-medium tabular-nums text-grey">0{i + 1}</span>
               <div className="lg:mt-6">
                 <h3 className="text-title">{step.title}</h3>
                 <p className="mt-3 max-w-xs text-body text-grey">{step.body}</p>
@@ -43,7 +43,7 @@ export function Approach() {
         </ol>
 
         <p className="reveal mt-16 flex flex-col gap-2 rounded-xl border border-line bg-obsidian px-6 py-5 text-body text-grey sm:flex-row sm:items-center sm:gap-6">
-          <span className="eyebrow shrink-0 !text-offwhite">Direct collaboration</span>
+          <span className="shrink-0 text-small font-semibold text-offwhite">Direct collaboration</span>
           <span>
             You work with the engineer designing and building your solution — from the first conversation to the
             final review.

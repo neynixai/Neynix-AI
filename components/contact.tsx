@@ -51,21 +51,25 @@ export function Contact() {
           )}
 
           {!primary && process.env.NODE_ENV !== "production" && (
-            <p className="mt-9 max-w-lg rounded-md border border-dashed border-line-strong p-4 font-mono text-xs leading-relaxed text-grey">
-              Dev note (hidden in production): no contact channel is configured. Set NEXT_PUBLIC_CONTACT_EMAIL,
-              NEXT_PUBLIC_LINKEDIN_URL, or NEXT_PUBLIC_CONTACT_FORM_ENDPOINT in .env.local — see .env.example.
+            <p className="mt-9 max-w-lg rounded-md border border-dashed border-line-strong p-4 text-small text-grey">
+              Dev note (hidden in production): no contact channel is configured. Set{" "}
+              <code className="font-mono text-xs">NEXT_PUBLIC_CONTACT_EMAIL</code>,{" "}
+              <code className="font-mono text-xs">NEXT_PUBLIC_LINKEDIN_URL</code>, or{" "}
+              <code className="font-mono text-xs">NEXT_PUBLIC_CONTACT_FORM_ENDPOINT</code> in{" "}
+              <code className="font-mono text-xs">.env.local</code> — see{" "}
+              <code className="font-mono text-xs">.env.example</code>.
             </p>
           )}
         </div>
 
         <div aria-hidden className="hidden items-center justify-center gap-8 lg:flex">
           <LogoMark sizes="256px" className="w-64" />
-          <p className="border-l border-line-strong pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.12em] text-grey">
-            IDEAS
+          <p className="border-l border-line-strong pl-3 text-xs leading-relaxed text-grey">
+            Ideas
             <br />
-            ENGINEERING
+            Engineering
             <br />
-            IMPACT
+            Impact
           </p>
         </div>
       </div>

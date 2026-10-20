@@ -67,14 +67,14 @@ function HeroVisual() {
         />
       </div>
 
-      <div className="absolute right-0 top-[24%] hidden border-l border-line-strong pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.12em] text-grey sm:block">
-        IDEAS
+      <div className="absolute right-0 top-[24%] hidden border-l border-line-strong pl-3 text-xs leading-relaxed text-grey sm:block">
+        Ideas
         <br />
-        INTELLIGENCE
+        Intelligence
         <br />
-        IMPACT
+        Impact
       </div>
-      <span className="absolute bottom-[9%] right-[4%] font-mono text-[0.625rem] tracking-[0.12em] text-grey">
+      <span className="absolute bottom-[9%] right-[4%] text-xs tabular-nums text-grey">
         01
       </span>
     </div>

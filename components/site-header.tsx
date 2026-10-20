@@ -102,10 +102,10 @@ export function SiteHeader() {
                 <a
                   href={link.href}
                   onClick={() => close(false)}
-                  className="flex items-baseline justify-between py-5 text-xl font-medium tracking-tight"
+                  className="flex items-baseline justify-between py-5 text-xl font-medium"
                 >
                   {link.label}
-                  <span className="font-mono text-xs text-grey">0{i + 1}</span>
+                  <span className="text-xs tabular-nums text-grey">0{i + 1}</span>
                 </a>
               </li>
             ))}

@@ -2,7 +2,7 @@
 
 Single-page site for NEYNIX AI, an independent AI engineering studio.
 Next.js (App Router) · TypeScript · Tailwind CSS v4 · Lucide icons.
-Type: Space Grotesk (headings), Inter (text), JetBrains Mono (labels), self-hosted via `next/font`.
+Type: Space Grotesk (headings) and Inter (all text and UI), self-hosted via `next/font`.
 
 ## Run locally
 

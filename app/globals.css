@@ -18,10 +18,11 @@
   --color-lime-hover: #e4ff91; /* primary button hover */
   --color-danger: #ff8a7a; /* form errors */
 
-  /* Typography — Space Grotesk headings, Inter text, JetBrains Mono labels. */
+  /* Typography — Space Grotesk headings, Inter for all text and UI. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* System monospace, reserved for genuine code (no web font is loaded). */
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
   /* Hero headline: ~44–56px on phones, ~72–88px on desktop. */
   --text-display: clamp(2.75rem, 1.9rem + 4.2vw, 5.5rem);
@@ -44,10 +45,10 @@
   /* Lists, captions, footer links. */
   --text-small: 0.875rem;
   --text-small--line-height: 1.6;
-  /* Mono labels and technical metadata. */
-  --text-label: 0.6875rem;
+  /* Eyebrows, metadata and small labels. */
+  --text-label: 0.8125rem;
   --text-label--line-height: 1.5;
-  --text-label--letter-spacing: 0.12em;
+  --text-label--letter-spacing: 0.01em;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -139,13 +140,13 @@
     .container-page { padding-inline: 2.5rem; }
   }
 
+  /* Section eyebrows and metadata: Inter, sentence case, natural spacing. */
   .eyebrow {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: var(--text-label);
     line-height: var(--text-label--line-height);
     font-weight: 500;
     letter-spacing: var(--text-label--letter-spacing);
-    text-transform: uppercase;
     color: var(--color-grey);
   }
 

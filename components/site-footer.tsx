@@ -65,7 +65,7 @@ export function SiteFooter() {
           <p>
             © <CurrentYear /> {siteConfig.name}. All rights reserved.
           </p>
-          <p className="font-mono text-label uppercase">Independent AI engineering studio</p>
+          <p>Independent AI engineering studio</p>
         </div>
       </div>
     </footer>
