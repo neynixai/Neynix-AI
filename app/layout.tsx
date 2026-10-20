@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
-import { siteConfig } from "@/config/site";
+import { CHAT_BOT_ID, CHAT_WIDGET_URL, siteConfig } from "@/config/site";
 import "./globals.css";
 
 // Self-hosted at build time by next/font (no runtime requests to Google) with
@@ -51,6 +51,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to content
         </a>
         {children}
+        {/* The same embed snippet any site uses for the assistant. */}
+        {CHAT_WIDGET_URL && <script src={CHAT_WIDGET_URL} data-bot={CHAT_BOT_ID} defer />}
       </body>
     </html>
   );

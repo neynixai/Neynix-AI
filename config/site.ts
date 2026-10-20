@@ -21,6 +21,14 @@ export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.
  */
 export const CONTACT_FORM_ENDPOINT =
   process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT || "https://formspree.io/f/mgaobdkk";
+/**
+ * Site assistant: the chatbot Worker's widget script, e.g.
+ * "https://neynix-chatbot.<account>.workers.dev/widget.js" (see chatbot/README.md).
+ * Leave empty to hide the assistant.
+ */
+export const CHAT_WIDGET_URL = process.env.NEXT_PUBLIC_CHAT_WIDGET_URL || "";
+/** This site's bot id in chatbot/bots.json. */
+export const CHAT_BOT_ID = "neynix";
 /** Production origin without a trailing slash, e.g. "https://neynix.ai". */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
 

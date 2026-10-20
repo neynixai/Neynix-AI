@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "neynix-chatbot",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "observability": { "enabled": true },
+  // No public per-version preview URLs; only the production URL serves traffic.
+  "preview_urls": false,
+  // Serve src/widget.js as text at /widget.js instead of bundling it as code.
+  "rules": [{ "type": "Text", "globs": ["**/widget.js"], "fallthrough": false }],
+  "vars": {
+    // Primary LLM. Any Groq chat model with JSON mode: https://console.groq.com/docs/models
+    "GROQ_MODEL": "openai/gpt-oss-120b",
+    // Fallback when Groq is rate limited or failing: https://ai.google.dev/gemini-api/docs/models
+    // Flash-Lite: fast, and a much larger free-tier daily quota than gemini-3.6-flash (20/day).
+    "GEMINI_MODEL": "gemini-3.5-flash-lite"
+  },
+  // Crawled sites, one "bot:<id>" key each, written by `npm run crawl`.
+  "kv_namespaces": [{ "binding": "BOTS", "id": "f856dc7aa7584dbcba6a20ec99c20f74" }],
+  // Per bot and IP: 10 questions per minute.
+  "ratelimits": [
+    { "name": "RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } }
+  ]
+  // Secrets (`npx wrangler secret put <NAME>`, or .dev.vars locally):
+  //   GROQ_API_KEY, GEMINI_API_KEY — set at least one; with both, Gemini is the fallback.
+}

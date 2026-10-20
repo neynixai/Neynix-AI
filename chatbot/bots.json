@@ -1,0 +1,11 @@
+{
+  "neynix": {
+    "name": "NEYNIX AI",
+    "url": "https://neynixai.github.io/Neynix-AI/",
+    "origins": ["https://neynixai.github.io", "http://localhost:3000"],
+    "theme": "dark",
+    "accent": "#d7ff64",
+    "greeting": "Hi! Ask me anything about NEYNIX AI — I answer from this website and link the sources.",
+    "suggestions": ["What services do you offer?", "How do you approach a project?", "How can I get in touch?"]
+  }
+}

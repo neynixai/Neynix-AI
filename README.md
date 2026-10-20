@@ -39,6 +39,7 @@ To hide a link, set its value in `config/site.ts` to `""`.
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Shows "Email NEYNIX AI" and the footer email link. |
 | `NEXT_PUBLIC_LINKEDIN_URL` / `NEXT_PUBLIC_GITHUB_URL` | Footer "Connect" links. |
 | `NEXT_PUBLIC_CONTACT_FORM_ENDPOINT` | Enables the contact form. GitHub Pages can't run server code, so messages go to a form service that accepts a JSON POST — e.g. create a form at [Formspree](https://formspree.io) and paste its `https://formspree.io/f/…` URL. The form only reports success on a 2xx response. |
+| `NEXT_PUBLIC_CHAT_WIDGET_URL` | Shows the site assistant (chat button, bottom-right). Set it to the chatbot Worker's `/widget.js` URL — see [`chatbot/README.md`](chatbot/README.md). |
 
 "Start a conversation" points to the best configured channel: the form, then
 email, then LinkedIn. With nothing configured, the contact section shows only
@@ -74,4 +75,5 @@ components/     header, hero, services, philosophy, approach, work, about, why,
                 contact (+ form), footer, logo, ui primitives
 config/         site.ts (brand, contact, SEO, form endpoint)
 lib/            content.ts · contact-validation.ts
+chatbot/        embeddable site assistant: Cloudflare Worker, Groq with Gemini fallback, cited answers
 ```
