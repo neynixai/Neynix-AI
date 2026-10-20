@@ -51,7 +51,6 @@ export function Work() {
                 aria-hidden
                 className="relative aspect-[16/10] overflow-hidden border-b border-line bg-surface"
               >
-                <div className="bg-grid absolute inset-0 opacity-70" />
                 <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.025]">
                   {project.preview}
                 </div>

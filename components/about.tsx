@@ -1,3 +1,6 @@
+import { ArrowUpRight } from "lucide-react";
+import { GITHUB_URL, LINKEDIN_URL, siteConfig } from "@/config/site";
+
 const parts = [
   {
     key: "NEY",
@@ -29,6 +32,8 @@ export function About() {
             NEYNIX brings together three ideas: the determination to keep going, the ambition to build something
             of your own, and the X factor that comes from thinking differently.
           </p>
+
+          <FounderCard />
         </div>
 
         <div>
@@ -65,5 +70,52 @@ export function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+function FounderCard() {
+  const links = [
+    { label: "LinkedIn", href: LINKEDIN_URL },
+    { label: "GitHub", href: GITHUB_URL },
+  ].filter((link) => link.href);
+
+  return (
+    <figure className="mt-12 max-w-md border-t border-line pt-8">
+      <figcaption className="eyebrow">Founder</figcaption>
+      <div className="mt-5 flex items-center gap-4">
+        <span
+          aria-hidden
+          className="flex size-14 shrink-0 items-center justify-center rounded-full bg-ink text-lg font-semibold tracking-tight text-white"
+        >
+          {siteConfig.founder.charAt(0)}
+        </span>
+        <div>
+          <p className="text-lg font-semibold tracking-tight">{siteConfig.founder}</p>
+          <p className="text-sm text-muted">Founder, {siteConfig.name}</p>
+        </div>
+      </div>
+      <p className="mt-5 text-sm leading-relaxed text-muted">
+        {siteConfig.founder} founded {siteConfig.name} and works directly with every client — from the first
+        conversation to the final review.
+      </p>
+      {links.length > 0 && (
+        <ul className="mt-5 flex gap-5 text-sm">
+          {links.map((link) => (
+            <li key={link.label}>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-medium text-ink underline-offset-4 hover:underline"
+              >
+                {link.label}
+                <ArrowUpRight aria-hidden className="size-3.5" strokeWidth={1.5} />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </figure>
   );
 }

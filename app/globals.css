@@ -118,14 +118,6 @@
   .section-pad {
     padding-block: clamp(4.5rem, 3rem + 6vw, 8.5rem);
   }
-
-  /* Hairline architectural grid used behind hero and diagram visuals. */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgb(17 19 24 / 0.055) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(17 19 24 / 0.055) 1px, transparent 1px);
-    background-size: 56px 56px;
-  }
 }
 
 /* Gentle reveal as sections scroll into view — zero JS, progressive enhancement. */

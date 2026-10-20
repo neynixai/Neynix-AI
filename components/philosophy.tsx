@@ -41,7 +41,6 @@ export function Philosophy() {
         />
 
         <figure className="reveal relative mt-16">
-          <div className="bg-grid pointer-events-none absolute -inset-x-8 -inset-y-10 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" aria-hidden />
           <ol className="relative grid gap-0 md:grid-cols-5 md:gap-4">
             {/* Connector — horizontal on desktop, vertical on mobile. */}
             <div aria-hidden className="absolute inset-y-7 left-7 w-px bg-line-strong md:hidden">

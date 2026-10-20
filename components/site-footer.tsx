@@ -16,6 +16,9 @@ export function SiteFooter() {
           </a>
           <p className="mt-6 text-sm font-semibold">{siteConfig.tagline}</p>
           <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted">{siteConfig.shortDescription}</p>
+          <p className="mt-4 text-sm text-muted">
+            Founded by <span className="font-medium text-ink">{siteConfig.founder}</span>
+          </p>
         </div>
 
         <FooterColumn title="Navigation">

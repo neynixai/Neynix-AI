@@ -56,8 +56,6 @@ function HeroVisual() {
       aria-hidden
       className="relative mx-auto aspect-square w-full max-w-[22rem] animate-fade [animation-delay:150ms] sm:max-w-[30rem] lg:max-w-[36rem]"
     >
-      {/* Architectural frame: hairline grid, fading toward the edges. */}
-      <div className="bg-grid absolute inset-[6%] [mask-image:radial-gradient(closest-side,black_55%,transparent_100%)]" />
       <svg viewBox="0 0 400 400" className="absolute inset-0 size-full text-ink" fill="none">
         <circle cx="200" cy="200" r="150" stroke="currentColor" strokeOpacity="0.07" />
         <circle cx="200" cy="200" r="190" stroke="currentColor" strokeOpacity="0.05" strokeDasharray="2 6" />
