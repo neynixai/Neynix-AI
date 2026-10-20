@@ -9,7 +9,7 @@ export function Hero() {
           <p className="eyebrow animate-rise">Independent AI engineering studio</p>
           <h1
             id="hero-title"
-            className="mt-5 text-display font-semibold animate-rise [animation-delay:80ms]"
+            className="mt-5 text-display animate-rise [animation-delay:80ms]"
           >
             Build what&rsquo;s next <span className="whitespace-nowrap">with AI.</span>
           </h1>
@@ -27,7 +27,7 @@ export function Hero() {
           </div>
           <ul
             aria-label="Focus areas"
-            className="eyebrow mt-12 flex flex-wrap gap-x-5 gap-y-2 !text-[0.625rem] sm:!text-[0.6875rem] animate-fade [animation-delay:400ms]"
+            className="eyebrow mt-12 flex flex-wrap gap-x-5 gap-y-2 animate-fade [animation-delay:400ms]"
           >
             {["AI engineering", "Automation", "Intelligent software"].map((item) => (
               <li key={item} className="flex items-center gap-2">
@@ -67,14 +67,14 @@ function HeroVisual() {
         />
       </div>
 
-      <div className="absolute right-0 top-[24%] hidden border-l border-line-strong pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.2em] text-grey sm:block">
+      <div className="absolute right-0 top-[24%] hidden border-l border-line-strong pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.12em] text-grey sm:block">
         IDEAS
         <br />
         INTELLIGENCE
         <br />
         IMPACT
       </div>
-      <span className="absolute bottom-[9%] right-[4%] font-mono text-[0.625rem] tracking-[0.2em] text-grey">
+      <span className="absolute bottom-[9%] right-[4%] font-mono text-[0.625rem] tracking-[0.12em] text-grey">
         01
       </span>
     </div>

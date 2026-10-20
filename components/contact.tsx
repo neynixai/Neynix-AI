@@ -26,8 +26,8 @@ export function Contact() {
 
       <div className="container-page section-pad grid items-center gap-14 lg:grid-cols-[1.2fr_1fr]">
         <div className="reveal">
-          <p className="eyebrow !text-grey">Have an idea worth building?</p>
-          <h2 id="contact-title" className="mt-4 text-[clamp(2.5rem,1.6rem+3.8vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.04em]">
+          <p className="eyebrow">Have an idea worth building?</p>
+          <h2 id="contact-title" className="mt-4 text-heading">
             Let&rsquo;s make it real.
           </h2>
           <p className="mt-6 max-w-lg text-lede text-pretty text-grey">
@@ -60,7 +60,7 @@ export function Contact() {
 
         <div aria-hidden className="hidden items-center justify-center gap-8 lg:flex">
           <LogoMark sizes="256px" className="w-64" />
-          <p className="border-l border-line-strong pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.2em] text-grey">
+          <p className="border-l border-line-strong pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.12em] text-grey">
             IDEAS
             <br />
             ENGINEERING
@@ -74,8 +74,8 @@ export function Contact() {
         <div id="contact-form" className="container-page pb-[clamp(4.5rem,3rem+6vw,8.5rem)]">
           <div className="grid gap-10 border-t border-line pt-14 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <h3 className="text-2xl font-semibold tracking-tight">Tell us about your project</h3>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-grey">
+              <h3 className="text-[1.5rem] leading-tight tracking-[-0.02em]">Tell us about your project</h3>
+              <p className="mt-3 max-w-sm text-body text-grey">
                 A few sentences is enough — the problem, who it&rsquo;s for, and any constraints you already know
                 about.
               </p>

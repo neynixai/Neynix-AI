@@ -38,7 +38,7 @@ export function Logo({ tone = "light", className = "" }: { tone?: Tone; classNam
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <LogoMark tone={tone} className="w-[26px]" priority sizes="26px" />
       <span
-        className={`text-[0.95rem] font-semibold tracking-[0.08em] ${tone === "light" ? "text-offwhite" : "text-obsidian"}`}
+        className={`font-display text-[0.95rem] font-semibold tracking-[0.06em] ${tone === "light" ? "text-offwhite" : "text-obsidian"}`}
       >
         {siteConfig.name}
       </span>

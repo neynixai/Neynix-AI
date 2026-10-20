@@ -18,17 +18,36 @@
   --color-lime-hover: #e4ff91; /* primary button hover */
   --color-danger: #ff8a7a; /* form errors */
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Typography — Space Grotesk headings, Inter text, JetBrains Mono labels. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --text-display: clamp(2.75rem, 1.55rem + 5.2vw, 5.75rem);
-  --text-display--line-height: 0.95;
-  --text-display--letter-spacing: -0.045em;
-  --text-heading: clamp(2rem, 1.35rem + 2.6vw, 3.4rem);
-  --text-heading--line-height: 1.02;
-  --text-heading--letter-spacing: -0.035em;
-  --text-lede: clamp(1.0625rem, 0.98rem + 0.35vw, 1.25rem);
-  --text-lede--line-height: 1.55;
+  /* Hero headline: ~44–56px on phones, ~72–88px on desktop. */
+  --text-display: clamp(2.75rem, 1.9rem + 4.2vw, 5.5rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.04em;
+  /* Section headings: ~32px on phones, ~36–48px on desktop. */
+  --text-heading: clamp(2rem, 1.5rem + 1.6vw, 3rem);
+  --text-heading--line-height: 1.1;
+  --text-heading--letter-spacing: -0.03em;
+  /* Card and item titles. */
+  --text-title: clamp(1.125rem, 1.05rem + 0.25vw, 1.25rem);
+  --text-title--line-height: 1.3;
+  --text-title--letter-spacing: -0.015em;
+  /* Lead paragraphs under headings. */
+  --text-lede: clamp(1.0625rem, 1rem + 0.2vw, 1.125rem);
+  --text-lede--line-height: 1.65;
+  /* Running text. */
+  --text-body: 1rem;
+  --text-body--line-height: 1.65;
+  /* Lists, captions, footer links. */
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.6;
+  /* Mono labels and technical metadata. */
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.5;
+  --text-label--letter-spacing: 0.12em;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -76,10 +95,21 @@
     background: var(--color-obsidian);
     color: var(--color-offwhite);
     font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
   }
 
   ::selection {
@@ -111,9 +141,10 @@
 
   .eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--text-label--letter-spacing);
     text-transform: uppercase;
     color: var(--color-grey);
   }

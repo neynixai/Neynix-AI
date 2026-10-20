@@ -56,11 +56,11 @@ export function Work() {
                 </div>
               </div>
               <div className="flex flex-1 flex-col p-6">
-                <p className="eyebrow !text-[0.625rem]">{project.category}</p>
-                <h3 className="mt-3 text-xl font-semibold tracking-tight">{project.title}</h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-grey">{project.description}</p>
+                <p className="eyebrow">{project.category}</p>
+                <h3 className="mt-3 text-title">{project.title}</h3>
+                <p className="mt-3 flex-1 text-body text-grey">{project.description}</p>
                 <p className="mt-6">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-line bg-obsidian px-3 py-1 text-[0.6875rem] font-medium text-offwhite/80">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-line bg-obsidian px-3 py-1 text-xs font-medium text-offwhite/80">
                     <span aria-hidden className="size-1.5 rounded-full border border-offwhite/50" />
                     Project concept
                   </span>

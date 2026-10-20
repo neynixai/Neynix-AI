@@ -27,7 +27,7 @@ export function About() {
       <div className="container-page grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div className="reveal">
           <p className="eyebrow">The story behind the name</p>
-          <h2 id="about-title" className="mt-4 text-heading font-semibold text-balance">
+          <h2 id="about-title" className="mt-4 text-heading">
             More than a name. A mindset.
           </h2>
           <p className="mt-6 max-w-md text-lede text-pretty text-grey">
@@ -47,21 +47,21 @@ export function About() {
               >
                 <span
                   aria-hidden
-                  className="w-20 shrink-0 text-[clamp(2.75rem,2rem+2.5vw,4rem)] font-semibold leading-none tracking-[-0.05em] sm:w-auto"
+                  className="w-20 shrink-0 font-display text-[clamp(2.5rem,2rem+2vw,3.5rem)] font-semibold leading-none tracking-[-0.04em] sm:w-auto"
                 >
                   {part.key}
                 </span>
                 <div className="sm:mt-8">
-                  <h3 className="text-sm font-semibold">
+                  <h3 className="text-base">
                     <span className="sr-only">{part.key} — </span>
                     {part.title}
                   </h3>
-                  <p className="mt-2 text-[0.8125rem] leading-relaxed text-grey">{part.body}</p>
+                  <p className="mt-2 text-small text-grey">{part.body}</p>
                 </div>
               </li>
             ))}
           </ul>
-          <p className="reveal mt-8 max-w-xl text-[0.9375rem] leading-relaxed text-offwhite/80">
+          <p className="reveal mt-8 max-w-xl text-body text-offwhite/80">
             Together, they represent the mindset behind NEYNIX AI: ambitious thinking, independent engineering,
             and the determination to turn ideas into useful technology.
           </p>
@@ -92,11 +92,11 @@ function FounderCard() {
           className="w-28 shrink-0 rounded-lg object-cover grayscale transition-[filter] duration-500 hover:grayscale-0 sm:w-32"
         />
         <div className="pb-1">
-          <p className="text-xl font-semibold tracking-tight">{siteConfig.founder}</p>
+          <p className="font-display text-title font-semibold">{siteConfig.founder}</p>
           <p className="mt-1 text-sm text-grey">{siteConfig.founderTitle}</p>
         </div>
       </div>
-      <div className="mt-6 space-y-3 text-sm leading-relaxed text-grey">
+      <div className="mt-6 space-y-3 text-body text-grey">
         <p>
           An AI engineer with two years of experience in product development. {siteConfig.founder} started{" "}
           {siteConfig.name} to help small businesses go digital and put new technology like AI to practical use.

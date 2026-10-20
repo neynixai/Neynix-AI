@@ -42,13 +42,13 @@ export function Services() {
                     className="size-7 text-offwhite transition-transform duration-300 group-hover:-translate-y-0.5"
                     strokeWidth={1.25}
                   />
-                  <span className="font-mono text-[0.6875rem] tracking-[0.15em] text-grey">{service.number}</span>
+                  <span className="font-mono text-label text-grey">{service.number}</span>
                 </div>
-                <h3 className="mt-10 text-[1.0625rem] font-semibold tracking-tight">{service.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-grey">{service.description}</p>
+                <h3 className="mt-10 text-title">{service.title}</h3>
+                <p className="mt-3 text-body text-grey">{service.description}</p>
                 <ul className="mt-6 space-y-2.5 border-t border-line pt-5">
                   {service.capabilities.map((capability) => (
-                    <li key={capability} className="flex items-center gap-3 text-[0.8125rem] text-offwhite/80">
+                    <li key={capability} className="flex items-center gap-3 text-small text-offwhite/80">
                       <span aria-hidden className="size-1 shrink-0 bg-grey" />
                       {capability}
                     </li>

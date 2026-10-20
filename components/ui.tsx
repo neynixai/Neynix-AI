@@ -58,7 +58,7 @@ export function SectionHeader({
     <div className="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <div className="max-w-2xl">
         <p className="eyebrow">{eyebrow}</p>
-        <h2 id={id} className="mt-4 text-heading font-semibold text-balance">
+        <h2 id={id} className="mt-4 text-heading">
           {title}
         </h2>
         {lede && (

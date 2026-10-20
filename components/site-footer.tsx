@@ -14,9 +14,9 @@ export function SiteFooter() {
           <a href="#top" aria-label="NEYNIX AI — back to top" className="inline-block rounded-sm">
             <Logo />
           </a>
-          <p className="mt-6 text-sm font-semibold">{siteConfig.tagline}</p>
-          <p className="mt-2 max-w-xs text-sm leading-relaxed text-grey">{siteConfig.shortDescription}</p>
-          <p className="mt-4 text-sm text-grey">
+          <p className="mt-6 font-display text-base font-semibold">{siteConfig.tagline}</p>
+          <p className="mt-2 max-w-xs text-small text-grey">{siteConfig.shortDescription}</p>
+          <p className="mt-4 text-small text-grey">
             Founded by <span className="font-medium text-offwhite">{siteConfig.founder}</span>
           </p>
         </div>
@@ -65,7 +65,7 @@ export function SiteFooter() {
           <p>
             © <CurrentYear /> {siteConfig.name}. All rights reserved.
           </p>
-          <p className="font-mono tracking-[0.15em] uppercase">Independent AI engineering studio</p>
+          <p className="font-mono text-label uppercase">Independent AI engineering studio</p>
         </div>
       </div>
     </footer>
@@ -76,7 +76,7 @@ function FooterColumn({ title, children }: { title: string; children: React.Reac
   return (
     <nav aria-label={`Footer ${title.toLowerCase()}`}>
       <h2 className="text-sm font-semibold">{title}</h2>
-      <ul className="mt-5 space-y-3 text-sm">{children}</ul>
+      <ul className="mt-5 space-y-3 text-small">{children}</ul>
     </nav>
   );
 }

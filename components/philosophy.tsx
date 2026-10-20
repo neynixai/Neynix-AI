@@ -56,16 +56,16 @@ export function Philosophy() {
                   <Icon aria-hidden className="size-5 md:size-6" strokeWidth={1.4} />
                 </span>
                 <div className="pt-1 md:mt-5 md:pt-0">
-                  <p className="font-mono text-[0.6875rem] font-medium tracking-[0.18em] uppercase">
+                  <p className="font-mono text-label font-medium uppercase">
                     <span className="text-grey">0{i + 1} </span>
                     {label}
                   </p>
-                  <p className="mt-2 max-w-[13rem] text-[0.8125rem] leading-relaxed text-grey md:mx-auto">{caption}</p>
+                  <p className="mt-2 max-w-[13rem] text-small text-grey md:mx-auto">{caption}</p>
                 </div>
               </li>
             ))}
           </ol>
-          <figcaption className="eyebrow relative mt-10 text-center !text-[0.625rem]">
+          <figcaption className="eyebrow relative mt-10 text-center">
             Conceptual flow — how we approach an AI system, not a product
           </figcaption>
         </figure>
@@ -73,11 +73,11 @@ export function Philosophy() {
         <dl className="mt-20 grid gap-x-10 gap-y-10 border-t border-line pt-12 sm:grid-cols-2 lg:grid-cols-4">
           {principles.map((p, i) => (
             <div key={p.title} className="reveal">
-              <dt className="flex items-baseline gap-3 text-lg font-semibold tracking-tight">
-                <span className="font-mono text-[0.6875rem] font-normal text-grey">0{i + 1}</span>
+              <dt className="flex items-baseline gap-3 font-display text-title font-semibold">
+                <span className="font-mono text-label font-normal text-grey">0{i + 1}</span>
                 {p.title}
               </dt>
-              <dd className="mt-3 text-sm leading-relaxed text-grey">{p.body}</dd>
+              <dd className="mt-3 text-body text-grey">{p.body}</dd>
             </div>
           ))}
         </dl>

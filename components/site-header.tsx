@@ -65,13 +65,13 @@ export function SiteHeader() {
           <ul className="flex items-center gap-7">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="text-[0.8125rem] text-grey transition-colors hover:text-offwhite">
+                <a href={link.href} className="text-sm font-medium text-grey transition-colors hover:text-offwhite">
                   {link.label}
                 </a>
               </li>
             ))}
           </ul>
-          <ButtonLink href="#contact" arrow className="!min-h-9 !px-4 !text-[0.8125rem]">
+          <ButtonLink href="#contact" arrow className="!min-h-9 !px-4">
             Discuss a project
           </ButtonLink>
         </nav>
@@ -102,7 +102,7 @@ export function SiteHeader() {
                 <a
                   href={link.href}
                   onClick={() => close(false)}
-                  className="flex items-baseline justify-between py-5 text-2xl font-semibold tracking-tight"
+                  className="flex items-baseline justify-between py-5 text-xl font-medium tracking-tight"
                 >
                   {link.label}
                   <span className="font-mono text-xs text-grey">0{i + 1}</span>

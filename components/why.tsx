@@ -30,7 +30,7 @@ export function Why() {
         <div className="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="eyebrow">Why NEYNIX AI</p>
-            <h2 id="why-title" className="mt-4 max-w-3xl text-heading font-semibold text-balance">
+            <h2 id="why-title" className="mt-4 max-w-3xl text-heading">
               Independent by design. Ambitious by nature.
             </h2>
           </div>
@@ -44,8 +44,8 @@ export function Why() {
             <li key={title} className="reveal flex gap-4 lg:flex-col">
               <Icon aria-hidden className="mt-0.5 size-6 shrink-0" strokeWidth={1.4} />
               <div>
-                <h3 className="text-base font-semibold tracking-tight">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-grey">{body}</p>
+                <h3 className="text-title">{title}</h3>
+                <p className="mt-2 text-body text-grey">{body}</p>
               </div>
             </li>
           ))}

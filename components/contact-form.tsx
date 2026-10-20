@@ -11,7 +11,7 @@ type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind
 const empty: ContactInput = { name: "", email: "", projectType: "", message: "" };
 
 const fieldClass =
-  "mt-2 block w-full rounded-md border bg-elevated px-3.5 py-3 text-[0.9375rem] text-offwhite placeholder:text-grey transition-colors focus:border-offwhite focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime";
+  "mt-2 block w-full rounded-md border bg-elevated px-3.5 py-3 text-base text-offwhite placeholder:text-grey transition-colors focus:border-offwhite focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime";
 
 export function ContactForm() {
   const id = useId();
@@ -66,8 +66,8 @@ export function ContactForm() {
     return (
       <div role="status" className="rounded-xl border border-line-strong bg-elevated p-8">
         <Check aria-hidden className="size-6 text-lime" strokeWidth={1.5} />
-        <p className="mt-4 text-xl font-semibold tracking-tight">Thanks — your message has been sent.</p>
-        <p className="mt-2 text-sm text-grey">You&rsquo;ll get a reply at the email address you provided.</p>
+        <p className="mt-4 font-display text-title font-semibold">Thanks — your message has been sent.</p>
+        <p className="mt-2 text-body text-grey">You&rsquo;ll get a reply at the email address you provided.</p>
         <button
           type="button"
           onClick={() => setStatus({ kind: "idle" })}
@@ -202,7 +202,7 @@ export function ContactForm() {
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
   return (
-    <p id={id} className="mt-2 text-[0.8125rem] text-danger">
+    <p id={id} className="mt-2 text-small text-danger">
       {message}
     </p>
   );
