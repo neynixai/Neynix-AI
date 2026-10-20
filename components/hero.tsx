@@ -4,12 +4,6 @@ import { ButtonLink } from "@/components/ui";
 export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden">
-      {/* Soft ambient light — no colour, just depth. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_55%_at_75%_35%,#ffffff_0%,rgb(242_242_246/0.6)_55%,transparent_100%)]"
-      />
-
       <div className="container-page grid items-center gap-12 pb-16 pt-10 sm:pt-14 lg:min-h-[calc(100svh-4rem)] lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:pb-20 lg:pt-6">
         <div className="max-w-xl">
           <p className="eyebrow animate-rise">Independent AI engineering studio</p>
@@ -19,7 +13,7 @@ export function Hero() {
           >
             Build what&rsquo;s next <span className="whitespace-nowrap">with AI.</span>
           </h1>
-          <p className="mt-6 max-w-[34rem] text-lede text-pretty text-muted animate-rise [animation-delay:160ms]">
+          <p className="mt-6 max-w-[34rem] text-lede text-pretty text-grey animate-rise [animation-delay:160ms]">
             NEYNIX AI builds intelligent applications, AI agents, and custom software that help turn
             complex ideas into practical solutions.
           </p>
@@ -37,7 +31,7 @@ export function Hero() {
           >
             {["AI engineering", "Automation", "Intelligent software"].map((item) => (
               <li key={item} className="flex items-center gap-2">
-                <span aria-hidden className="size-1 bg-ink/40" />
+                <span aria-hidden className="size-1 bg-grey" />
                 {item}
               </li>
             ))}
@@ -56,7 +50,7 @@ function HeroVisual() {
       aria-hidden
       className="relative mx-auto aspect-square w-full max-w-[22rem] animate-fade [animation-delay:150ms] sm:max-w-[30rem] lg:max-w-[36rem]"
     >
-      <svg viewBox="0 0 400 400" className="absolute inset-0 size-full text-ink" fill="none">
+      <svg viewBox="0 0 400 400" className="absolute inset-0 size-full text-offwhite" fill="none">
         <circle cx="200" cy="200" r="150" stroke="currentColor" strokeOpacity="0.07" />
         <circle cx="200" cy="200" r="190" stroke="currentColor" strokeOpacity="0.05" strokeDasharray="2 6" />
         <line x1="10" y1="200" x2="44" y2="200" stroke="currentColor" strokeOpacity="0.35" />
@@ -69,18 +63,18 @@ function HeroVisual() {
         <LogoMark
           priority
           sizes="(min-width: 1024px) 400px, (min-width: 640px) 330px, 240px"
-          className="w-full drop-shadow-[0_30px_40px_rgb(17_19_24/0.12)]"
+          className="w-full"
         />
       </div>
 
-      <div className="absolute right-0 top-[24%] hidden border-l border-ink/20 pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.2em] text-muted sm:block">
+      <div className="absolute right-0 top-[24%] hidden border-l border-line-strong pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.2em] text-grey sm:block">
         IDEAS
         <br />
         INTELLIGENCE
         <br />
         IMPACT
       </div>
-      <span className="absolute bottom-[9%] right-[4%] font-mono text-[0.625rem] tracking-[0.2em] text-muted">
+      <span className="absolute bottom-[9%] right-[4%] font-mono text-[0.625rem] tracking-[0.2em] text-grey">
         01
       </span>
     </div>

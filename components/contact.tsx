@@ -20,17 +20,17 @@ export function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-title"
-      className="on-dark relative isolate overflow-hidden bg-charcoal text-white"
+      className="relative isolate overflow-hidden border-t border-line bg-obsidian"
     >
       <ContourLines />
 
       <div className="container-page section-pad grid items-center gap-14 lg:grid-cols-[1.2fr_1fr]">
         <div className="reveal">
-          <p className="eyebrow !text-silver">Have an idea worth building?</p>
+          <p className="eyebrow !text-grey">Have an idea worth building?</p>
           <h2 id="contact-title" className="mt-4 text-[clamp(2.5rem,1.6rem+3.8vw,4.5rem)] font-semibold leading-[0.98] tracking-[-0.04em]">
             Let&rsquo;s make it real.
           </h2>
-          <p className="mt-6 max-w-lg text-lede text-pretty text-silver">
+          <p className="mt-6 max-w-lg text-lede text-pretty text-grey">
             Have an AI idea, an automation challenge, or a software project in mind? Let&rsquo;s discuss what a
             practical solution could look like.
           </p>
@@ -38,12 +38,12 @@ export function Contact() {
           {(primary || showEmailButton) && (
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               {primary && (
-                <ButtonLink variant="inverse" arrow {...primary}>
+                <ButtonLink arrow {...primary}>
                   Start a conversation
                 </ButtonLink>
               )}
               {showEmailButton && (
-                <ButtonLink variant="ghost-inverse" href={`mailto:${CONTACT_EMAIL}`}>
+                <ButtonLink variant="secondary" href={`mailto:${CONTACT_EMAIL}`}>
                   Email NEYNIX AI
                 </ButtonLink>
               )}
@@ -51,7 +51,7 @@ export function Contact() {
           )}
 
           {!primary && process.env.NODE_ENV !== "production" && (
-            <p className="mt-9 max-w-lg rounded-md border border-dashed border-white/25 p-4 font-mono text-xs leading-relaxed text-silver">
+            <p className="mt-9 max-w-lg rounded-md border border-dashed border-line-strong p-4 font-mono text-xs leading-relaxed text-grey">
               Dev note (hidden in production): no contact channel is configured. Set NEXT_PUBLIC_CONTACT_EMAIL,
               NEXT_PUBLIC_LINKEDIN_URL, or NEXT_PUBLIC_CONTACT_FORM_ENDPOINT in .env.local — see .env.example.
             </p>
@@ -59,8 +59,8 @@ export function Contact() {
         </div>
 
         <div aria-hidden className="hidden items-center justify-center gap-8 lg:flex">
-          <LogoMark tone="light" sizes="256px" className="w-64 opacity-90 drop-shadow-[0_40px_60px_rgb(0_0_0/0.5)]" />
-          <p className="border-l border-white/20 pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.2em] text-silver">
+          <LogoMark sizes="256px" className="w-64" />
+          <p className="border-l border-line-strong pl-3 font-mono text-[0.625rem] leading-relaxed tracking-[0.2em] text-grey">
             IDEAS
             <br />
             ENGINEERING
@@ -72,10 +72,10 @@ export function Contact() {
 
       {formEnabled && (
         <div id="contact-form" className="container-page pb-[clamp(4.5rem,3rem+6vw,8.5rem)]">
-          <div className="grid gap-10 border-t border-white/10 pt-14 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="grid gap-10 border-t border-line pt-14 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
               <h3 className="text-2xl font-semibold tracking-tight">Tell us about your project</h3>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-silver">
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-grey">
                 A few sentences is enough — the problem, who it&rsquo;s for, and any constraints you already know
                 about.
               </p>
@@ -102,7 +102,7 @@ function ContourLines() {
       preserveAspectRatio="xMidYMid slice"
       className="pointer-events-none absolute inset-0 -z-10 size-full [mask-image:linear-gradient(to_right,transparent_10%,black_70%)]"
       fill="none"
-      stroke="#ffffff"
+      stroke="#f5f5f0"
     >
       {paths.map((d, i) => (
         <path key={i} d={d} strokeOpacity={0.03 + i * 0.006} />

@@ -25,7 +25,7 @@ const reasons: { title: string; body: string; icon: LucideIcon }[] = [
 
 export function Why() {
   return (
-    <section aria-labelledby="why-title" className="section-pad border-t border-line bg-canvas">
+    <section aria-labelledby="why-title" className="section-pad border-t border-line bg-obsidian">
       <div className="container-page">
         <div className="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
@@ -45,7 +45,7 @@ export function Why() {
               <Icon aria-hidden className="mt-0.5 size-6 shrink-0" strokeWidth={1.4} />
               <div>
                 <h3 className="text-base font-semibold tracking-tight">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-grey">{body}</p>
               </div>
             </li>
           ))}

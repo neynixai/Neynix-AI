@@ -5,9 +5,9 @@ import { siteConfig } from "@/config/site";
 
 type Tone = "dark" | "light";
 
-/** The N symbol. `tone="light"` is the reversed mark for dark backgrounds. */
+/** The N symbol. `tone="light"` (default) is the reversed mark for the dark site; `"dark"` is the original. */
 export function LogoMark({
-  tone = "dark",
+  tone = "light",
   className,
   priority,
   sizes = "40px",
@@ -33,12 +33,12 @@ export function LogoMark({
 }
 
 /** Symbol + wordmark lockup used in the navigation and footer. */
-export function Logo({ tone = "dark", className = "" }: { tone?: Tone; className?: string }) {
+export function Logo({ tone = "light", className = "" }: { tone?: Tone; className?: string }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <LogoMark tone={tone} className="w-[26px]" priority sizes="26px" />
       <span
-        className={`text-[0.95rem] font-semibold tracking-[0.08em] ${tone === "light" ? "text-white" : "text-ink"}`}
+        className={`text-[0.95rem] font-semibold tracking-[0.08em] ${tone === "light" ? "text-offwhite" : "text-obsidian"}`}
       >
         {siteConfig.name}
       </span>

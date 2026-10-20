@@ -8,23 +8,23 @@ export function SiteFooter() {
   const contactLinks = getContactLinks();
 
   return (
-    <footer className="border-t border-line bg-white">
+    <footer className="border-t border-line bg-elevated">
       <div className="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.4fr_0.7fr_1fr_0.8fr]">
         <div>
           <a href="#top" aria-label="NEYNIX AI — back to top" className="inline-block rounded-sm">
             <Logo />
           </a>
           <p className="mt-6 text-sm font-semibold">{siteConfig.tagline}</p>
-          <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted">{siteConfig.shortDescription}</p>
-          <p className="mt-4 text-sm text-muted">
-            Founded by <span className="font-medium text-ink">{siteConfig.founder}</span>
+          <p className="mt-2 max-w-xs text-sm leading-relaxed text-grey">{siteConfig.shortDescription}</p>
+          <p className="mt-4 text-sm text-grey">
+            Founded by <span className="font-medium text-offwhite">{siteConfig.founder}</span>
           </p>
         </div>
 
         <FooterColumn title="Navigation">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a href={link.href} className="text-muted transition-colors hover:text-ink">
+              <a href={link.href} className="text-grey transition-colors hover:text-offwhite">
                 {link.label}
               </a>
             </li>
@@ -34,7 +34,7 @@ export function SiteFooter() {
         <FooterColumn title="Services">
           {services.map((service) => (
             <li key={service.id}>
-              <a href="#services" className="text-muted transition-colors hover:text-ink">
+              <a href="#services" className="text-grey transition-colors hover:text-offwhite">
                 {service.title}
               </a>
             </li>
@@ -48,7 +48,7 @@ export function SiteFooter() {
                 <a
                   href={link.href}
                   {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="inline-flex items-center gap-1 text-muted transition-colors hover:text-ink"
+                  className="inline-flex items-center gap-1 text-grey transition-colors hover:text-offwhite"
                 >
                   {link.label}
                   {link.external && <ArrowUpRight aria-hidden className="size-3.5" strokeWidth={1.5} />}
@@ -61,7 +61,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-line">
-        <div className="container-page flex flex-col gap-2 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="container-page flex flex-col gap-2 py-6 text-xs text-grey sm:flex-row sm:items-center sm:justify-between">
           <p>
             © <CurrentYear /> {siteConfig.name}. All rights reserved.
           </p>

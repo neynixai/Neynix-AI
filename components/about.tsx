@@ -23,14 +23,14 @@ const parts = [
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="section-pad border-t border-line bg-white">
+    <section id="about" aria-labelledby="about-title" className="section-pad border-t border-line bg-elevated">
       <div className="container-page grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div className="reveal">
           <p className="eyebrow">The story behind the name</p>
           <h2 id="about-title" className="mt-4 text-heading font-semibold text-balance">
             More than a name. A mindset.
           </h2>
-          <p className="mt-6 max-w-md text-lede text-pretty text-muted">
+          <p className="mt-6 max-w-md text-lede text-pretty text-grey">
             NEYNIX brings together three ideas: the determination to keep going, the ambition to build something
             of your own, and the X factor that comes from thinking differently.
           </p>
@@ -56,16 +56,16 @@ export function About() {
                     <span className="sr-only">{part.key} — </span>
                     {part.title}
                   </h3>
-                  <p className="mt-2 text-[0.8125rem] leading-relaxed text-muted">{part.body}</p>
+                  <p className="mt-2 text-[0.8125rem] leading-relaxed text-grey">{part.body}</p>
                 </div>
               </li>
             ))}
           </ul>
-          <p className="reveal mt-8 max-w-xl text-[0.9375rem] leading-relaxed text-ink/80">
+          <p className="reveal mt-8 max-w-xl text-[0.9375rem] leading-relaxed text-offwhite/80">
             Together, they represent the mindset behind NEYNIX AI: ambitious thinking, independent engineering,
             and the determination to turn ideas into useful technology.
           </p>
-          <p className="mt-4 text-xs text-muted">
+          <p className="mt-4 text-xs text-grey">
             The name is a personal tribute. NEYNIX AI is independent and not affiliated with or endorsed by
             Neymar.
           </p>
@@ -93,10 +93,10 @@ function FounderCard() {
         />
         <div className="pb-1">
           <p className="text-xl font-semibold tracking-tight">{siteConfig.founder}</p>
-          <p className="mt-1 text-sm text-muted">{siteConfig.founderTitle}</p>
+          <p className="mt-1 text-sm text-grey">{siteConfig.founderTitle}</p>
         </div>
       </div>
-      <div className="mt-6 space-y-3 text-sm leading-relaxed text-muted">
+      <div className="mt-6 space-y-3 text-sm leading-relaxed text-grey">
         <p>
           An AI engineer with two years of experience in product development. {siteConfig.founder} started{" "}
           {siteConfig.name} to help small businesses go digital and put new technology like AI to practical use.
@@ -111,7 +111,7 @@ function FounderCard() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-medium text-ink underline-offset-4 hover:underline"
+                className="inline-flex items-center gap-1 font-medium text-offwhite underline-offset-4 hover:underline"
               >
                 {link.label}
                 <ArrowUpRight aria-hidden className="size-3.5" strokeWidth={1.5} />

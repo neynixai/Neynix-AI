@@ -1,13 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 
-type ButtonVariant = "primary" | "secondary" | "inverse" | "ghost-inverse";
+type ButtonVariant = "primary" | "secondary";
 
 const variants: Record<ButtonVariant, string> = {
-  primary: "bg-ink text-white hover:bg-graphite border border-ink",
-  secondary: "bg-white text-ink border border-line-strong hover:border-ink",
-  inverse: "bg-white text-ink border border-white hover:bg-surface",
-  "ghost-inverse": "bg-transparent text-white border border-white/25 hover:border-white/70",
+  primary: "bg-lime text-obsidian border border-lime hover:bg-lime-hover hover:border-lime-hover",
+  secondary: "bg-transparent text-offwhite border border-line-strong hover:border-offwhite",
 };
 
 export function ButtonLink({
@@ -49,24 +47,22 @@ export function SectionHeader({
   lede,
   index,
   id,
-  tone = "dark",
 }: {
   eyebrow: string;
   title: ReactNode;
   lede?: ReactNode;
   index?: string;
   id: string;
-  tone?: "dark" | "light";
 }) {
   return (
     <div className="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <div className="max-w-2xl">
-        <p className={`eyebrow ${tone === "light" ? "!text-silver" : ""}`}>{eyebrow}</p>
+        <p className="eyebrow">{eyebrow}</p>
         <h2 id={id} className="mt-4 text-heading font-semibold text-balance">
           {title}
         </h2>
         {lede && (
-          <p className={`mt-5 max-w-xl text-lede text-pretty ${tone === "light" ? "text-silver" : "text-muted"}`}>
+          <p className="mt-5 max-w-xl text-lede text-pretty text-grey">
             {lede}
           </p>
         )}

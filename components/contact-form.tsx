@@ -11,7 +11,7 @@ type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind
 const empty: ContactInput = { name: "", email: "", projectType: "", message: "" };
 
 const fieldClass =
-  "mt-2 block w-full rounded-md border bg-white/[0.04] px-3.5 py-3 text-[0.9375rem] text-white placeholder:text-white/35 transition-colors focus:border-white/70 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+  "mt-2 block w-full rounded-md border bg-elevated px-3.5 py-3 text-[0.9375rem] text-offwhite placeholder:text-grey transition-colors focus:border-offwhite focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime";
 
 export function ContactForm() {
   const id = useId();
@@ -64,14 +64,14 @@ export function ContactForm() {
 
   if (status.kind === "sent") {
     return (
-      <div role="status" className="rounded-xl border border-white/15 p-8">
-        <Check aria-hidden className="size-6" strokeWidth={1.5} />
+      <div role="status" className="rounded-xl border border-line-strong bg-elevated p-8">
+        <Check aria-hidden className="size-6 text-lime" strokeWidth={1.5} />
         <p className="mt-4 text-xl font-semibold tracking-tight">Thanks — your message has been sent.</p>
-        <p className="mt-2 text-sm text-silver">You&rsquo;ll get a reply at the email address you provided.</p>
+        <p className="mt-2 text-sm text-grey">You&rsquo;ll get a reply at the email address you provided.</p>
         <button
           type="button"
           onClick={() => setStatus({ kind: "idle" })}
-          className="mt-6 text-sm text-white underline underline-offset-4 hover:no-underline"
+          className="mt-6 text-sm text-offwhite underline underline-offset-4 hover:no-underline"
         >
           Send another message
         </button>
@@ -80,7 +80,7 @@ export function ContactForm() {
   }
 
   const describedBy = (field: keyof ContactInput) => (errors[field] ? `${id}-${field}-error` : undefined);
-  const border = (field: keyof ContactInput) => (errors[field] ? "border-[#ff8a80]" : "border-white/15");
+  const border = (field: keyof ContactInput) => (errors[field] ? "border-danger" : "border-line-input");
 
   return (
     <form ref={formRef} onSubmit={onSubmit} noValidate className="relative grid gap-5 sm:grid-cols-2">
@@ -133,7 +133,7 @@ export function ContactForm() {
           onChange={set("projectType")}
           aria-invalid={Boolean(errors.projectType)}
           aria-describedby={describedBy("projectType")}
-          className={`${fieldClass} ${border("projectType")} appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23A9ABB3' stroke-width='1.5'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E")] bg-[length:12px] bg-[right_1rem_center] bg-no-repeat pr-10 [&>option]:text-ink`}
+          className={`${fieldClass} ${border("projectType")} appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2385877E' stroke-width='1.5'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E")] bg-[length:12px] bg-[right_1rem_center] bg-no-repeat pr-10 [&>option]:bg-elevated [&>option]:text-offwhite`}
         >
           <option value="" disabled>
             Select a project type
@@ -178,7 +178,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={status.kind === "sending"}
-          className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-white bg-white px-5 text-sm font-medium text-ink transition-colors hover:bg-surface disabled:cursor-wait disabled:opacity-70"
+          className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-lime bg-lime px-5 text-sm font-medium text-obsidian transition-colors hover:border-lime-hover hover:bg-lime-hover disabled:cursor-wait disabled:opacity-70"
         >
           {status.kind === "sending" ? (
             <>
@@ -191,7 +191,7 @@ export function ContactForm() {
             </>
           )}
         </button>
-        <p role="alert" aria-live="assertive" className="text-sm text-[#ff8a80]">
+        <p role="alert" aria-live="assertive" className="text-sm text-danger">
           {status.kind === "error" ? status.message : ""}
         </p>
       </div>
@@ -202,7 +202,7 @@ export function ContactForm() {
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
   return (
-    <p id={id} className="mt-2 text-[0.8125rem] text-[#ff8a80]">
+    <p id={id} className="mt-2 text-[0.8125rem] text-danger">
       {message}
     </p>
   );

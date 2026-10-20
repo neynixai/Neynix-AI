@@ -30,7 +30,7 @@ const principles = [
 
 export function Philosophy() {
   return (
-    <section aria-labelledby="philosophy-title" className="section-pad relative overflow-hidden bg-canvas">
+    <section aria-labelledby="philosophy-title" className="section-pad relative overflow-hidden bg-obsidian">
       <div className="container-page">
         <SectionHeader
           id="philosophy-title"
@@ -44,23 +44,23 @@ export function Philosophy() {
           <ol className="relative grid gap-0 md:grid-cols-5 md:gap-4">
             {/* Connector — horizontal on desktop, vertical on mobile. */}
             <div aria-hidden className="absolute inset-y-7 left-7 w-px bg-line-strong md:hidden">
-              <span className="motion-pulse absolute left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-ink animate-travel-y" />
+              <span className="motion-pulse absolute left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-lime animate-travel-y" />
             </div>
             <div aria-hidden className="absolute inset-x-[10%] top-9 hidden h-px bg-line-strong md:block">
-              <span className="motion-pulse absolute top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-ink animate-travel-x" />
+              <span className="motion-pulse absolute top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-lime animate-travel-x" />
             </div>
 
             {flow.map(({ label, caption, icon: Icon }, i) => (
               <li key={label} className="relative flex gap-5 py-4 md:flex-col md:items-center md:py-0 md:text-center">
-                <span className="relative flex size-14 shrink-0 items-center justify-center rounded-lg border border-line bg-white shadow-[0_1px_0_rgb(17_19_24/0.04)] md:size-[4.5rem]">
+                <span className="relative flex size-14 shrink-0 items-center justify-center rounded-lg border border-line bg-elevated md:size-[4.5rem]">
                   <Icon aria-hidden className="size-5 md:size-6" strokeWidth={1.4} />
                 </span>
                 <div className="pt-1 md:mt-5 md:pt-0">
                   <p className="font-mono text-[0.6875rem] font-medium tracking-[0.18em] uppercase">
-                    <span className="text-muted">0{i + 1} </span>
+                    <span className="text-grey">0{i + 1} </span>
                     {label}
                   </p>
-                  <p className="mt-2 max-w-[13rem] text-[0.8125rem] leading-relaxed text-muted md:mx-auto">{caption}</p>
+                  <p className="mt-2 max-w-[13rem] text-[0.8125rem] leading-relaxed text-grey md:mx-auto">{caption}</p>
                 </div>
               </li>
             ))}
@@ -74,10 +74,10 @@ export function Philosophy() {
           {principles.map((p, i) => (
             <div key={p.title} className="reveal">
               <dt className="flex items-baseline gap-3 text-lg font-semibold tracking-tight">
-                <span className="font-mono text-[0.6875rem] font-normal text-muted">0{i + 1}</span>
+                <span className="font-mono text-[0.6875rem] font-normal text-grey">0{i + 1}</span>
                 {p.title}
               </dt>
-              <dd className="mt-3 text-sm leading-relaxed text-muted">{p.body}</dd>
+              <dd className="mt-3 text-sm leading-relaxed text-grey">{p.body}</dd>
             </div>
           ))}
         </dl>

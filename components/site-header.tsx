@@ -47,9 +47,9 @@ export function SiteHeader() {
   // No backdrop-filter while the menu is open: it would become the containing
   // block for the fixed menu panel and collapse it to the header's height.
   const surface = open
-    ? "border-line bg-canvas"
+    ? "border-line bg-obsidian"
     : scrolled
-      ? "border-line bg-canvas/85 backdrop-blur-md"
+      ? "border-line bg-obsidian/85 backdrop-blur-md"
       : "border-transparent bg-transparent";
 
   return (
@@ -65,7 +65,7 @@ export function SiteHeader() {
           <ul className="flex items-center gap-7">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="text-[0.8125rem] text-muted transition-colors hover:text-ink">
+                <a href={link.href} className="text-[0.8125rem] text-grey transition-colors hover:text-offwhite">
                   {link.label}
                 </a>
               </li>
@@ -79,7 +79,7 @@ export function SiteHeader() {
         <button
           ref={toggleRef}
           type="button"
-          className="-mr-2 inline-flex size-11 items-center justify-center rounded-md text-ink md:hidden"
+          className="-mr-2 inline-flex size-11 items-center justify-center rounded-md text-offwhite md:hidden"
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -93,7 +93,7 @@ export function SiteHeader() {
         id="mobile-menu"
         ref={panelRef}
         hidden={!open}
-        className="fixed inset-x-0 top-16 bottom-0 overflow-y-auto border-t border-line bg-canvas md:hidden"
+        className="fixed inset-x-0 top-16 bottom-0 overflow-y-auto border-t border-line bg-obsidian md:hidden"
       >
         <nav aria-label="Mobile" className="container-page flex min-h-full flex-col pb-10 pt-4">
           <ul className="divide-y divide-line">
@@ -105,7 +105,7 @@ export function SiteHeader() {
                   className="flex items-baseline justify-between py-5 text-2xl font-semibold tracking-tight"
                 >
                   {link.label}
-                  <span className="font-mono text-xs text-muted">0{i + 1}</span>
+                  <span className="font-mono text-xs text-grey">0{i + 1}</span>
                 </a>
               </li>
             ))}
