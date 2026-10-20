@@ -1,27 +1,28 @@
 /**
  * Central brand and contact configuration.
  *
- * Contact values are read from environment variables (see .env.example) so
- * they can differ per deployment. You can also replace the fallbacks below
- * with literal values. An empty value hides the related link — never put
- * placeholder or invented contact details here.
+ * The values below are the live contact details. An environment variable with
+ * the same name (see .env.example) overrides a value when set. To hide a link,
+ * set its value here to "" — never put placeholder or invented details here.
  */
 
-/** Public contact email, e.g. "hello@your-domain". */
-export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "";
+/** Public contact email. */
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "neynixai@gmail.com";
 /** Full LinkedIn profile or company page URL. */
-export const LINKEDIN_URL = process.env.NEXT_PUBLIC_LINKEDIN_URL ?? "";
+export const LINKEDIN_URL =
+  process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://www.linkedin.com/in/nishaanth-k-n-a59a38232";
 /** Full GitHub profile or organisation URL. */
-export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL ?? "";
+export const GITHUB_URL = process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/Nishaanth419";
 /**
  * Contact form endpoint that accepts a JSON POST and answers 2xx on success,
  * e.g. a Formspree form URL ("https://formspree.io/f/xxxxxxx"). The site is
  * static, so delivery has to be handled by an external service. Leave empty to
  * hide the form.
  */
-export const CONTACT_FORM_ENDPOINT = process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT ?? "";
+export const CONTACT_FORM_ENDPOINT =
+  process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT || "https://formspree.io/f/mgaobdkk";
 /** Production origin without a trailing slash, e.g. "https://neynix.ai". */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
 
 export const siteConfig = {
   name: "NEYNIX AI",

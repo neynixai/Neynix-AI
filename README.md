@@ -26,11 +26,11 @@ Source: GitHub Actions**.
 
 ## Configuration
 
-Set these as repository **Variables** (Settings → Secrets and variables →
-Actions → Variables) for the deployed site, or in `.env.local` for local
-development (see `.env.example`). Every value is optional — anything left empty
-is simply not shown, so the site never displays invented contact details.
-Re-run the deploy workflow after changing them.
+The live contact details (email, LinkedIn, GitHub, Formspree form) are set in
+`config/site.ts`. To override one without editing code, set a repository
+**Variable** with the same name (Settings → Secrets and variables → Actions →
+Variables) or put it in `.env.local` for local development, then redeploy.
+To hide a link, set its value in `config/site.ts` to `""`.
 
 | Variable | Effect |
 | --- | --- |
