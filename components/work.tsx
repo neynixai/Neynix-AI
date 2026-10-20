@@ -1,5 +1,6 @@
-import type { ReactNode } from "react";
+import Image, { type StaticImageData } from "next/image";
 import { SectionHeader } from "@/components/ui";
+import caModeScreenshot from "@/public/work/ca-mode.webp";
 
 type ProjectStatus = "poc" | "in-build" | "completed" | "hosted";
 
@@ -19,7 +20,8 @@ const projects: {
   title: string;
   category: string;
   description: string;
-  preview: ReactNode;
+  image: StaticImageData;
+  imageAlt: string;
   status: ProjectStatus;
   href?: string;
 }[] = [
@@ -28,7 +30,9 @@ const projects: {
     category: "AI agents · Personal finance",
     description:
       "A local-first finance copilot with two agents: one answers general finance questions, the other analyses an INDmoney portfolio through read-only MCP tools, daily snapshots, and charts with a full call trace.",
-    preview: <CaModePreview />,
+    image: caModeScreenshot,
+    imageAlt:
+      "CA Mode home screen: net worth, P&L and goal cards, recent chats, and a portfolio overview with a 7-day trend and market insights.",
     status: "in-build",
     href: "https://github.com/Nishaanth419/CAMode",
   },
@@ -57,14 +61,17 @@ export function Work() {
               }`}
             >
               <div
-                aria-hidden
                 className={`relative aspect-[16/10] overflow-hidden border-b border-line bg-obsidian ${
-                  wide ? "md:w-1/2 md:shrink-0 md:border-r md:border-b-0" : ""
+                  wide ? "md:w-3/5 md:shrink-0 md:border-r md:border-b-0" : ""
                 }`}
               >
-                <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.025]">
-                  {project.preview}
-                </div>
+                <Image
+                  src={project.image}
+                  alt={project.imageAlt}
+                  fill
+                  sizes={wide ? "(min-width: 768px) 60vw, 100vw" : "(min-width: 768px) 50vw, 100vw"}
+                  className="object-cover object-left-top transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                />
               </div>
               <div className={`flex flex-1 flex-col p-6 ${wide ? "md:justify-center md:p-10" : ""}`}>
                 <p className="eyebrow">{project.category}</p>
@@ -93,69 +100,5 @@ export function Work() {
         </ul>
       </div>
     </section>
-  );
-}
-
-/* ── Abstract interface sketches in the site palette. Decorative only. ── */
-
-const c = {
-  panel: "#191b17", // elevated surface
-  raised: "#22251f", // emphasised panel
-  line: "#2a2d27",
-  strong: "#3b3e37",
-  grey: "#85877e",
-  bright: "#f5f5f0",
-  accent: "#d7ff64", // one highlight per sketch
-};
-
-function CaModePreview() {
-  const trend = "M14 62 L30 56 L46 59 L62 48 L78 51 L94 40 L110 43 L126 32";
-  return (
-    <svg viewBox="0 0 320 200" className="size-full" fill="none">
-      {/* chat panel */}
-      <g transform="translate(26 30)">
-        <rect width="150" height="140" rx="8" fill={c.panel} stroke={c.line} />
-        <rect x="12" y="14" width="44" height="14" rx="7" fill={c.raised} stroke={c.strong} />
-        <rect x="18" y="19.5" width="32" height="3" rx="1.5" fill={c.grey} />
-        <rect x="60" y="14" width="44" height="14" rx="7" stroke={c.line} />
-        <rect x="66" y="19.5" width="32" height="3" rx="1.5" fill={c.strong} />
-        <rect x="66" y="40" width="72" height="16" rx="8" fill={c.raised} />
-        <rect x="74" y="46" width="52" height="4" rx="2" fill={c.grey} />
-        <rect x="12" y="66" width="110" height="46" rx="6" fill={c.raised} />
-        {[76, 85, 94].map((y, j) => (
-          <rect key={y} x="20" y={y} width={j === 2 ? 52 : 92} height="3.5" rx="1.75" fill={c.grey} />
-        ))}
-        {/* call trace */}
-        {[0, 1, 2].map((i) => (
-          <g key={i} transform={`translate(${12 + i * 30} 120)`}>
-            <circle cx="3" cy="3" r="3" fill={i === 2 ? c.accent : c.strong} />
-            {i < 2 && <path d="M8 3 H28" stroke={c.strong} strokeDasharray="2 2" />}
-          </g>
-        ))}
-      </g>
-      {/* portfolio card */}
-      <g transform="translate(188 30)">
-        <rect width="108" height="140" rx="8" fill={c.raised} stroke={c.strong} />
-        <rect x="12" y="14" width="40" height="3.5" rx="1.75" fill={c.grey} />
-        <rect x="12" y="24" width="62" height="7" rx="3.5" fill={c.bright} />
-        <g transform="translate(-6 30) scale(0.78)">
-          <path d={`${trend} L126 78 L14 78 Z`} fill={c.accent} fillOpacity="0.08" />
-          <path d={trend} stroke={c.accent} strokeWidth="1.6" strokeLinejoin="round" />
-        </g>
-        <circle cx="34" cy="112" r="14" stroke={c.line} strokeWidth="6" />
-        <circle
-          cx="34"
-          cy="112"
-          r="14"
-          stroke={c.bright}
-          strokeWidth="6"
-          strokeDasharray="56 88"
-          transform="rotate(-90 34 112)"
-        />
-        {[104, 112, 120].map((y) => (
-          <rect key={y} x="58" y={y} width="36" height="3" rx="1.5" fill={c.strong} />
-        ))}
-      </g>
-    </svg>
   );
 }
