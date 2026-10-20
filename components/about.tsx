@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import founderPortrait from "@/public/brand/founder-nishaanth.webp";
 import { GITHUB_URL, LINKEDIN_URL, siteConfig } from "@/config/site";
 
 const parts = [
@@ -82,22 +84,25 @@ function FounderCard() {
   return (
     <figure className="mt-12 max-w-md border-t border-line pt-8">
       <figcaption className="eyebrow">Founder</figcaption>
-      <div className="mt-5 flex items-center gap-4">
-        <span
-          aria-hidden
-          className="flex size-14 shrink-0 items-center justify-center rounded-full bg-ink text-lg font-semibold tracking-tight text-white"
-        >
-          {siteConfig.founder.charAt(0)}
-        </span>
-        <div>
-          <p className="text-lg font-semibold tracking-tight">{siteConfig.founder}</p>
-          <p className="text-sm text-muted">Founder, {siteConfig.name}</p>
+      <div className="mt-5 flex items-end gap-5">
+        <Image
+          src={founderPortrait}
+          alt={`Portrait of ${siteConfig.founder}, founder of ${siteConfig.name}`}
+          sizes="128px"
+          className="w-28 shrink-0 rounded-lg object-cover grayscale transition-[filter] duration-500 hover:grayscale-0 sm:w-32"
+        />
+        <div className="pb-1">
+          <p className="text-xl font-semibold tracking-tight">{siteConfig.founder}</p>
+          <p className="mt-1 text-sm text-muted">{siteConfig.founderTitle}</p>
         </div>
       </div>
-      <p className="mt-5 text-sm leading-relaxed text-muted">
-        {siteConfig.founder} founded {siteConfig.name} and works directly with every client — from the first
-        conversation to the final review.
-      </p>
+      <div className="mt-6 space-y-3 text-sm leading-relaxed text-muted">
+        <p>
+          An AI engineer with two years of experience in product development. {siteConfig.founder} started{" "}
+          {siteConfig.name} to help small businesses go digital and put new technology like AI to practical use.
+        </p>
+        <p>Every client works directly with {siteConfig.founder}, from the first conversation to the final review.</p>
+      </div>
       {links.length > 0 && (
         <ul className="mt-5 flex gap-5 text-sm">
           {links.map((link) => (

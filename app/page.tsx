@@ -21,7 +21,7 @@ const structuredData = {
   founder: {
     "@type": "Person",
     name: siteConfig.founder,
-    jobTitle: `Founder, ${siteConfig.name}`,
+    jobTitle: siteConfig.founderTitle,
     sameAs: [LINKEDIN_URL, GITHUB_URL].filter(Boolean),
   },
 };

@@ -30,6 +30,7 @@ export const siteConfig = {
   shortDescription:
     "Independent AI engineering studio building intelligent software for real-world problems.",
   founder: "Nishaanth",
+  founderTitle: "Founder & AI Engineer",
   url: SITE_URL,
   contact: {
     email: CONTACT_EMAIL,
