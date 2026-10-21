@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { CurrentYear } from "@/components/current-year";
@@ -11,9 +12,9 @@ export function SiteFooter() {
     <footer className="border-t border-line bg-elevated">
       <div className="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.4fr_0.7fr_1fr_0.8fr]">
         <div>
-          <a href="#top" aria-label="NEYNIX AI — back to top" className="inline-block rounded-sm">
+          <Link href="/#top" aria-label="NEYNIX AI — home" className="inline-block rounded-sm">
             <Logo />
-          </a>
+          </Link>
           <p className="mt-6 font-display text-base font-semibold">{siteConfig.tagline}</p>
           <p className="mt-2 max-w-xs text-small text-grey">{siteConfig.shortDescription}</p>
           <p className="mt-4 text-small text-grey">
@@ -24,9 +25,9 @@ export function SiteFooter() {
         <FooterColumn title="Navigation">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a href={link.href} className="text-grey transition-colors hover:text-offwhite">
+              <Link href={link.href} className="text-grey transition-colors hover:text-offwhite">
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </FooterColumn>
@@ -34,9 +35,9 @@ export function SiteFooter() {
         <FooterColumn title="Services">
           {services.map((service) => (
             <li key={service.id}>
-              <a href="#services" className="text-grey transition-colors hover:text-offwhite">
+              <Link href="/#services" className="text-grey transition-colors hover:text-offwhite">
                 {service.title}
-              </a>
+              </Link>
             </li>
           ))}
         </FooterColumn>

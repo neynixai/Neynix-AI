@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -22,8 +23,10 @@ export function ButtonLink({
   arrow?: boolean;
   className?: string;
 } & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href" | "className" | "children">) {
+  // Site paths go through next/link so they pick up the GitHub Pages basePath.
+  const Anchor = href.startsWith("/") ? Link : "a";
   return (
-    <a
+    <Anchor
       href={href}
       className={`group inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 text-sm font-medium transition-colors duration-200 ${variants[variant]} ${className}`}
       {...rest}
@@ -36,7 +39,7 @@ export function ButtonLink({
           strokeWidth={1.75}
         />
       )}
-    </a>
+    </Anchor>
   );
 }
 

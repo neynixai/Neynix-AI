@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/logo";
@@ -57,21 +58,21 @@ export function SiteHeader() {
       className={`sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${surface}`}
     >
       <div className="container-page flex h-16 items-center justify-between gap-6">
-        <a href="#top" aria-label="NEYNIX AI — back to top" className="rounded-sm">
+        <Link href="/#top" aria-label="NEYNIX AI — home" className="rounded-sm">
           <Logo />
-        </a>
+        </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
           <ul className="flex items-center gap-7">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className="text-sm font-medium text-grey transition-colors hover:text-offwhite">
+                <Link href={link.href} className="text-sm font-medium text-grey transition-colors hover:text-offwhite">
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
-          <ButtonLink href="#contact" arrow className="!min-h-9 !px-4">
+          <ButtonLink href="/#contact" arrow className="!min-h-9 !px-4">
             Discuss a project
           </ButtonLink>
         </nav>
@@ -99,18 +100,18 @@ export function SiteHeader() {
           <ul className="divide-y divide-line">
             {navLinks.map((link, i) => (
               <li key={link.href}>
-                <a
+                <Link
                   href={link.href}
                   onClick={() => close(false)}
                   className="flex items-baseline justify-between py-5 text-xl font-medium"
                 >
                   {link.label}
                   <span className="text-xs tabular-nums text-grey">0{i + 1}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
-          <ButtonLink href="#contact" arrow className="mt-8 w-full" onClick={() => close(false)}>
+          <ButtonLink href="/#contact" arrow className="mt-8 w-full" onClick={() => close(false)}>
             Discuss a project
           </ButtonLink>
         </nav>
