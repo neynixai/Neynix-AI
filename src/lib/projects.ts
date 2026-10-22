@@ -64,22 +64,22 @@ export const projects: Project[] = [
     title: "CA Mode",
     category: "AI agents · Personal finance",
     summary:
-      "A private finance copilot that answers questions about your INDmoney portfolio in plain language, runs its AI model on your own computer, and shows exactly how it reached every number.",
+      "A private finance copilot that answers questions about your INDmoney portfolio in plain language, works out every number in code, and shows exactly how it reached each answer. Live now and free to try.",
     description:
-      "A private AI finance copilot for INDmoney investors: plain-language portfolio answers, worked out in code, with the AI model running on your own computer.",
+      "A live AI finance copilot for INDmoney investors: plain-language portfolio answers, figures worked out in code, and history locked with your own PIN.",
     tags: ["AI agents", "Local LLM", "Tool calling", "Personal finance", "Privacy-first", "Data visualisation"],
     tagline:
-      "Ask your portfolio anything. Get answers built from your real numbers, worked out in code, and kept on your own computer.",
+      "Ask your portfolio anything. Get answers built from your real numbers, worked out in code, and locked with your own PIN.",
     image: caModeScreenshot,
     imageAlt:
       "CA Mode home screen: net worth, P&L and goal cards, recent chats, and a portfolio overview with a 7-day trend and market insights.",
-    status: "in-build",
+    status: "hosted",
     liveUrl: "https://129-225-97-229.sslip.io/",
     screens: [
       {
         image: caModeChat,
         alt: "CA Mode chat: Finance Agent, running on the local Ollama model, explains the difference between an SIP and a lumpsum investment.",
-        caption: "Finance Agent answers a general question with the AI model running on the same computer.",
+        caption: "Finance Agent answers a general question using an open-source model run with Ollama, not a cloud AI service.",
       },
       {
         image: caModeAnswerTrace,
@@ -117,7 +117,7 @@ export const projects: Project[] = [
     },
     what: {
       intro:
-        "CA Mode is a finance assistant with two specialised agents. One answers general finance questions and never sees your account. The other connects to INDmoney with read-only access and answers questions about your own portfolio, with charts and a step-by-step trace of how each answer was built.",
+        "CA Mode is a finance assistant with two specialised agents. One answers general finance questions and never sees your account. The other connects to INDmoney with read-only access and answers questions about your own portfolio, with charts and a step-by-step trace of how each answer was built. It is live: sign in with Google and try it free.",
       features: [
         {
           title: "Two agents, clear boundaries",
@@ -125,23 +125,35 @@ export const projects: Project[] = [
         },
         {
           title: "Read-only by design",
-          body: "CA Mode reads your account through INDmoney’s read-only tools. It cannot trade, redeem or move money.",
+          body: "CA Mode reads your account through INDmoney’s read-only tools. It cannot trade, change SIPs, move money or change account settings.",
         },
         {
           title: "A daily portfolio snapshot",
-          body: "Every morning at 09:00 IST it records your net worth and holdings, so it can show trends and explain what changed since yesterday or last month.",
+          body: "Every morning at 09:00 IST, before the market opens, it records your net worth and holdings, so it can show trends and explain what changed since yesterday or last month.",
+        },
+        {
+          title: "“Why did my portfolio change?”",
+          body: "A fixed workflow in code compares two snapshots, splits each holding’s change into price and units held, and runs consistency checks before reporting. It says what changed, and never guesses why.",
         },
         {
           title: "Goals you can trust",
-          body: "Set a savings goal and see where you will land. Projections are calculated in code under your own return assumptions, and what-if scenarios are never saved.",
+          body: "Projections are calculated in code under your own return assumption, with ways to close any gap. Fixed rules show which kinds of investment suit each goal’s timeline, and fund figures are dated and sourced, never ranked.",
+        },
+        {
+          title: "Every broker, not just one",
+          body: "Upload your monthly NSDL or CDSL statement to include holdings at other brokers. It is read offline, and only the holdings are kept: never the PDF, its password or your personal details.",
+        },
+        {
+          title: "Questions with several parts",
+          body: "Ask for your net worth and a monthly target in one question. The agent plans its tool calls, the plan is checked in code, and independent steps run at the same time.",
         },
         {
           title: "Answers you can check",
-          body: "Bar, donut, line and candlestick charts when the data supports them, plus a call trace showing every tool the agent used to reach its answer.",
+          body: "Bar, donut, line and candlestick charts when the data supports them, a trace of every step behind an answer, and a warning on any figure that doesn’t match your INDmoney data.",
         },
         {
-          title: "Private by default",
-          body: "The AI model runs on your own computer, so questions and portfolio data never leave it. Each person has a PIN-protected profile, and a private mode saves nothing.",
+          title: "Private by design",
+          body: "Chats, goals and snapshots are sealed with your PIN, so not even whoever runs the server can read them. Answers come from an open-source model run with Ollama, not a cloud AI service.",
         },
       ],
     },
@@ -160,7 +172,7 @@ export const projects: Project[] = [
       },
       {
         title: "Small teams",
-        body: "Groups that want one shared, self-hosted finance assistant running behind their own access controls rather than a public service.",
+        body: "Teams and organisations that want their own hosted copy, with its own server, database and model and a Google sign-in for each member, rather than a shared service.",
       },
     ],
     principles: [
@@ -178,15 +190,16 @@ export const projects: Project[] = [
       },
       {
         title: "Measured, not assumed",
-        body: "The local model was chosen by scoring candidates on the project’s own tests for correct portfolio numbers, request routing and speed.",
+        body: "The model was chosen on the project’s own tests: gpt-oss-20b got 23 of 24 portfolio figures right in about 9 seconds an answer. Every change is graded the same way, in code.",
       },
     ],
     progress: {
-      now: "CA Mode is in active development. Profiles, both agents, read-only INDmoney access, daily snapshots, goals and charts all work today.",
+      now: "CA Mode is live: sign in with Google and ask five questions a day, free. Both agents, daily snapshots, investigations, goals, broker statements and charts all work today.",
       next: [
-        "Investigations: “why did my portfolio change?” answered by comparing snapshots, verifying the calculations and naming the main contributors.",
-        "Consistency checks that flag conflicting totals, mismatched snapshots and stale data before they reach an answer.",
-        "Saved investigations you can return to, with the evidence behind each finding.",
+        "Checkout for the Individual plan, so unlimited questions can be bought in the app.",
+        "Live answer traces that show each step as it happens, instead of arriving with the finished answer.",
+        "Fund overlap: showing when two of your funds own the same companies.",
+        "Fewer misquoted figures in investigation answers, tracked on the project’s evals.",
       ],
     },
     note: "CA Mode is an independent project and is not affiliated with or endorsed by INDmoney. It provides information and analysis, not investment advice.",
