@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { getImage, Image } from "astro:assets";
 import ArrowLeft from "@lucide/astro/icons/arrow-left";
+import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
 import ButtonLink from "@/components/ButtonLink.astro";
 import PointCards from "@/components/PointCards.astro";
 import ProjectSection from "@/components/ProjectSection.astro";
@@ -104,7 +105,22 @@ const structuredData = {
               {project.tagline}
             </p>
             <div class="mt-8 flex flex-wrap items-center gap-3 animate-rise [animation-delay:200ms]">
-              <ButtonLink href="/#contact" arrow>Discuss a project like this</ButtonLink>
+              {
+                project.liveUrl && (
+                  <ButtonLink href={project.liveUrl} target="_blank" rel="noopener">
+                    Try it live
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      class="size-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      stroke-width={1.75}
+                    />
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </ButtonLink>
+                )
+              }
+              <ButtonLink href="/#contact" variant={project.liveUrl ? "secondary" : "primary"} arrow>
+                Discuss a project like this
+              </ButtonLink>
               {project.screens && <ButtonLink href="#screens" variant="secondary">See the screens</ButtonLink>}
             </div>
             <div class="mt-8 flex flex-wrap items-center gap-3 animate-rise [animation-delay:240ms]">

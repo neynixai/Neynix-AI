@@ -36,6 +36,8 @@ export type Project = {
   image: ImageMetadata;
   imageAlt: string;
   status: ProjectStatus;
+  /** Where the running app can be tried, if it is online. */
+  liveUrl?: string;
   /** More screenshots, shown in a gallery on the project page. */
   screens?: Screen[];
   /** Why the project exists: the problem it answers. */
@@ -72,6 +74,7 @@ export const projects: Project[] = [
     imageAlt:
       "CA Mode home screen: net worth, P&L and goal cards, recent chats, and a portfolio overview with a 7-day trend and market insights.",
     status: "in-build",
+    liveUrl: "https://129-225-97-229.sslip.io/",
     screens: [
       {
         image: caModeChat,
