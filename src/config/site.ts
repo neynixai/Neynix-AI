@@ -43,7 +43,7 @@ export const siteConfig = {
   tagline: "Build what's next with AI.",
   shortDescription:
     "Independent AI engineering studio building intelligent software for real-world problems.",
-  founder: "Nishaanth",
+  founder: "Nishaanth K N",
   founderTitle: "Founder & AI Engineer",
   url: SITE_URL,
   contact: {
