@@ -5,6 +5,7 @@ import ArrowLeft from "@lucide/astro/icons/arrow-left";
 import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
 import ButtonLink from "@/components/ButtonLink.astro";
 import PointCards from "@/components/PointCards.astro";
+import PricingPlans from "@/components/PricingPlans.astro";
 import ProjectSection from "@/components/ProjectSection.astro";
 import ProjectStatusBadge from "@/components/ProjectStatusBadge.astro";
 import ProjectTags from "@/components/ProjectTags.astro";
@@ -180,6 +181,15 @@ const structuredData = {
           }
         </ul>
       </ProjectSection>
+
+      {
+        project.pricing && (
+          <ProjectSection id="pricing" eyebrow="Pricing" title="Plans" lede={project.pricing.intro}>
+            <PricingPlans plans={project.pricing.plans} />
+            {project.pricing.note && <p class="mt-6 max-w-2xl text-sm text-grey">{project.pricing.note}</p>}
+          </ProjectSection>
+        )
+      }
 
       <ProjectSection id="progress" eyebrow="Where it stands" title="Today and next">
         <div class="reveal grid gap-10 rounded-2xl border border-line-strong bg-[linear-gradient(135deg,rgb(215_255_100/0.06),transparent_45%)] bg-elevated p-7 sm:p-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-14">

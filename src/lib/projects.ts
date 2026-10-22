@@ -20,6 +20,21 @@ type Point = { title: string; body: string };
 /** A screenshot shown in the project page's gallery. */
 export type Screen = { image: ImageMetadata; alt: string; caption: string };
 
+/** A paid or free plan, shown in the project page's pricing section. */
+export type PricingPlan = {
+  name: string;
+  /** Shown large, e.g. "₹199" or "Contact us". */
+  price: string;
+  /** Follows the price, e.g. "per month". */
+  period?: string;
+  summary: string;
+  features: string[];
+  /** A site path ("/#contact") or a full URL, which opens in a new tab. */
+  cta: { label: string; href: string };
+  /** Drawn with a lime border to stand out. */
+  featured?: boolean;
+};
+
 export type Project = {
   /** URL segment: the project's page is served at /work/<slug>/. */
   slug: string;
@@ -48,6 +63,8 @@ export type Project = {
   audiences: Point[];
   /** The principles that shape how it is built. */
   principles: Point[];
+  /** The plans people can choose, if the project is sold. */
+  pricing?: { intro: string; plans: PricingPlan[]; note?: string };
   /** Where it stands today and what comes next. */
   progress: { now: string; next: string[] };
   /** Small print shown at the end of the page. */
@@ -193,8 +210,53 @@ export const projects: Project[] = [
         body: "The model was chosen on the project’s own tests: gpt-oss-20b got 23 of 24 portfolio figures right in about 9 seconds an answer. Every change is graded the same way, in code.",
       },
     ],
+    pricing: {
+      intro:
+        "Start free on the shared copy. Pay for unlimited questions, or for a copy of CA Mode hosted for your team alone.",
+      plans: [
+        {
+          name: "Free",
+          price: "₹0",
+          summary: "Try CA Mode on the shared copy.",
+          features: [
+            "50 questions a day, starting again at midnight IST",
+            "Finance Agent and Portfolio Analyzer",
+            "INDmoney connection, goals and daily portfolio snapshots",
+            "History encrypted with your PIN",
+          ],
+          cta: { label: "Start free", href: "https://129-225-97-229.sslip.io/" },
+        },
+        {
+          name: "Individual",
+          price: "₹199",
+          period: "per month",
+          summary: "For one person. Answers come from an open-source model run with Ollama, which keeps the price low.",
+          features: [
+            "Unlimited questions",
+            "No paid cloud AI service behind your answers",
+            "Sign in and ask, with no AI keys to buy or manage",
+            "Everything in Free",
+          ],
+          cta: { label: "Get Individual", href: "/#contact" },
+          featured: true,
+        },
+        {
+          name: "Team or organisation",
+          price: "Contact us",
+          summary: "A copy hosted for your team alone, so the price depends on its size.",
+          features: [
+            "Its own server, database and model, run by us",
+            "Each member signs in with their own Google account",
+            "Unlimited questions for every member",
+            "Daily backups and updates",
+          ],
+          cta: { label: "Talk to us", href: "/#contact" },
+        },
+      ],
+      note: "There is no online checkout yet. Get in touch and we move your existing profile to the new plan, so your chats, goals and snapshots stay where they are. Prices are in Indian rupees.",
+    },
     progress: {
-      now: "CA Mode is live: sign in with Google and ask five questions a day, free. Both agents, daily snapshots, investigations, goals, broker statements and charts all work today.",
+      now: "CA Mode is live: sign in with Google and ask 50 questions a day, free. Both agents, daily snapshots, investigations, goals, broker statements and charts all work today.",
       next: [
         "Checkout for the Individual plan, so unlimited questions can be bought in the app.",
         "Live answer traces that show each step as it happens, instead of arriving with the finished answer.",

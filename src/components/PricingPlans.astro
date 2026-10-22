@@ -1,0 +1,52 @@
+---
+import Check from "@lucide/astro/icons/check";
+import ButtonLink from "@/components/ButtonLink.astro";
+import type { PricingPlan } from "@/lib/projects";
+
+type Props = { plans: PricingPlan[] };
+
+const { plans } = Astro.props;
+---
+
+<ul class="grid gap-4 lg:grid-cols-3">
+  {
+    plans.map((plan) => {
+      const external = plan.cta.href.startsWith("http");
+      return (
+        <li
+          class:list={[
+            "reveal flex flex-col rounded-xl border p-6 sm:p-8 transition-colors duration-300",
+            plan.featured
+              ? "border-lime/60 bg-[linear-gradient(135deg,rgb(215_255_100/0.08),transparent_50%)] bg-elevated"
+              : "border-line bg-elevated hover:border-line-strong",
+          ]}
+        >
+          <h3 class="text-title">{plan.name}</h3>
+          <p class="mt-5 flex items-baseline gap-2">
+            <span class="text-heading">{plan.price}</span>
+            {plan.period && <span class="text-sm text-grey">{plan.period}</span>}
+          </p>
+          <p class="mt-4 text-body text-pretty text-grey">{plan.summary}</p>
+          <ul class="mt-6 flex-1 space-y-3 border-t border-line pt-6">
+            {plan.features.map((feature) => (
+              <li class="flex gap-3 text-body text-offwhite/85">
+                <Check aria-hidden="true" class="mt-[0.2em] size-4 shrink-0 text-lime" stroke-width={2} />
+                {feature}
+              </li>
+            ))}
+          </ul>
+          <ButtonLink
+            href={plan.cta.href}
+            variant={plan.featured ? "primary" : "secondary"}
+            arrow={!external}
+            class="mt-8"
+            {...(external ? { target: "_blank", rel: "noopener" } : {})}
+          >
+            {plan.cta.label}
+            {external && <span class="sr-only">(opens in a new tab)</span>}
+          </ButtonLink>
+        </li>
+      );
+    })
+  }
+</ul>
