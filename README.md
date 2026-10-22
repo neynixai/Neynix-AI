@@ -40,6 +40,7 @@ To hide a link, set its value in `src/config/site.ts` to `""`.
 | `PUBLIC_CONTACT_EMAIL` | Shows "Email NEYNIX AI" and the footer email link. |
 | `PUBLIC_LINKEDIN_URL` / `PUBLIC_GITHUB_URL` | Footer "Connect" links. |
 | `PUBLIC_WEB3FORMS_ACCESS_KEY` | Enables the contact form. GitHub Pages can't run server code, so the form posts to [Web3Forms](https://web3forms.com), which emails each message to the address the access key was created for (the sender's email becomes the reply-to). Create a free key there and paste it here; it is public by design. The form only reports success when Web3Forms confirms delivery. |
+| `PUBLIC_GOOGLE_SITE_VERIFICATION` | Adds Google Search Console's verification tag. Use the `content` value from the HTML-tag method. |
 | `PUBLIC_CHAT_WIDGET_URL` | Shows the site assistant (chat button, bottom-right). Set it to the chatbot Worker's `/widget.js` URL — see [`chatbot/README.md`](chatbot/README.md). |
 
 "Start a conversation" points to the best configured channel: the form, then

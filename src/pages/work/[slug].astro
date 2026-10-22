@@ -34,18 +34,40 @@ const ogImage = await getImage({
   format: "jpg",
 });
 
+const pageUrl = siteConfig.url ? `${siteConfig.url}${path}` : undefined;
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: project.title,
-  description: project.description,
-  keywords: project.tags.join(", "),
-  applicationCategory: project.category,
-  creativeWorkStatus: statuses[project.status].label,
-  ...(siteConfig.url ? { url: `${siteConfig.url}${path}` } : {}),
-  creator: { "@type": "Organization", name: siteConfig.name },
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      name: project.title,
+      headline: project.tagline,
+      description: project.description,
+      keywords: project.tags.join(", "),
+      genre: project.category,
+      creativeWorkStatus: statuses[project.status].label,
+      inLanguage: "en",
+      ...(pageUrl
+        ? { url: pageUrl, image: `${new URL(siteConfig.url).origin}${ogImage.src}`, mainEntityOfPage: pageUrl }
+        : {}),
+      creator: siteConfig.url
+        ? { "@id": `${siteConfig.url}/#organization` }
+        : { "@type": "Organization", name: siteConfig.name },
+    },
+    ...(pageUrl
+      ? [
+          {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: siteConfig.name, item: `${siteConfig.url}/` },
+              { "@type": "ListItem", position: 2, name: project.title, item: pageUrl },
+            ],
+          },
+        ]
+      : []),
+  ],
 };
----
+------
 
 <BaseLayout
   title={title}

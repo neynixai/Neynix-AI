@@ -28,6 +28,11 @@ export const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
  * Leave empty to hide the assistant.
  */
 export const CHAT_WIDGET_URL = import.meta.env.PUBLIC_CHAT_WIDGET_URL || "";
+/**
+ * Google Search Console verification code: the `content` value of the
+ * <meta name="google-site-verification"> tag Search Console gives you.
+ */
+export const GOOGLE_SITE_VERIFICATION = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION || "";
 /** This site's bot id in chatbot/bots.json. */
 export const CHAT_BOT_ID = "neynix";
 /** Production origin without a trailing slash, e.g. "https://neynix.ai". */

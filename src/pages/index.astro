@@ -12,23 +12,44 @@ import Work from "@/components/Work.astro";
 import { GITHUB_URL, LINKEDIN_URL, siteConfig } from "@/config/site";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
+// Organization and WebSite data: the site name and logo Google shows in results.
+const url = siteConfig.url ? `${siteConfig.url}/` : undefined;
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: siteConfig.name,
-  slogan: siteConfig.tagline,
-  description: siteConfig.seo.description,
-  knowsAbout: siteConfig.seo.keywords,
-  ...(siteConfig.url ? { url: `${siteConfig.url}/` } : {}),
-  ...(siteConfig.contact.email ? { email: siteConfig.contact.email } : {}),
-  founder: {
-    "@type": "Person",
-    name: siteConfig.founder,
-    jobTitle: siteConfig.founderTitle,
-    sameAs: [LINKEDIN_URL, GITHUB_URL].filter(Boolean),
-  },
+  "@graph": [
+    {
+      "@type": "Organization",
+      ...(url ? { "@id": `${url}#organization`, url } : {}),
+      name: siteConfig.name,
+      alternateName: "NEYNIX",
+      slogan: siteConfig.tagline,
+      description: siteConfig.seo.description,
+      knowsAbout: siteConfig.seo.keywords,
+      ...(url
+        ? {
+            logo: { "@type": "ImageObject", url: `${siteConfig.url}/icon.png`, width: 512, height: 512 },
+            image: `${siteConfig.url}/og-image.png`,
+          }
+        : {}),
+      ...(siteConfig.contact.email ? { email: siteConfig.contact.email } : {}),
+      founder: {
+        "@type": "Person",
+        name: siteConfig.founder,
+        jobTitle: siteConfig.founderTitle,
+        sameAs: [LINKEDIN_URL, GITHUB_URL].filter(Boolean),
+      },
+    },
+    {
+      "@type": "WebSite",
+      ...(url ? { "@id": `${url}#website`, url, publisher: { "@id": `${url}#organization` } } : {}),
+      name: siteConfig.name,
+      alternateName: ["NEYNIX", "Neynix AI"],
+      description: siteConfig.shortDescription,
+      inLanguage: "en",
+    },
+  ],
 };
----
+------
 
 <BaseLayout title={siteConfig.seo.title} description={siteConfig.seo.description} path="/" structuredData={structuredData}>
   <div id="top"></div>

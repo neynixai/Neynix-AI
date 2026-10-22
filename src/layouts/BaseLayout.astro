@@ -2,7 +2,7 @@
 import "@fontsource-variable/inter";
 import "@fontsource-variable/space-grotesk";
 import "@/styles/global.css";
-import { CHAT_BOT_ID, CHAT_WIDGET_URL, siteConfig } from "@/config/site";
+import { CHAT_BOT_ID, CHAT_WIDGET_URL, GOOGLE_SITE_VERIFICATION, siteConfig } from "@/config/site";
 import { href } from "@/lib/paths";
 
 type Props = {
@@ -58,7 +58,8 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, "\\
     <meta name="theme-color" content="#111310" />
     <meta name="color-scheme" content="dark" />
     {canonical && <link rel="canonical" href={canonical} />}
-    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={noindex ? "noindex" : "index, follow, max-image-preview:large, max-snippet:-1"} />
+    {GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={GOOGLE_SITE_VERIFICATION} />}
 
     <link rel="icon" type="image/svg+xml" href={href("/icon.svg")} />
     <link rel="icon" type="image/png" sizes="512x512" href={href("/icon.png")} />
