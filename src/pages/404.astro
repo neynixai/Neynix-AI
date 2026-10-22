@@ -1,0 +1,18 @@
+---
+import ButtonLink from "@/components/ButtonLink.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import { siteConfig } from "@/config/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title={`Page not found | ${siteConfig.name}`} description={siteConfig.seo.description} path="/404/" noindex>
+  <SiteHeader />
+  <main id="main" class="container-page section-pad">
+    <p class="eyebrow">404</p>
+    <h1 class="mt-4 text-heading">This page doesn&rsquo;t exist.</h1>
+    <p class="mt-5 max-w-lg text-lede text-grey">The link may be out of date. Everything else is on the home page.</p>
+    <ButtonLink href="/" arrow class="mt-9">Back to home</ButtonLink>
+  </main>
+  <SiteFooter />
+</BaseLayout>

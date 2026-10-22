@@ -1,0 +1,201 @@
+---
+import ArrowRight from "@lucide/astro/icons/arrow-right";
+import Check from "@lucide/astro/icons/check";
+import LoaderCircle from "@lucide/astro/icons/loader-circle";
+import FieldError from "@/components/FieldError.astro";
+import { projectTypes } from "@/lib/content";
+import { LIMITS } from "@/lib/contact-validation";
+
+const fieldClass =
+  "mt-2 block w-full rounded-md border border-line-input bg-elevated px-3.5 py-3 text-base text-offwhite placeholder:text-grey transition-colors focus:border-offwhite focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime aria-invalid:border-danger";
+---
+
+<div data-contact>
+  <form data-contact-form novalidate class="relative grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="contact-name" class="text-sm font-medium">Name</label>
+      <input id="contact-name" name="name" autocomplete="name" maxlength={LIMITS.name} class={fieldClass} />
+      <FieldError field="name" />
+    </div>
+
+    <div>
+      <label for="contact-email" class="text-sm font-medium">Email</label>
+      <input
+        id="contact-email"
+        name="email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        maxlength={LIMITS.email}
+        class={fieldClass}
+      />
+      <FieldError field="email" />
+    </div>
+
+    <div class="sm:col-span-2">
+      <label for="contact-projectType" class="text-sm font-medium">Project type</label>
+      <select
+        id="contact-projectType"
+        name="projectType"
+        class:list={[
+          fieldClass,
+          "select-chevron pr-10 [&>option]:bg-elevated [&>option]:text-offwhite",
+        ]}
+      >
+        <option value="" disabled selected>Select a project type</option>
+        {projectTypes.map((type) => <option value={type}>{type}</option>)}
+      </select>
+      <FieldError field="projectType" />
+    </div>
+
+    <div class="sm:col-span-2">
+      <label for="contact-message" class="text-sm font-medium">Project description</label>
+      <textarea
+        id="contact-message"
+        name="message"
+        rows={5}
+        maxlength={LIMITS.message}
+        placeholder="What are you trying to build, and what does success look like?"
+        class:list={[fieldClass, "resize-y"]}></textarea>
+      <FieldError field="message" />
+    </div>
+
+    {/* Web3Forms honeypot — hidden from people and assistive tech; bots that tick it are rejected. */}
+    <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display: none" />
+
+    <div class="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center">
+      <button
+        type="submit"
+        class="group inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-md border border-lime bg-lime px-5 text-sm font-medium text-obsidian transition-colors hover:border-lime-hover hover:bg-lime-hover disabled:cursor-wait disabled:opacity-70"
+      >
+        <span data-label-idle class="inline-flex items-center gap-2">
+          Send message
+          <ArrowRight
+            aria-hidden="true"
+            class="size-4 transition-transform group-hover:translate-x-0.5"
+            stroke-width={1.75}
+          />
+        </span>
+        <span data-label-sending hidden class="inline-flex items-center gap-2">
+          <LoaderCircle aria-hidden="true" class="size-4 animate-spin" />
+          Sending…
+        </span>
+      </button>
+      <p data-form-alert role="alert" aria-live="assertive" class="text-sm text-danger"></p>
+    </div>
+  </form>
+
+  <div data-contact-sent hidden role="status" tabindex="-1" class="rounded-xl border border-line-strong bg-elevated p-8">
+    <Check aria-hidden="true" class="size-6 text-lime" stroke-width={1.5} />
+    <p class="mt-4 font-display text-title font-semibold">Thanks — your message has been sent.</p>
+    <p class="mt-2 text-body text-grey">You&rsquo;ll get a reply at the email address you provided.</p>
+    <button
+      type="button"
+      data-send-another
+      class="mt-6 text-sm text-offwhite underline underline-offset-4 hover:no-underline"
+    >
+      Send another message
+    </button>
+  </div>
+</div>
+
+<script>
+  import { siteConfig, WEB3FORMS_ACCESS_KEY, WEB3FORMS_ENDPOINT } from "@/config/site";
+  import { validateContact, type ContactInput } from "@/lib/contact-validation";
+
+  const fields = ["name", "email", "projectType", "message"] as const;
+
+  for (const root of document.querySelectorAll<HTMLElement>("[data-contact]")) {
+    const form = root.querySelector<HTMLFormElement>("[data-contact-form]")!;
+    const sent = root.querySelector<HTMLElement>("[data-contact-sent]")!;
+    const alert = form.querySelector<HTMLElement>("[data-form-alert]")!;
+    const submit = form.querySelector<HTMLButtonElement>("button[type=submit]")!;
+    const control = (field: keyof ContactInput) =>
+      form.elements.namedItem(field) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+    const showError = (field: keyof ContactInput, message?: string) => {
+      const input = control(field);
+      const error = form.querySelector<HTMLElement>(`#contact-${field}-error`)!;
+      error.textContent = message ?? "";
+      error.hidden = !message;
+      if (message) {
+        input.setAttribute("aria-invalid", "true");
+        input.setAttribute("aria-describedby", error.id);
+      } else {
+        input.removeAttribute("aria-invalid");
+        input.removeAttribute("aria-describedby");
+      }
+    };
+
+    const setSending = (sending: boolean) => {
+      submit.disabled = sending;
+      submit.querySelector<HTMLElement>("[data-label-idle]")!.hidden = sending;
+      submit.querySelector<HTMLElement>("[data-label-sending]")!.hidden = !sending;
+    };
+
+    // Editing a field clears its error.
+    for (const field of fields) {
+      const clear = () => control(field).hasAttribute("aria-invalid") && showError(field);
+      control(field).addEventListener("input", clear);
+      control(field).addEventListener("change", clear);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      alert.textContent = "";
+
+      const values = Object.fromEntries(fields.map((f) => [f, control(f).value])) as ContactInput;
+      const errors = validateContact(values);
+      for (const field of fields) showError(field, errors[field]);
+      const firstInvalid = fields.find((field) => errors[field]);
+      if (firstInvalid) {
+        control(firstInvalid).focus();
+        return;
+      }
+
+      const name = values.name.trim();
+      const honeypot = form.elements.namedItem("botcheck") as HTMLInputElement;
+      setSending(true);
+      try {
+        const res = await fetch(WEB3FORMS_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: `New enquiry — ${values.projectType} — ${name}`,
+            from_name: `${siteConfig.name} website`,
+            name,
+            // Web3Forms uses this as the reply-to address.
+            email: values.email.trim(),
+            project_type: values.projectType,
+            message: values.message.trim(),
+            ...(honeypot.checked ? { botcheck: true } : {}),
+          }),
+        });
+        // Only a confirmed delivery from Web3Forms counts as sent.
+        const result = (await res.json().catch(() => null)) as { success?: boolean } | null;
+        if (!res.ok || !result?.success) {
+          alert.textContent =
+            res.status === 429
+              ? "Too many messages were sent just now. Please try again in a few minutes."
+              : "Your message couldn't be sent right now. Please try again in a moment.";
+          return;
+        }
+        form.reset();
+        form.hidden = true;
+        sent.hidden = false;
+        sent.focus();
+      } catch {
+        alert.textContent = "Network error — please check your connection and try again.";
+      } finally {
+        setSending(false);
+      }
+    });
+
+    root.querySelector("[data-send-another]")!.addEventListener("click", () => {
+      sent.hidden = true;
+      form.hidden = false;
+      control("name").focus();
+    });
+  }
+</script>

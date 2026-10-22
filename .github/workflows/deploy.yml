@@ -36,17 +36,17 @@ jobs:
         env:
           # Serve from /<repo> on <owner>.github.io
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || steps.pages.outputs.base_url }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL || steps.pages.outputs.base_url }}
           # Optional — set as repository variables to show contact links / form.
-          NEXT_PUBLIC_CONTACT_EMAIL: ${{ vars.NEXT_PUBLIC_CONTACT_EMAIL }}
-          NEXT_PUBLIC_LINKEDIN_URL: ${{ vars.NEXT_PUBLIC_LINKEDIN_URL }}
-          NEXT_PUBLIC_GITHUB_URL: ${{ vars.NEXT_PUBLIC_GITHUB_URL }}
-          NEXT_PUBLIC_CONTACT_FORM_ENDPOINT: ${{ vars.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT }}
-          NEXT_PUBLIC_CHAT_WIDGET_URL: ${{ vars.NEXT_PUBLIC_CHAT_WIDGET_URL }}
+          PUBLIC_CONTACT_EMAIL: ${{ vars.PUBLIC_CONTACT_EMAIL }}
+          PUBLIC_LINKEDIN_URL: ${{ vars.PUBLIC_LINKEDIN_URL }}
+          PUBLIC_GITHUB_URL: ${{ vars.PUBLIC_GITHUB_URL }}
+          PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ vars.PUBLIC_WEB3FORMS_ACCESS_KEY }}
+          PUBLIC_CHAT_WIDGET_URL: ${{ vars.PUBLIC_CHAT_WIDGET_URL }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: out
+          path: dist
 
   deploy:
     needs: build

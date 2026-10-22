@@ -1,0 +1,30 @@
+---
+import { Image } from "astro:assets";
+import markDark from "@/assets/brand/neynix-mark.png";
+import markLight from "@/assets/brand/neynix-mark-light.png";
+
+/** The N symbol. `tone="light"` (default) is the reversed mark for the dark site; `"dark"` is the original. */
+type Props = {
+  tone?: "dark" | "light";
+  class?: string;
+  priority?: boolean;
+  sizes?: string;
+  /** Rendered widths to generate, matched to the sizes the mark is shown at. */
+  widths?: number[];
+  alt?: string;
+};
+
+const { tone = "light", class: className, priority = false, sizes = "40px", widths = [40, 80], alt = "" } = Astro.props;
+---
+
+{/* Height follows the asset's intrinsic ratio so the mark is never distorted. */}
+<Image
+  src={tone === "light" ? markLight : markDark}
+  alt={alt}
+  class={className}
+  style="height: auto"
+  sizes={sizes}
+  widths={widths}
+  loading={priority ? "eager" : "lazy"}
+  fetchpriority={priority ? "high" : "auto"}
+/>

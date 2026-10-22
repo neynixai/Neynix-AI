@@ -1,0 +1,117 @@
+---
+import { Image } from "astro:assets";
+import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
+import founderPortrait from "@/assets/brand/founder-nishaanth.webp";
+import { GITHUB_URL, LINKEDIN_URL, siteConfig } from "@/config/site";
+
+const parts = [
+  {
+    key: "NEY",
+    title: "Determination",
+    body: "The never-give-up attitude inspired by Neymar — creativity, confidence, and the will to keep going.",
+  },
+  {
+    key: "NI",
+    title: "Ownership",
+    body: "Nishaanth, the founder behind the vision, and the ambition to build something of your own.",
+  },
+  {
+    key: "X",
+    title: "The X factor",
+    body: "The unique edge that drives creativity, experimentation, and problem-solving.",
+  },
+];
+
+const links = [
+  { label: "LinkedIn", href: LINKEDIN_URL },
+  { label: "GitHub", href: GITHUB_URL },
+].filter((link) => link.href);
+---
+
+<section id="about" aria-labelledby="about-title" class="section-pad border-t border-line bg-elevated">
+  <div class="container-page grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+    <div class="reveal">
+      <p class="eyebrow">The story behind the name</p>
+      <h2 id="about-title" class="mt-4 text-heading">More than a name. A mindset.</h2>
+      <p class="mt-6 max-w-md text-lede text-pretty text-grey">
+        NEYNIX brings together three ideas: the determination to keep going, the ambition to build something of your
+        own, and the X factor that comes from thinking differently.
+      </p>
+
+      <figure class="mt-12 max-w-md border-t border-line pt-8">
+        <figcaption class="eyebrow">Founder</figcaption>
+        <div class="mt-5 flex items-end gap-5">
+          <Image
+            src={founderPortrait}
+            alt={`Portrait of ${siteConfig.founder}, founder of ${siteConfig.name}`}
+            widths={[128, 256]}
+            sizes="128px"
+            class="w-28 shrink-0 rounded-lg object-cover grayscale transition-[filter] duration-500 hover:grayscale-0 sm:w-32"
+          />
+          <div class="pb-1">
+            <p class="font-display text-title font-semibold">{siteConfig.founder}</p>
+            <p class="mt-1 text-sm text-grey">{siteConfig.founderTitle}</p>
+          </div>
+        </div>
+        <div class="mt-6 space-y-3 text-body text-grey">
+          <p>
+            An AI engineer with two years of experience in product development. {siteConfig.founder} started{" "}
+            {siteConfig.name} to help small businesses go digital and put new technology like AI to practical use.
+          </p>
+          <p>Every client works directly with {siteConfig.founder}, from the first conversation to the final review.</p>
+        </div>
+        {
+          links.length > 0 && (
+            <ul class="mt-5 flex gap-5 text-sm">
+              {links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 font-medium text-offwhite underline-offset-4 hover:underline"
+                  >
+                    {link.label}
+                    <ArrowUpRight aria-hidden="true" class="size-3.5" stroke-width={1.5} />
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </figure>
+    </div>
+
+    <div>
+      <ul class="grid border-y border-line sm:grid-cols-3 sm:divide-x sm:divide-line">
+        {
+          parts.map((part) => (
+            <li class="reveal flex gap-6 border-b border-line py-7 last:border-b-0 sm:flex-col sm:gap-0 sm:border-b-0 sm:px-6 sm:py-8 sm:first:pl-0 sm:last:pr-0">
+              <span
+                aria-hidden="true"
+                class="w-20 shrink-0 font-display text-[clamp(2.5rem,2rem+2vw,3.5rem)] font-semibold leading-none tracking-[-0.04em] sm:w-auto"
+              >
+                {part.key}
+              </span>
+              <div class="sm:mt-8">
+                <h3 class="text-base">
+                  <span class="sr-only">{part.key} —{" "}</span>
+                  {part.title}
+                </h3>
+                <p class="mt-2 text-small text-grey">{part.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="reveal mt-8 max-w-xl text-body text-offwhite/80">
+        Together, they represent the mindset behind NEYNIX AI: ambitious thinking, independent engineering, and the
+        determination to turn ideas into useful technology.
+      </p>
+      <p class="mt-4 text-xs text-grey">
+        The name is a personal tribute. NEYNIX AI is independent and not affiliated with or endorsed by Neymar.
+      </p>
+    </div>
+  </div>
+</section>

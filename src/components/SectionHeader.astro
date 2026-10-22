@@ -1,0 +1,23 @@
+---
+/** Eyebrow + heading + optional lede, with an optional index label on the right. */
+type Props = { id: string; eyebrow: string; title?: string; lede?: string; index?: string };
+
+const { id, eyebrow, title, lede, index } = Astro.props;
+---
+
+<div class="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+  <div class="max-w-2xl">
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 id={id} class="mt-4 text-heading">
+      {title}<slot name="title" />
+    </h2>
+    {lede && <p class="mt-5 max-w-xl text-lede text-pretty text-grey">{lede}</p>}
+  </div>
+  {
+    index && (
+      <p aria-hidden="true" class="eyebrow hidden shrink-0 md:block">
+        {index}
+      </p>
+    )
+  }
+</div>

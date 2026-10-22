@@ -80,7 +80,7 @@ npm run deploy
 npm run crawl -- --remote                 # crawl every bot in bots.json
 ```
 
-Then set the repository **Variable** `NEXT_PUBLIC_CHAT_WIDGET_URL` to
+Then set the repository **Variable** `PUBLIC_CHAT_WIDGET_URL` to
 `https://neynix-chatbot.<account>.workers.dev/widget.js` and redeploy the site.
 
 To automate deploys and re-crawls, add repository **Secrets**
@@ -99,7 +99,7 @@ npm run crawl -- neynix --url http://localhost:3000/ --local
 npm run dev                                             # http://localhost:8787
 ```
 
-In the project root, set `NEXT_PUBLIC_CHAT_WIDGET_URL=http://localhost:8787/widget.js`
+In the project root, set `PUBLIC_CHAT_WIDGET_URL=http://localhost:8787/widget.js`
 in `.env.local` and run `npm run dev`.
 
 Without `--local`/`--remote`, `npm run crawl` only writes `.bots/<id>.json`, so

@@ -1,0 +1,40 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import ArrowRight from "@lucide/astro/icons/arrow-right";
+import { href as sitePath } from "@/lib/paths";
+
+type Props = HTMLAttributes<"a"> & {
+  href: string;
+  variant?: "primary" | "secondary";
+  arrow?: boolean;
+};
+
+const variants = {
+  primary: "bg-lime text-obsidian border border-lime hover:bg-lime-hover hover:border-lime-hover",
+  secondary: "bg-transparent text-offwhite border border-line-strong hover:border-offwhite",
+};
+
+const { href, variant = "primary", arrow = false, class: className = "", ...rest } = Astro.props;
+---
+
+{/* Site paths pick up the GitHub Pages base path. */}
+<a
+  href={sitePath(href)}
+  class:list={[
+    "group inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 text-sm font-medium transition-colors duration-200",
+    variants[variant],
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+  {
+    arrow && (
+      <ArrowRight
+        aria-hidden="true"
+        class="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+        stroke-width={1.75}
+      />
+    )
+  }
+</a>

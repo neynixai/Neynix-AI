@@ -1,0 +1,76 @@
+---
+import { Image } from "astro:assets";
+import ArrowRight from "@lucide/astro/icons/arrow-right";
+import ProjectStatusBadge from "@/components/ProjectStatusBadge.astro";
+import ProjectTags from "@/components/ProjectTags.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import { href } from "@/lib/paths";
+import { projects } from "@/lib/projects";
+
+// A lone project gets a wide card so the grid does not leave an empty column.
+const wide = projects.length === 1;
+---
+
+<section id="work" aria-labelledby="work-title" class="section-pad border-t border-line bg-obsidian">
+  <div class="container-page">
+    <SectionHeader
+      id="work-title"
+      eyebrow="Engineering in practice"
+      index="04 — Work"
+      title="Ideas, translated into systems."
+      lede="Projects built and in progress, each marked with where it stands today — from proof of concept to hosted. More work will be published here as it progresses."
+    />
+
+    <ul class="mt-14 grid gap-5 md:grid-cols-2">
+      {
+        projects.map((project) => (
+          <li
+            class:list={[
+              "reveal group relative flex flex-col overflow-hidden rounded-xl border border-line bg-elevated transition-colors duration-300 hover:border-line-strong",
+              { "md:col-span-2 md:flex-row": wide },
+            ]}
+          >
+            <div
+              class:list={[
+                "relative aspect-[16/10] overflow-hidden border-b border-line bg-obsidian",
+                { "md:w-3/5 md:shrink-0 md:border-r md:border-b-0": wide },
+              ]}
+            >
+              <Image
+                src={project.image}
+                alt={project.imageAlt}
+                widths={[480, 768, 1080, 1440]}
+                sizes={wide ? "(min-width: 768px) 60vw, 100vw" : "(min-width: 768px) 50vw, 100vw"}
+                class="absolute inset-0 size-full object-cover object-left-top transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+              />
+            </div>
+            <div class:list={["flex flex-1 flex-col p-6", { "md:justify-center md:p-10": wide }]}>
+              <p class="eyebrow">{project.category}</p>
+              <h3 class="mt-3 text-title">
+                {/* The link's overlay makes the whole card clickable. */}
+                <a href={href(`/work/${project.slug}/`)} class="after:absolute after:inset-0 after:content-['']">
+                  {project.title}
+                </a>
+              </h3>
+              <p class:list={["mt-3 text-body text-grey", { "flex-1": !wide }]}>{project.summary}</p>
+              <ProjectTags tags={project.tags} class="mt-5" />
+              <p class="mt-6 flex flex-wrap items-center gap-4">
+                <ProjectStatusBadge status={project.status} />
+                <span
+                  aria-hidden="true"
+                  class="inline-flex items-center gap-1.5 text-sm font-medium text-offwhite underline decoration-line-strong underline-offset-4 transition-colors group-hover:decoration-offwhite"
+                >
+                  Read the full story
+                  <ArrowRight
+                    class="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                    stroke-width={1.75}
+                  />
+                </span>
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

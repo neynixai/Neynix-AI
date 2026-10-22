@@ -1,0 +1,161 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getImage, Image } from "astro:assets";
+import ArrowLeft from "@lucide/astro/icons/arrow-left";
+import ButtonLink from "@/components/ButtonLink.astro";
+import PointList from "@/components/PointList.astro";
+import ProjectSection from "@/components/ProjectSection.astro";
+import ProjectStatusBadge from "@/components/ProjectStatusBadge.astro";
+import ProjectTags from "@/components/ProjectTags.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import { siteConfig } from "@/config/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { href } from "@/lib/paths";
+import { projects, statuses, type Project } from "@/lib/projects";
+
+// Static build: every project in src/lib/projects.ts gets a page.
+export const getStaticPaths = (() =>
+  projects.map((project) => ({ params: { slug: project.slug }, props: { project } }))) satisfies GetStaticPaths;
+
+type Props = { project: Project };
+
+const { project } = Astro.props;
+const path = `/work/${project.slug}/`;
+const title = `${project.title} | ${siteConfig.name}`;
+
+// Social preview: the screenshot cropped to the 1200×630 card size.
+const ogImage = await getImage({
+  src: project.image,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  position: "left top",
+  format: "jpg",
+});
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: project.title,
+  description: project.description,
+  keywords: project.tags.join(", "),
+  applicationCategory: project.category,
+  creativeWorkStatus: statuses[project.status].label,
+  ...(siteConfig.url ? { url: `${siteConfig.url}${path}` } : {}),
+  creator: { "@type": "Organization", name: siteConfig.name },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={project.description}
+  keywords={project.tags}
+  tags={project.tags}
+  path={path}
+  type="article"
+  image={{ src: ogImage.src, alt: project.imageAlt, width: 1200, height: 630 }}
+  structuredData={structuredData}
+>
+  <div id="top"></div>
+  <SiteHeader />
+  <main id="main">
+    <article>
+      <header class="container-page pb-14 pt-10 sm:pt-14">
+        <a
+          href={href("/#work")}
+          class="inline-flex items-center gap-2 text-sm font-medium text-grey transition-colors hover:text-offwhite"
+        >
+          <ArrowLeft aria-hidden="true" class="size-4" stroke-width={1.75} />
+          All work
+        </a>
+
+        <div class="mt-10 max-w-3xl">
+          <p class="eyebrow animate-rise">{project.category}</p>
+          <h1 class="mt-4 text-display animate-rise [animation-delay:80ms]">{project.title}</h1>
+          <p class="mt-6 max-w-2xl text-lede text-pretty text-grey animate-rise [animation-delay:160ms]">
+            {project.tagline}
+          </p>
+          <ProjectTags tags={project.tags} class="mt-6 animate-rise [animation-delay:200ms]" />
+          <div class="mt-8 flex flex-wrap items-center gap-4 animate-rise [animation-delay:240ms]">
+            <ProjectStatusBadge status={project.status} />
+            <ButtonLink href="/#contact" arrow class="!min-h-9 !px-4">Discuss a project like this</ButtonLink>
+          </div>
+        </div>
+
+        <div
+          class="relative mt-14 aspect-[16/10] overflow-hidden rounded-xl border border-line bg-elevated animate-fade [animation-delay:300ms]"
+        >
+          <Image
+            src={project.image}
+            alt={project.imageAlt}
+            widths={[640, 1136, 1600, 2272]}
+            sizes="(min-width: 1216px) 1136px, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            class="absolute inset-0 size-full object-cover object-left-top"
+          />
+        </div>
+      </header>
+
+      <ProjectSection id="why" eyebrow="Why it exists" title="The problem" tone="elevated">
+        <p class="max-w-2xl text-lede text-pretty text-grey">{project.why.intro}</p>
+        <PointList points={project.why.points} columns={3} />
+      </ProjectSection>
+
+      <ProjectSection id="what" eyebrow="What it is" title={`What ${project.title} does`}>
+        <p class="max-w-2xl text-lede text-pretty text-grey">{project.what.intro}</p>
+        <PointList points={project.what.features} columns={3} />
+      </ProjectSection>
+
+      <ProjectSection id="who" eyebrow="Who it’s for" title="Built for" tone="elevated">
+        <PointList points={project.audiences} columns={2} />
+      </ProjectSection>
+
+      <ProjectSection id="how" eyebrow="How it’s built" title="The principles behind it">
+        <PointList points={project.principles} columns={2} />
+      </ProjectSection>
+
+      <ProjectSection id="progress" eyebrow="Where it stands" title="Today and next" tone="elevated">
+        <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <div class="reveal">
+            <ProjectStatusBadge status={project.status} />
+            <p class="mt-5 text-body text-offwhite/80">{project.progress.now}</p>
+          </div>
+          <div class="reveal">
+            <h3 class="text-base">Coming next</h3>
+            <ul class="mt-4 space-y-3">
+              {
+                project.progress.next.map((item) => (
+                  <li class="flex gap-3 text-body text-grey">
+                    <span aria-hidden="true" class="mt-[0.7em] size-1 shrink-0 bg-lime" />
+                    {item}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        {project.note && <p class="mt-12 max-w-2xl text-xs text-grey">{project.note}</p>}
+      </ProjectSection>
+
+      <section aria-labelledby="project-cta-title" class="section-pad border-t border-line">
+        <div class="container-page reveal flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div class="max-w-xl">
+            <p class="eyebrow">Have an idea worth building?</p>
+            <h2 id="project-cta-title" class="mt-4 text-heading">Let&rsquo;s build yours next.</h2>
+            <p class="mt-5 text-lede text-pretty text-grey">
+              From a first prototype to a product people rely on, {siteConfig.name} turns ideas like this into
+              working software.
+            </p>
+          </div>
+          <div class="flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href="/#contact" arrow>Discuss a project</ButtonLink>
+            <ButtonLink href="/#work" variant="secondary">See all work</ButtonLink>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+  <SiteFooter />
+</BaseLayout>

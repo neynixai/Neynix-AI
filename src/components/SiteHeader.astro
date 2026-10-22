@@ -1,0 +1,114 @@
+---
+import Menu from "@lucide/astro/icons/menu";
+import X from "@lucide/astro/icons/x";
+import ButtonLink from "@/components/ButtonLink.astro";
+import Logo from "@/components/Logo.astro";
+import { navLinks } from "@/lib/content";
+import { href } from "@/lib/paths";
+---
+
+{/*
+  data-surface: "top" (transparent), "scrolled" (blurred) or "open" (menu open).
+  No backdrop-filter while the menu is open: it would become the containing
+  block for the fixed menu panel and collapse it to the header's height.
+*/}
+<header
+  data-site-header
+  data-surface="top"
+  class="sticky top-0 z-50 border-b border-transparent bg-transparent transition-[background-color,border-color,backdrop-filter] duration-300 data-[surface=open]:border-line data-[surface=open]:bg-obsidian data-[surface=scrolled]:border-line data-[surface=scrolled]:bg-obsidian/85 data-[surface=scrolled]:backdrop-blur-md"
+>
+  <div class="container-page flex h-16 items-center justify-between gap-6">
+    <a href={href("/#top")} aria-label="NEYNIX AI — home" class="rounded-sm">
+      <Logo />
+    </a>
+
+    <nav aria-label="Primary" class="hidden items-center gap-8 md:flex">
+      <ul class="flex items-center gap-7">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a href={href(link.href)} class="text-sm font-medium text-grey transition-colors hover:text-offwhite">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ButtonLink href="/#contact" arrow class="!min-h-9 !px-4">Discuss a project</ButtonLink>
+    </nav>
+
+    <button
+      type="button"
+      data-menu-toggle
+      class="group -mr-2 inline-flex size-11 items-center justify-center rounded-md text-offwhite md:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
+      <Menu aria-hidden="true" class="size-5 group-aria-expanded:hidden" stroke-width={1.75} />
+      <X aria-hidden="true" class="hidden size-5 group-aria-expanded:block" stroke-width={1.75} />
+    </button>
+  </div>
+
+  <div
+    id="mobile-menu"
+    hidden
+    class="fixed inset-x-0 top-16 bottom-0 overflow-y-auto border-t border-line bg-obsidian md:hidden"
+  >
+    <nav aria-label="Mobile" class="container-page flex min-h-full flex-col pb-10 pt-4">
+      <ul class="divide-y divide-line">
+        {
+          navLinks.map((link, i) => (
+            <li>
+              <a href={href(link.href)} class="flex items-baseline justify-between py-5 text-xl font-medium">
+                {link.label}
+                <span class="text-xs tabular-nums text-grey">0{i + 1}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ButtonLink href="/#contact" arrow class="mt-8 w-full">Discuss a project</ButtonLink>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-site-header]");
+  const toggle = header?.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const panel = header?.querySelector<HTMLElement>("#mobile-menu");
+
+  if (header && toggle && panel) {
+    let open = false;
+    const desktop = window.matchMedia("(min-width: 768px)");
+
+    const paint = () => {
+      header.dataset.surface = open ? "open" : window.scrollY > 8 ? "scrolled" : "top";
+    };
+
+    const setOpen = (next: boolean, restoreFocus = false) => {
+      open = next;
+      panel.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      document.body.style.overflow = open ? "hidden" : "";
+      paint();
+      if (open) panel.querySelector<HTMLElement>("a")?.focus();
+      else if (restoreFocus) toggle.focus();
+    };
+
+    toggle.addEventListener("click", () => setOpen(!open));
+    // Following a link closes the menu (the page scrolls to the section).
+    panel.addEventListener("click", (e) => {
+      if ((e.target as Element).closest("a")) setOpen(false);
+    });
+    window.addEventListener("keydown", (e) => {
+      if (open && e.key === "Escape") setOpen(false, true);
+    });
+    desktop.addEventListener("change", () => {
+      if (open && desktop.matches) setOpen(false);
+    });
+    window.addEventListener("scroll", paint, { passive: true });
+    paint();
+  }
+</script>

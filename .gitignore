@@ -1,11 +1,8 @@
 node_modules
-.next
-out
-build
+dist
+.astro
 .env*.local
 .env
-*.tsbuildinfo
-next-env.d.ts
 .DS_Store
 .playwright-mcp
 .claude
