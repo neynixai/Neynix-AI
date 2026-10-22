@@ -219,7 +219,7 @@ export const projects: Project[] = [
           price: "₹0",
           summary: "Try CA Mode on the shared copy.",
           features: [
-            "50 questions a day, starting again at midnight IST",
+            "5 questions a day, starting again at midnight IST",
             "Finance Agent and Portfolio Analyzer",
             "INDmoney connection, goals and daily portfolio snapshots",
             "History encrypted with your PIN",
@@ -256,7 +256,7 @@ export const projects: Project[] = [
       note: "There is no online checkout yet. Get in touch and we move your existing profile to the new plan, so your chats, goals and snapshots stay where they are. Prices are in Indian rupees.",
     },
     progress: {
-      now: "CA Mode is live: sign in with Google and ask 50 questions a day, free. Both agents, daily snapshots, investigations, goals, broker statements and charts all work today.",
+      now: "CA Mode is live: sign in with Google and ask 5 questions a day, free. Both agents, daily snapshots, investigations, goals, broker statements and charts all work today.",
       next: [
         "Checkout for the Individual plan, so unlimited questions can be bought in the app.",
         "Live answer traces that show each step as it happens, instead of arriving with the finished answer.",
