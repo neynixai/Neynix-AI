@@ -51,18 +51,31 @@ in `src/lib/content.ts`.
 
 ## Brand assets
 
-- `brand/neynix-logo-source.webp` — the supplied logo (source of truth).
-- `brand/design-reference.png` — the landing-page design mockup.
-- `src/assets/brand/neynix-mark.png` — transparent mark for light backgrounds.
-- `src/assets/brand/neynix-mark-light.png` — reversed mark for dark backgrounds.
-- `public/icon.png`, `public/apple-icon.png` — favicon / app icon.
-- `public/og-image.png` — social preview image for the home page (1200×630).
+- `brand/neynix-brand-board.webp` — the brand board (logo, lockups, app icons,
+  banner): the visual reference.
+- `src/lib/mark.ts` — the mark itself: a 3D shape (tapered capsules blended
+  with a smooth union, plus a sphere) and the 2D paths traced from it. The
+  header, footer, icons and the hero's 3D render all come from here.
+- `brand/neynix-mark.svg` — vector master of the mark.
+- `public/icon.svg`, `public/icon.png`, `public/apple-icon.png` — favicon and
+  app icons (the mark on a dark tile).
+- `public/og-image.png` — social preview (1200×630): a capture of the 3D mark
+  with the wordmark and tagline.
 
-Images in `src/assets/` are resized and converted to WebP at build time by
-`astro:assets`; files in `public/` are served as they are.
+`npm run assets` regenerates the SVG master and icons from `src/lib/mark.ts`.
 
-The marks and icons come from `scripts/generate-brand-assets.mjs`. If a vector
-(SVG) master of the logo becomes available, swap it in and regenerate.
+## Motion
+
+- **Hero:** the mark rendered in 3D with WebGL (ray-marched from the same
+  shape, `src/scripts/mark-3d.ts`). It floats and leans toward the pointer.
+- **Contact:** a flowing 3D wave with a lime crest (`src/scripts/wave-3d.ts`).
+- **Work cards and project screenshots:** perspective tilt with a following
+  highlight (`src/scripts/tilt.ts`).
+
+No 3D library is loaded; both effects are small fragment shaders
+(`src/scripts/webgl.ts`). They pause off-screen, render a single still frame
+for visitors who prefer reduced motion, and fall back to the flat mark and
+contour lines when WebGL is unavailable.
 
 ## Content notes
 
@@ -81,7 +94,8 @@ src/layouts/     BaseLayout: <head> metadata (description, keywords, Open Graph,
 src/components/  header, hero, services, philosophy, approach, work, about, why,
                  contact (+ Web3Forms form), footer, logo, ui primitives
 src/config/      site.ts (brand, contact, SEO, form key)
-src/lib/         content.ts · projects.ts · contact-validation.ts · paths.ts
+src/lib/         content.ts · projects.ts · mark.ts · contact-validation.ts · paths.ts
+src/scripts/     WebGL hero mark and wave, card tilt
 src/assets/      images processed at build time
 public/          icons and social image, copied as-is
 chatbot/         embeddable site assistant: Cloudflare Worker, Groq with Gemini fallback, cited answers

@@ -60,6 +60,7 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, "\\
     {canonical && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex" />}
 
+    <link rel="icon" type="image/svg+xml" href={href("/icon.svg")} />
     <link rel="icon" type="image/png" sizes="512x512" href={href("/icon.png")} />
     <link rel="apple-touch-icon" sizes="180x180" href={href("/apple-icon.png")} />
 
@@ -93,5 +94,10 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, "\\
     <slot />
     {/* The same embed snippet any site uses for the assistant. */}
     {CHAT_WIDGET_URL && <script is:inline src={CHAT_WIDGET_URL} data-bot={CHAT_BOT_ID} defer></script>}
+    <script>
+      import { initTilt } from "@/scripts/tilt";
+
+      initTilt();
+    </script>
   </body>
 </html>

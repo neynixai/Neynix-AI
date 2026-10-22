@@ -1,21 +1,15 @@
 ---
 import LogoMark from "@/components/LogoMark.astro";
-import { siteConfig } from "@/config/site";
 
-/** Symbol + wordmark lockup used in the navigation and footer. */
-type Props = { tone?: "dark" | "light"; class?: string };
+/** Mark + wordmark lockup used in the navigation and footer. */
+type Props = { class?: string };
 
-const { tone = "light", class: className = "" } = Astro.props;
+const { class: className = "" } = Astro.props;
 ---
 
 <span class:list={["inline-flex items-center gap-2.5", className]}>
-  <LogoMark tone={tone} class="w-[26px]" priority sizes="26px" widths={[26, 52]} />
-  <span
-    class:list={[
-      "font-display text-[0.95rem] font-semibold tracking-[0.06em]",
-      tone === "light" ? "text-offwhite" : "text-obsidian",
-    ]}
-  >
-    {siteConfig.name}
+  <LogoMark class="h-[22px] w-auto" />
+  <span class="font-display text-[0.9rem] font-medium tracking-[0.2em] text-offwhite">
+    NEYNIX<span class="text-grey">{" "}AI</span>
   </span>
 </span>

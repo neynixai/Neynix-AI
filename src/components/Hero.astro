@@ -48,13 +48,16 @@ import LogoMark from "@/components/LogoMark.astro";
         <line x1="300" y1="352" x2="372" y2="352" stroke="currentColor" stroke-opacity="0.25"></line>
       </svg>
 
-      <div class="absolute inset-y-[16%] left-[12%] right-[24%] flex items-center justify-center">
-        <LogoMark
-          priority
-          sizes="(min-width: 1024px) 400px, (min-width: 640px) 330px, 240px"
-          widths={[240, 330, 400, 660, 800]}
-          class="w-full"
-        />
+      {/* The 3D mark fades in over the flat one once WebGL has drawn a frame. */}
+      <div data-mark-3d class="group/mark absolute inset-[4%]">
+        <div
+          class="absolute inset-y-[16%] left-[10%] right-[22%] flex items-center justify-center transition-opacity duration-700 group-data-[ready]/mark:opacity-0"
+        >
+          <LogoMark class="h-auto w-full" />
+        </div>
+        <canvas
+          class="absolute inset-0 size-full opacity-0 transition-opacity duration-1000 group-data-[ready]/mark:opacity-100"
+        ></canvas>
       </div>
 
       <div
@@ -66,3 +69,11 @@ import LogoMark from "@/components/LogoMark.astro";
     </div>
   </div>
 </section>
+
+<script>
+  import { mountMark3D } from "@/scripts/mark-3d";
+
+  const root = document.querySelector<HTMLElement>("[data-mark-3d]");
+  const canvas = root?.querySelector("canvas");
+  if (root && canvas) mountMark3D(canvas, () => root.setAttribute("data-ready", ""));
+</script>
