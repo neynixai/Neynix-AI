@@ -1,19 +1,19 @@
 ---
-type Props = { id: string; eyebrow: string; title: string; tone?: "base" | "elevated" };
+type Props = { id: string; eyebrow: string; title: string; lede?: string };
 
-const { id, eyebrow, title, tone = "base" } = Astro.props;
+const { id, eyebrow, title, lede } = Astro.props;
 ---
 
-<section
-  id={id}
-  aria-labelledby={`${id}-title`}
-  class:list={["section-pad border-t border-line", tone === "elevated" ? "bg-elevated" : "bg-obsidian"]}
->
+<section id={id} aria-labelledby={`${id}-title`} class="section-pad">
   <div class="container-page">
-    <div class="reveal">
-      <p class="eyebrow">{eyebrow}</p>
+    <div class="reveal max-w-2xl">
+      <p class="eyebrow flex items-center gap-2.5 text-lime">
+        <span aria-hidden="true" class="size-1.5 rounded-full bg-lime"></span>
+        {eyebrow}
+      </p>
       <h2 id={`${id}-title`} class="mt-4 text-heading">{title}</h2>
+      {lede && <p class="mt-5 text-lede text-pretty text-grey">{lede}</p>}
     </div>
-    <div class="mt-8"><slot /></div>
+    <div class="mt-12"><slot /></div>
   </div>
 </section>

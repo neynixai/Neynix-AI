@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { getImage, Image } from "astro:assets";
 import ArrowLeft from "@lucide/astro/icons/arrow-left";
 import ButtonLink from "@/components/ButtonLink.astro";
-import PointList from "@/components/PointList.astro";
+import PointCards from "@/components/PointCards.astro";
 import ProjectSection from "@/components/ProjectSection.astro";
 import ProjectStatusBadge from "@/components/ProjectStatusBadge.astro";
 import ProjectTags from "@/components/ProjectTags.astro";
@@ -84,7 +84,7 @@ const structuredData = {
   <SiteHeader />
   <main id="main">
     <article>
-      <header class="container-page pb-14 pt-10 sm:pt-14">
+      <header class="container-page pb-10 pt-10 sm:pt-14 lg:pb-16">
         <a
           href={href("/#work")}
           class="inline-flex items-center gap-2 text-sm font-medium text-grey transition-colors hover:text-offwhite"
@@ -93,71 +93,91 @@ const structuredData = {
           All work
         </a>
 
-        <div class="mt-10 max-w-3xl">
-          <p class="eyebrow animate-rise">{project.category}</p>
-          <h1 class="mt-4 text-display animate-rise [animation-delay:80ms]">{project.title}</h1>
-          <p class="mt-6 max-w-2xl text-lede text-pretty text-grey animate-rise [animation-delay:160ms]">
-            {project.tagline}
-          </p>
-          <ProjectTags tags={project.tags} class="mt-6 animate-rise [animation-delay:200ms]" />
-          <div class="mt-8 flex flex-wrap items-center gap-4 animate-rise [animation-delay:240ms]">
-            <ProjectStatusBadge status={project.status} />
-            <ButtonLink href="/#contact" arrow class="!min-h-9 !px-4">Discuss a project like this</ButtonLink>
+        <div class="mt-10 grid items-center gap-12 lg:mt-16 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
+          <div>
+            <p class="eyebrow flex items-center gap-2.5 text-lime animate-rise">
+              <span aria-hidden="true" class="size-1.5 rounded-full bg-lime"></span>
+              {project.category}
+            </p>
+            <h1 class="mt-5 text-display animate-rise [animation-delay:80ms]">{project.title}</h1>
+            <p class="mt-6 text-lede text-pretty text-grey animate-rise [animation-delay:160ms]">
+              {project.tagline}
+            </p>
+            <div class="mt-8 flex flex-wrap items-center gap-3 animate-rise [animation-delay:200ms]">
+              <ButtonLink href="/#contact" arrow>Discuss a project like this</ButtonLink>
+              {project.screens && <ButtonLink href="#screens" variant="secondary">See the screens</ButtonLink>}
+            </div>
+            <div class="mt-8 flex flex-wrap items-center gap-3 animate-rise [animation-delay:240ms]">
+              <ProjectStatusBadge status={project.status} />
+              <ProjectTags tags={project.tags} />
+            </div>
           </div>
-        </div>
 
-        <div
-          data-tilt="3"
-          class="group relative mt-14 aspect-[16/10] overflow-hidden rounded-xl border border-line bg-elevated will-change-transform animate-fade [animation-delay:300ms]"
-        >
-          <Image
-            src={project.image}
-            alt={project.imageAlt}
-            widths={[640, 1136, 1600, 2272]}
-            sizes="(min-width: 1216px) 1136px, 100vw"
-            loading="eager"
-            fetchpriority="high"
-            class="absolute inset-0 size-full object-cover object-left-top"
-          />
+          <div
+            data-tilt="3"
+            class="group relative aspect-[16/10] overflow-hidden rounded-xl border border-line bg-elevated shadow-[0_40px_120px_-40px_rgb(215_255_100/0.18)] will-change-transform animate-fade [animation-delay:300ms]"
+          >
+            <Image
+              src={project.image}
+              alt={project.imageAlt}
+              widths={[640, 960, 1360, 1920]}
+              sizes="(min-width: 1216px) 640px, (min-width: 1024px) 55vw, 100vw"
+              loading="eager"
+              fetchpriority="high"
+              class="absolute inset-0 size-full object-cover object-left-top"
+            />
+          </div>
         </div>
       </header>
 
-      <ProjectSection id="why" eyebrow="Why it exists" title="The problem" tone="elevated">
-        <p class="max-w-2xl text-lede text-pretty text-grey">{project.why.intro}</p>
-        <PointList points={project.why.points} columns={3} />
+      <ProjectSection id="why" eyebrow="Why it exists" title="The problem" lede={project.why.intro}>
+        <PointCards points={project.why.points} columns={3} steps />
       </ProjectSection>
 
-      <ProjectSection id="what" eyebrow="What it is" title={`What ${project.title} does`}>
-        <p class="max-w-2xl text-lede text-pretty text-grey">{project.what.intro}</p>
-        <PointList points={project.what.features} columns={3} />
+      <ProjectSection id="what" eyebrow="What it is" title={`What ${project.title} does`} lede={project.what.intro}>
         {
           project.screens && (
-            <ScreenSlideshow screens={project.screens} label={`${project.title} screens`} class="mt-16" />
+            <div id="screens" class="mb-16 scroll-mt-24">
+              <ScreenSlideshow screens={project.screens} label={`${project.title} screens`} />
+            </div>
           )
         }
-      </ProjectSection>
-
-      <ProjectSection id="who" eyebrow="Who it’s for" title="Built for" tone="elevated">
-        <PointList points={project.audiences} columns={2} />
+        <PointCards points={project.what.features} columns={3} />
       </ProjectSection>
 
       <ProjectSection id="how" eyebrow="How it’s built" title="The principles behind it">
-        <PointList points={project.principles} columns={2} />
+        <PointCards points={project.principles} columns={4} />
       </ProjectSection>
 
-      <ProjectSection id="progress" eyebrow="Where it stands" title="Today and next" tone="elevated">
-        <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div class="reveal">
+      <ProjectSection id="who" eyebrow="Who it’s for" title="Built for">
+        <ul class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            project.audiences.map((audience) => (
+              <li class="reveal">
+                <h3 class="flex items-center gap-2.5 text-base">
+                  <span aria-hidden="true" class="size-1.5 shrink-0 rounded-full bg-lime" />
+                  {audience.title}
+                </h3>
+                <p class="mt-3 text-body text-grey">{audience.body}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </ProjectSection>
+
+      <ProjectSection id="progress" eyebrow="Where it stands" title="Today and next">
+        <div class="reveal grid gap-10 rounded-2xl border border-line-strong bg-[linear-gradient(135deg,rgb(215_255_100/0.06),transparent_45%)] bg-elevated p-7 sm:p-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] lg:gap-14">
+          <div>
             <ProjectStatusBadge status={project.status} />
-            <p class="mt-5 text-body text-offwhite/80">{project.progress.now}</p>
+            <p class="mt-6 text-lede text-pretty text-offwhite/85">{project.progress.now}</p>
           </div>
-          <div class="reveal">
+          <div>
             <h3 class="text-base">Coming next</h3>
-            <ul class="mt-4 space-y-3">
+            <ul class="mt-5 space-y-4">
               {
                 project.progress.next.map((item) => (
-                  <li class="flex gap-3 text-body text-grey">
-                    <span aria-hidden="true" class="mt-[0.7em] size-1 shrink-0 bg-lime" />
+                  <li class="flex gap-3.5 text-body text-grey">
+                    <span aria-hidden="true" class="mt-[0.55em] size-2 shrink-0 rounded-sm bg-lime" />
                     {item}
                   </li>
                 ))
@@ -165,20 +185,18 @@ const structuredData = {
             </ul>
           </div>
         </div>
-        {project.note && <p class="mt-12 max-w-2xl text-xs text-grey">{project.note}</p>}
+        {project.note && <p class="mt-6 max-w-2xl text-xs text-grey">{project.note}</p>}
       </ProjectSection>
 
-      <section aria-labelledby="project-cta-title" class="section-pad border-t border-line">
-        <div class="container-page reveal flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <div class="max-w-xl">
-            <p class="eyebrow">Have an idea worth building?</p>
-            <h2 id="project-cta-title" class="mt-4 text-heading">Let&rsquo;s build yours next.</h2>
-            <p class="mt-5 text-lede text-pretty text-grey">
-              From a first prototype to a product people rely on, {siteConfig.name} turns ideas like this into
-              working software.
-            </p>
-          </div>
-          <div class="flex flex-col gap-3 sm:flex-row">
+      <section aria-labelledby="project-cta-title" class="section-pad">
+        <div class="container-page reveal flex flex-col items-center text-center">
+          <p class="eyebrow">Have an idea worth building?</p>
+          <h2 id="project-cta-title" class="mt-4 max-w-2xl text-heading">Let&rsquo;s build yours next.</h2>
+          <p class="mt-5 max-w-xl text-lede text-pretty text-grey">
+            From a first prototype to a product people rely on, {siteConfig.name} turns ideas like this into working
+            software.
+          </p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="/#contact" arrow>Discuss a project</ButtonLink>
             <ButtonLink href="/#work" variant="secondary">See all work</ButtonLink>
           </div>
