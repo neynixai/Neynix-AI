@@ -1,0 +1,47 @@
+---
+import About from "@/components/About.astro";
+import Approach from "@/components/Approach.astro";
+import Contact from "@/components/Contact.astro";
+import Hero from "@/components/Hero.astro";
+import Philosophy from "@/components/Philosophy.astro";
+import Services from "@/components/Services.astro";
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import Why from "@/components/Why.astro";
+import Work from "@/components/Work.astro";
+import { GITHUB_URL, LINKEDIN_URL, siteConfig } from "@/config/site";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: siteConfig.name,
+  slogan: siteConfig.tagline,
+  description: siteConfig.seo.description,
+  knowsAbout: siteConfig.seo.keywords,
+  ...(siteConfig.url ? { url: `${siteConfig.url}/` } : {}),
+  ...(siteConfig.contact.email ? { email: siteConfig.contact.email } : {}),
+  founder: {
+    "@type": "Person",
+    name: siteConfig.founder,
+    jobTitle: siteConfig.founderTitle,
+    sameAs: [LINKEDIN_URL, GITHUB_URL].filter(Boolean),
+  },
+};
+---
+
+<BaseLayout title={siteConfig.seo.title} description={siteConfig.seo.description} path="/" structuredData={structuredData}>
+  <div id="top"></div>
+  <SiteHeader />
+  <main id="main">
+    <Hero />
+    <Services />
+    <Philosophy />
+    <Approach />
+    <Work />
+    <About />
+    <Why />
+    <Contact />
+  </main>
+  <SiteFooter />
+</BaseLayout>

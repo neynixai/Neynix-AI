@@ -2,8 +2,8 @@
 // Source: brand/neynix-logo-source.webp (monochrome N on a white background).
 //
 // The logo is greyscale, so luminance maps cleanly to an alpha mask:
-//   - neynix-mark.png        black + alpha  -> identical to the source on light backgrounds
-//   - neynix-mark-light.png  white + alpha  -> reversed treatment for dark backgrounds
+//   - src/assets/brand/neynix-mark.png        black + alpha  -> identical to the source on light backgrounds
+//   - src/assets/brand/neynix-mark-light.png  white + alpha  -> reversed treatment for dark backgrounds
 //
 // Run with: npm run assets
 import sharp from "sharp";
@@ -49,10 +49,10 @@ function maskedMark(channelValue) {
   return sharp(out, { raw: { width, height, channels: 4 } });
 }
 
-await mkdir("public/brand", { recursive: true });
+await mkdir("src/assets/brand", { recursive: true });
 
-await maskedMark(0).png({ compressionLevel: 9 }).toFile("public/brand/neynix-mark.png");
-await maskedMark(255).png({ compressionLevel: 9 }).toFile("public/brand/neynix-mark-light.png");
+await maskedMark(0).png({ compressionLevel: 9 }).toFile("src/assets/brand/neynix-mark.png");
+await maskedMark(255).png({ compressionLevel: 9 }).toFile("src/assets/brand/neynix-mark-light.png");
 
 // App icons: the symbol on a white tile, so it reads in light and dark browser chrome.
 async function appIcon(size, radius, file) {
@@ -70,7 +70,7 @@ async function appIcon(size, radius, file) {
     .toFile(file);
 }
 
-await appIcon(512, 112, "app/icon.png");
-await appIcon(180, 0, "app/apple-icon.png");
+await appIcon(512, 112, "public/icon.png");
+await appIcon(180, 0, "public/apple-icon.png");
 
 console.log(`Mark cropped to ${width}x${height} (from ${info.width}x${info.height}).`);

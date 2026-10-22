@@ -1,0 +1,8 @@
+---
+/** Error slot for one contact-form field; the form script fills and reveals it. */
+type Props = { field: string };
+
+const { field } = Astro.props;
+---
+
+<p id={`contact-${field}-error`} hidden class="mt-2 text-small text-danger"></p>

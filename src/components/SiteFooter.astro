@@ -1,0 +1,85 @@
+---
+import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
+import FooterColumn from "@/components/FooterColumn.astro";
+import Logo from "@/components/Logo.astro";
+import { getContactLinks, siteConfig } from "@/config/site";
+import { navLinks, services } from "@/lib/content";
+import { href } from "@/lib/paths";
+
+const contactLinks = getContactLinks();
+---
+
+<footer class="border-t border-line bg-elevated">
+  <div class="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.4fr_0.7fr_1fr_0.8fr]">
+    <div>
+      <a href={href("/#top")} aria-label="NEYNIX AI — home" class="inline-block rounded-sm">
+        <Logo />
+      </a>
+      <p class="mt-6 font-display text-base font-semibold">{siteConfig.tagline}</p>
+      <p class="mt-2 max-w-xs text-small text-grey">{siteConfig.shortDescription}</p>
+      <p class="mt-4 text-small text-grey">
+        Founded by{" "}<span class="font-medium text-offwhite">{siteConfig.founder}</span>
+      </p>
+    </div>
+
+    <FooterColumn title="Navigation">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a href={href(link.href)} class="text-grey transition-colors hover:text-offwhite">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </FooterColumn>
+
+    <FooterColumn title="Services">
+      {
+        services.map((service) => (
+          <li>
+            <a href={href("/#services")} class="text-grey transition-colors hover:text-offwhite">
+              {service.title}
+            </a>
+          </li>
+        ))
+      }
+    </FooterColumn>
+
+    {
+      contactLinks.length > 0 && (
+        <FooterColumn title="Connect">
+          {contactLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                class="inline-flex items-center gap-1 text-grey transition-colors hover:text-offwhite"
+              >
+                {link.label}
+                {link.external && <ArrowUpRight aria-hidden="true" class="size-3.5" stroke-width={1.5} />}
+                {link.external && <span class="sr-only">(opens in a new tab)</span>}
+              </a>
+            </li>
+          ))}
+        </FooterColumn>
+      )
+    }
+  </div>
+
+  <div class="border-t border-line">
+    <div class="container-page flex flex-col gap-2 py-6 text-xs text-grey sm:flex-row sm:items-center sm:justify-between">
+      <p>
+        ©{" "}<span data-current-year>{new Date().getFullYear()}</span>{" "}{siteConfig.name}. All rights reserved.
+      </p>
+      <p>Independent AI engineering studio</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // The page is built once, so refresh the year in the browser to keep it current.
+  for (const el of document.querySelectorAll("[data-current-year]")) {
+    el.textContent = String(new Date().getFullYear());
+  }
+</script>

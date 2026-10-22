@@ -1,0 +1,102 @@
+---
+import ButtonLink from "@/components/ButtonLink.astro";
+import ContactForm from "@/components/ContactForm.astro";
+import LogoMark from "@/components/LogoMark.astro";
+import { CONTACT_EMAIL, LINKEDIN_URL, WEB3FORMS_ACCESS_KEY } from "@/config/site";
+
+const formEnabled = Boolean(WEB3FORMS_ACCESS_KEY);
+
+// "Start a conversation" goes to the best channel that is actually configured.
+const primary = formEnabled
+  ? { href: "#contact-form" }
+  : CONTACT_EMAIL
+    ? { href: `mailto:${CONTACT_EMAIL}` }
+    : LINKEDIN_URL
+      ? { href: LINKEDIN_URL, target: "_blank", rel: "noopener noreferrer" }
+      : null;
+const showEmailButton = Boolean(CONTACT_EMAIL) && primary?.href !== `mailto:${CONTACT_EMAIL}`;
+
+/** Soft topographic lines — a quiet nod to depth without generic AI imagery. */
+const contours = Array.from({ length: 14 }, (_, i) => {
+  const y = 250 + i * 18;
+  const a = 40 + i * 6;
+  return `M0 ${y} C 240 ${y - a}, 420 ${y + a * 0.6}, 640 ${y - a * 0.4} S 1000 ${y - a * 1.2}, 1200 ${y - a * 0.2}`;
+});
+---
+
+<section id="contact" aria-labelledby="contact-title" class="relative isolate overflow-hidden border-t border-line bg-obsidian">
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 1200 600"
+    preserveAspectRatio="xMidYMid slice"
+    class="pointer-events-none absolute inset-0 -z-10 size-full [mask-image:linear-gradient(to_right,transparent_10%,black_70%)]"
+    fill="none"
+    stroke="#f5f5f0"
+  >
+    {contours.map((d, i) => <path d={d} stroke-opacity={0.03 + i * 0.006} />)}
+  </svg>
+
+  <div class="container-page section-pad grid items-center gap-14 lg:grid-cols-[1.2fr_1fr]">
+    <div class="reveal">
+      <p class="eyebrow">Have an idea worth building?</p>
+      <h2 id="contact-title" class="mt-4 text-heading">Let&rsquo;s make it real.</h2>
+      <p class="mt-6 max-w-lg text-lede text-pretty text-grey">
+        Have an AI idea, an automation challenge, or a software project in mind? Let&rsquo;s discuss what a practical
+        solution could look like.
+      </p>
+
+      {
+        (primary || showEmailButton) && (
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+            {primary && (
+              <ButtonLink arrow {...primary}>
+                Start a conversation
+              </ButtonLink>
+            )}
+            {showEmailButton && (
+              <ButtonLink variant="secondary" href={`mailto:${CONTACT_EMAIL}`}>
+                Email NEYNIX AI
+              </ButtonLink>
+            )}
+          </div>
+        )
+      }
+
+      {
+        !primary && import.meta.env.DEV && (
+          <p class="mt-9 max-w-lg rounded-md border border-dashed border-line-strong p-4 text-small text-grey">
+            Dev note (hidden in production): no contact channel is configured. Set{" "}
+            <code class="font-mono text-xs">PUBLIC_CONTACT_EMAIL</code>,{" "}
+            <code class="font-mono text-xs">PUBLIC_LINKEDIN_URL</code>, or{" "}
+            <code class="font-mono text-xs">PUBLIC_WEB3FORMS_ACCESS_KEY</code> in{" "}
+            <code class="font-mono text-xs">.env.local</code> — see{" "}
+            <code class="font-mono text-xs">.env.example</code>.
+          </p>
+        )
+      }
+    </div>
+
+    <div aria-hidden="true" class="hidden items-center justify-center gap-8 lg:flex">
+      <LogoMark sizes="256px" widths={[256, 512]} class="w-64" />
+      <p class="border-l border-line-strong pl-3 text-xs leading-relaxed text-grey">
+        Ideas<br />Engineering<br />Impact
+      </p>
+    </div>
+  </div>
+
+  {
+    formEnabled && (
+      <div id="contact-form" class="container-page pb-[clamp(4.5rem,3rem+6vw,8.5rem)]">
+        <div class="grid gap-10 border-t border-line pt-14 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <h3 class="text-[1.5rem] leading-tight tracking-[-0.02em]">Tell us about your project</h3>
+            <p class="mt-3 max-w-sm text-body text-grey">
+              A few sentences is enough — the problem, who it&rsquo;s for, and any constraints you already know about.
+            </p>
+          </div>
+          <ContactForm />
+        </div>
+      </div>
+    )
+  }
+</section>

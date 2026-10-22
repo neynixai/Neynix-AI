@@ -1,0 +1,97 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/space-grotesk";
+import "@/styles/global.css";
+import { CHAT_BOT_ID, CHAT_WIDGET_URL, siteConfig } from "@/config/site";
+import { href } from "@/lib/paths";
+
+type Props = {
+  title: string;
+  description: string;
+  /** Page keywords; the project pages pass their tags. */
+  keywords?: readonly string[];
+  /** Site path of this page, e.g. "/" or "/work/ca-mode/". */
+  path: string;
+  type?: "website" | "article";
+  /** Social preview image as a built URL (already carrying the base path). */
+  image?: { src: string; alt: string; width: number; height: number };
+  /** Topic tags, emitted as article:tag for article pages. */
+  tags?: readonly string[];
+  /** JSON-LD structured data for this page. */
+  structuredData?: object;
+  /** Keep the page out of search results (and give it no canonical URL). */
+  noindex?: boolean;
+};
+
+const {
+  title,
+  description,
+  keywords = siteConfig.seo.keywords,
+  path,
+  type = "website",
+  image = { src: href("/og-image.png"), alt: siteConfig.seo.title, width: 1200, height: 630 },
+  tags = [],
+  structuredData,
+  noindex = false,
+} = Astro.props;
+
+// Absolute URLs (canonical, Open Graph) need the production origin; until it is
+// configured they are left out rather than pointing at a wrong host.
+const origin = siteConfig.url ? new URL(siteConfig.url).origin : "";
+const canonical = siteConfig.url && !noindex ? `${siteConfig.url}${path}` : undefined;
+const imageUrl = origin ? `${origin}${image.src}` : image.src;
+const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, "\\u003c") : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords.join(", ")} />
+    <meta name="application-name" content={siteConfig.name} />
+    <meta name="author" content={siteConfig.founder} />
+    <meta name="creator" content={siteConfig.founder} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#111310" />
+    <meta name="color-scheme" content="dark" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <link rel="icon" type="image/png" sizes="512x512" href={href("/icon.png")} />
+    <link rel="apple-touch-icon" sizes="180x180" href={href("/apple-icon.png")} />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:locale" content="en" />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content={String(image.width)} />
+    <meta property="og:image:height" content={String(image.height)} />
+    <meta property="og:image:alt" content={image.alt} />
+    {type === "article" && tags.map((tag) => <meta property="article:tag" content={tag} />)}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={image.alt} />
+
+    {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd}></script>}
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-lime focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-obsidian"
+    >
+      Skip to content
+    </a>
+    <slot />
+    {/* The same embed snippet any site uses for the assistant. */}
+    {CHAT_WIDGET_URL && <script is:inline src={CHAT_WIDGET_URL} data-bot={CHAT_BOT_ID} defer></script>}
+  </body>
+</html>

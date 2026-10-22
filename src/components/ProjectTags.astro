@@ -1,0 +1,16 @@
+---
+/** A project's topic tags as a row of quiet labels. */
+type Props = { tags: readonly string[]; class?: string };
+
+const { tags, class: className = "" } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <ul aria-label="Tags" class:list={["flex flex-wrap gap-2", className]}>
+      {tags.map((tag) => (
+        <li class="rounded-md border border-line px-2.5 py-1 text-xs font-medium text-grey">{tag}</li>
+      ))}
+    </ul>
+  )
+}

@@ -1,0 +1,19 @@
+---
+type Props = { id: string; eyebrow: string; title: string; tone?: "base" | "elevated" };
+
+const { id, eyebrow, title, tone = "base" } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={`${id}-title`}
+  class:list={["section-pad border-t border-line", tone === "elevated" ? "bg-elevated" : "bg-obsidian"]}
+>
+  <div class="container-page">
+    <div class="reveal">
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id={`${id}-title`} class="mt-4 text-heading">{title}</h2>
+    </div>
+    <div class="mt-8"><slot /></div>
+  </div>
+</section>
