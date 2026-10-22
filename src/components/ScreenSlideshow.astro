@@ -1,0 +1,177 @@
+---
+import { Image } from "astro:assets";
+import ChevronLeft from "@lucide/astro/icons/chevron-left";
+import ChevronRight from "@lucide/astro/icons/chevron-right";
+import Pause from "@lucide/astro/icons/pause";
+import Play from "@lucide/astro/icons/play";
+import type { Screen } from "@/lib/projects";
+
+type Props = { screens: Screen[]; label: string; class?: string };
+
+const { screens, label, class: className } = Astro.props;
+const control =
+  "inline-flex size-10 items-center justify-center rounded-full border border-line-strong text-offwhite transition-colors hover:border-offwhite";
+---
+
+<section
+  data-slideshow
+  aria-roledescription="carousel"
+  aria-label={label}
+  class:list={["reveal", className]}
+>
+  {/* A scroll-snapping track: swipe and trackpad scrolling work without the script. */}
+  <ul
+    data-track
+    tabindex="0"
+    aria-live="off"
+    class="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain rounded-xl border border-line bg-elevated [scrollbar-width:none] focus-visible:outline-offset-4 [&::-webkit-scrollbar]:hidden"
+  >
+    {
+      screens.map((screen, i) => (
+        <li
+          aria-roledescription="slide"
+          aria-label={`${i + 1} of ${screens.length}`}
+          class="relative aspect-[16/10] w-full shrink-0 snap-start"
+        >
+          <Image
+            src={screen.image}
+            alt={screen.alt}
+            widths={[640, 1136, 1600, 2272]}
+            sizes="(min-width: 1216px) 1136px, 100vw"
+            class="absolute inset-0 size-full object-cover object-left-top"
+          />
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="mt-5 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+    <div class="grid max-w-xl">
+      {
+        screens.map((screen, i) => (
+          <p
+            data-caption
+            class:list={[
+              "col-start-1 row-start-1 text-body text-grey transition-opacity duration-300",
+              { "opacity-0": i !== 0 },
+            ]}
+            aria-hidden={i !== 0 ? "true" : undefined}
+          >
+            {screen.caption}
+          </p>
+        ))
+      }
+    </div>
+
+    <div class="flex shrink-0 items-center gap-3">
+      <button type="button" data-pause aria-label="Pause slideshow" class={control}>
+        <Pause data-icon="pause" aria-hidden="true" class="size-4" stroke-width={1.75} />
+        <Play data-icon="play" aria-hidden="true" class="hidden size-4" stroke-width={1.75} />
+      </button>
+      <button type="button" data-prev aria-label="Previous screen" class={control}>
+        <ChevronLeft aria-hidden="true" class="size-4" stroke-width={1.75} />
+      </button>
+      <div class="flex items-center gap-2">
+        {
+          screens.map((_, i) => (
+            <button
+              type="button"
+              data-dot
+              aria-label={`Show screen ${i + 1}`}
+              aria-current={i === 0 ? "true" : undefined}
+              class="group flex size-6 items-center justify-center"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-line-strong transition-all duration-300 group-hover:bg-grey group-aria-[current=true]:w-5 group-aria-[current=true]:bg-lime" />
+            </button>
+          ))
+        }
+      </div>
+      <button type="button" data-next aria-label="Next screen" class={control}>
+        <ChevronRight aria-hidden="true" class="size-4" stroke-width={1.75} />
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  const INTERVAL_MS = 5000;
+
+  for (const root of document.querySelectorAll<HTMLElement>("[data-slideshow]")) {
+    const track = root.querySelector<HTMLElement>("[data-track]")!;
+    const slides = [...track.children] as HTMLElement[];
+    const captions = [...root.querySelectorAll<HTMLElement>("[data-caption]")];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>("[data-dot]")];
+    const pauseButton = root.querySelector<HTMLButtonElement>("[data-pause]")!;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let index = 0;
+    let timer = 0;
+    // Stopped by the pause button (or reduced motion); held while hovered, focused or off-screen.
+    let stopped = reduceMotion;
+    let hovered = false;
+    let focused = false;
+    let visible = false;
+
+    const show = (i: number, behavior: ScrollBehavior = reduceMotion ? "auto" : "smooth") => {
+      const next = (i + slides.length) % slides.length;
+      track.scrollTo({ left: next * track.clientWidth, behavior });
+    };
+
+    const mark = (i: number) => {
+      if (i === index) return;
+      index = i;
+      captions.forEach((caption, n) => {
+        caption.classList.toggle("opacity-0", n !== i);
+        caption.toggleAttribute("aria-hidden", n !== i);
+      });
+      dots.forEach((dot, n) => (n === i ? dot.setAttribute("aria-current", "true") : dot.removeAttribute("aria-current")));
+    };
+
+    const schedule = () => {
+      window.clearInterval(timer);
+      if (!stopped && !hovered && !focused && visible) timer = window.setInterval(() => show(index + 1), INTERVAL_MS);
+    };
+
+    const setStopped = (value: boolean) => {
+      stopped = value;
+      pauseButton.setAttribute("aria-label", value ? "Play slideshow" : "Pause slideshow");
+      // Announce slide changes only when they are the visitor's own.
+      track.setAttribute("aria-live", value ? "polite" : "off");
+      pauseButton.querySelector('[data-icon="pause"]')!.classList.toggle("hidden", value);
+      pauseButton.querySelector('[data-icon="play"]')!.classList.toggle("hidden", !value);
+      schedule();
+    };
+
+    // The slide in view decides the index, so swipes and scrolls stay in sync.
+    let frame = 0;
+    track.addEventListener("scroll", () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => mark(Math.round(track.scrollLeft / track.clientWidth)));
+    });
+
+    root.querySelector("[data-prev]")!.addEventListener("click", () => (show(index - 1), schedule()));
+    root.querySelector("[data-next]")!.addEventListener("click", () => (show(index + 1), schedule()));
+    dots.forEach((dot, i) => dot.addEventListener("click", () => (show(i), schedule())));
+    pauseButton.addEventListener("click", () => setStopped(!stopped));
+
+    track.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      show(index + (e.key === "ArrowRight" ? 1 : -1));
+    });
+
+    root.addEventListener("pointerenter", () => ((hovered = true), schedule()));
+    root.addEventListener("pointerleave", () => ((hovered = false), schedule()));
+    root.addEventListener("focusin", () => ((focused = true), schedule()));
+    root.addEventListener("focusout", (e) => {
+      if (root.contains(e.relatedTarget as Node)) return;
+      focused = false;
+      schedule();
+    });
+    new IntersectionObserver(([entry]) => ((visible = entry.isIntersecting), schedule()), { threshold: 0.4 }).observe(root);
+    // Keep the current slide aligned when the width changes.
+    new ResizeObserver(() => show(index, "auto")).observe(track);
+
+    setStopped(stopped);
+  }
+</script>
