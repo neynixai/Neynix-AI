@@ -1,5 +1,9 @@
 import type { ImageMetadata } from "astro";
 import caModeScreenshot from "@/assets/work/ca-mode.webp";
+import caModeAnswerTrace from "@/assets/work/ca-mode-answer-trace.webp";
+import caModeChat from "@/assets/work/ca-mode-chat.webp";
+import caModeGoals from "@/assets/work/ca-mode-goals.webp";
+import caModePlanning from "@/assets/work/ca-mode-planning.webp";
 
 export type ProjectStatus = "poc" | "in-build" | "completed" | "hosted";
 
@@ -12,6 +16,9 @@ export const statuses: Record<ProjectStatus, { label: string; dot: string }> = {
 };
 
 type Point = { title: string; body: string };
+
+/** A screenshot shown in the project page's gallery. */
+export type Screen = { image: ImageMetadata; alt: string; caption: string };
 
 export type Project = {
   /** URL segment: the project's page is served at /work/<slug>/. */
@@ -29,6 +36,8 @@ export type Project = {
   image: ImageMetadata;
   imageAlt: string;
   status: ProjectStatus;
+  /** More screenshots, shown in a gallery on the project page. */
+  screens?: Screen[];
   /** Why the project exists: the problem it answers. */
   why: { intro: string; points: Point[] };
   /** What the project is and does. */
@@ -63,6 +72,28 @@ export const projects: Project[] = [
     imageAlt:
       "CA Mode home screen: net worth, P&L and goal cards, recent chats, and a portfolio overview with a 7-day trend and market insights.",
     status: "in-build",
+    screens: [
+      {
+        image: caModeChat,
+        alt: "CA Mode chat: Finance Agent, running on the local Ollama model, explains the difference between an SIP and a lumpsum investment.",
+        caption: "Finance Agent answers a general question with the AI model running on the same computer.",
+      },
+      {
+        image: caModeAnswerTrace,
+        alt: "The end of a CA Mode answer with its trace expanded: the request was classified, the local model answered, and a completeness check passed.",
+        caption: "Every answer shows how it was made: how the question was routed, which model answered, and the checks it passed.",
+      },
+      {
+        image: caModeGoals,
+        alt: "CA Mode Goals page: a home down payment goal with its projection, ways to close the gap and the kinds of investment that suit its timeline.",
+        caption: "Goals are projected in code under your own return assumption, with ways to close any gap.",
+      },
+      {
+        image: caModePlanning,
+        alt: "CA Mode SIP calculator: monthly investment, expected return and years, with the estimated value and a year-by-year chart.",
+        caption: "Planning tools for SIP, lumpsum, goal, loan EMI and income tax calculations.",
+      },
+    ],
     why: {
       intro:
         "Most investors can see their portfolio, but few can easily question it. Asking “why did my net worth drop this week?” or “am I on track for my house deposit?” still means clicking through screens and doing the maths yourself.",

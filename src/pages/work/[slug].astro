@@ -129,6 +129,31 @@ const structuredData = {
       <ProjectSection id="what" eyebrow="What it is" title={`What ${project.title} does`}>
         <p class="max-w-2xl text-lede text-pretty text-grey">{project.what.intro}</p>
         <PointList points={project.what.features} columns={3} />
+        {
+          project.screens && (
+            <ul class="mt-16 grid gap-x-6 gap-y-10 md:grid-cols-2">
+              {project.screens.map((screen) => (
+                <li class="reveal">
+                  <figure>
+                    <div
+                      data-tilt="3"
+                      class="relative aspect-[16/10] overflow-hidden rounded-xl border border-line bg-elevated will-change-transform"
+                    >
+                      <Image
+                        src={screen.image}
+                        alt={screen.alt}
+                        widths={[480, 768, 1080, 1440]}
+                        sizes="(min-width: 1216px) 560px, (min-width: 768px) 50vw, 100vw"
+                        class="absolute inset-0 size-full object-cover object-left-top"
+                      />
+                    </div>
+                    <figcaption class="mt-4 max-w-md text-sm text-grey">{screen.caption}</figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          )
+        }
       </ProjectSection>
 
       <ProjectSection id="who" eyebrow="Who it’s for" title="Built for" tone="elevated">
