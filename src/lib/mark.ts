@@ -19,21 +19,24 @@ export const MARK_SPHERE = { cx: 84.53, cy: 15.58, r: 14.92 };
 
 /**
  * 3D definition in mark units (about -1..1, y up). Each chain is a run of
- * round cones through [x, y, z, radius] points; chains blend with smooth-min k.
+ * round cones through [x, y, z, radius] points, blended with smooth-min `k`.
+ * The leg sits behind the body and meets it with the tighter `join`, which
+ * leaves the fold as a soft crease.
  */
 export const MARK_SHAPE = {
   body: [
-    [-0.482, 0.41, 0.08, 0.32],
-    [-0.105, -0.01, 0.14, 0.217],
-    [0.45, -0.425, 0.08, 0.315],
+    [-0.482, 0.41, 0.08, 0.33],
+    [-0.13, -0.04, 0.1, 0.235],
+    [0.45, -0.425, 0.08, 0.325],
   ],
   leg: [
-    [-0.428, 0.333, -0.08, 0.265],
-    [-0.545, -0.215, -0.24, 0.17],
-    [-0.647, -0.492, -0.14, 0.23],
+    [-0.47, 0.3, -0.06, 0.26],
+    [-0.37, -0.24, -0.12, 0.24],
+    [-0.6, -0.49, -0.08, 0.24],
   ],
   sphere: [0.61, 0.518, 0, 0.27],
   k: 0.14,
+  join: 0.07,
 } as const;
 
 /**

@@ -9,7 +9,7 @@ import { createRenderer, prefersReducedMotion, runWhenVisible } from "@/scripts/
  */
 
 const v = (n: readonly number[]) => `vec4(${n.map((x) => x.toFixed(3)).join(", ")})`;
-const { body, leg, sphere, k } = MARK_SHAPE;
+const { body, leg, sphere, k, join } = MARK_SHAPE;
 
 const FRAGMENT = /* glsl */ `
 precision highp float;
@@ -26,9 +26,10 @@ const vec4 L1 = ${v(leg[1])};
 const vec4 L2 = ${v(leg[2])};
 const vec4 S0 = ${v(sphere)};
 const float K = ${k.toFixed(3)};
+const float JOIN = ${join.toFixed(3)};
 const vec3 LIME = vec3(0.843, 1.0, 0.392);
 // Depth is squashed a little so the mark reads as a soft, pillowy form.
-const float FLAT = 1.9;
+const float FLAT = 1.95;
 
 mat3 rotY(float a) { float c = cos(a), s = sin(a); return mat3(c, 0.0, -s, 0.0, 1.0, 0.0, s, 0.0, c); }
 mat3 rotX(float a) { float c = cos(a), s = sin(a); return mat3(1.0, 0.0, 0.0, 0.0, c, s, 0.0, -s, c); }
@@ -58,6 +59,8 @@ float roundCone(vec3 p, vec3 a, vec3 b, float r1, float r2) {
   return (sqrt(x2 * a2 * il2) + y * rr) * il2 - r1;
 }
 
+float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+
 mat3 uRot;
 vec3 uSphere;
 float uBreath;
@@ -69,9 +72,17 @@ vec2 map(vec3 p) {
   float neck = B1.w + uBreath;
   float b = smin(roundCone(f, B0.xyz, B1.xyz, B0.w, neck), roundCone(f, B1.xyz, B2.xyz, neck, B2.w), K);
   float l = smin(roundCone(f, L0.xyz, L1.xyz, L0.w, L1.w), roundCone(f, L1.xyz, L2.xyz, L1.w, L2.w), K);
-  float n = smin(b, l, K) / FLAT;
+  float n = smin(b, l, JOIN) / FLAT;
   float s = length(q - uSphere) - S0.w;
   return s < n ? vec2(s, 1.0) : vec2(n, 0.0);
+}
+
+// Distance to the body alone: small on the leg just under the fold.
+float bodyDist(vec3 p) {
+  vec3 q = uRot * p;
+  vec3 f = vec3(q.xy, q.z * FLAT);
+  float neck = B1.w + uBreath;
+  return smin(roundCone(f, B0.xyz, B1.xyz, B0.w, neck), roundCone(f, B1.xyz, B2.xyz, neck, B2.w), K) / FLAT;
 }
 
 vec3 normalAt(vec3 p) {
@@ -84,11 +95,23 @@ vec3 normalAt(vec3 p) {
 float occlusion(vec3 p, vec3 n) {
   float o = 0.0, w = 1.0;
   for (int i = 1; i <= 5; i++) {
-    float h = 0.03 * float(i);
+    float h = 0.045 * float(i);
     o += w * (h - map(p + n * h).x);
-    w *= 0.7;
+    w *= 0.75;
   }
-  return clamp(1.0 - 2.2 * o, 0.0, 1.0);
+  return clamp(1.0 - 2.6 * o, 0.0, 1.0);
+}
+
+// Soft shadow toward the key light, so the body shades the leg beneath the fold.
+float softShadow(vec3 p, vec3 l) {
+  float res = 1.0, t = 0.02;
+  for (int i = 0; i < 28; i++) {
+    float h = map(p + l * t).x;
+    res = min(res, 10.0 * h / t);
+    t += clamp(h, 0.015, 0.12);
+    if (res < 0.01 || t > 2.0) break;
+  }
+  return clamp(res, 0.0, 1.0);
 }
 
 void main() {
@@ -99,7 +122,7 @@ void main() {
 
   // Pose: a slow sway plus the pointer tilt.
   float t = uTime;
-  uRot = rotX(0.12 * sin(t * 0.31) - uTilt.y * 0.35) * rotY(0.32 * sin(t * 0.23) + uTilt.x * 0.5);
+  uRot = rotX(0.06 * sin(t * 0.31) - uTilt.y * 0.25) * rotY(0.16 * sin(t * 0.23) + uTilt.x * 0.35);
   uSphere = S0.xyz + vec3(0.03 * sin(t * 0.7), 0.04 * sin(t * 0.9), 0.08 * sin(t * 0.5));
   uBreath = 0.012 * sin(t * 1.1);
   ro.y += 0.03 * sin(t * 0.6);
@@ -140,41 +163,55 @@ void main() {
   vec3 v = -rd;
   float ao = occlusion(p, n);
 
-  vec3 key = normalize(vec3(0.45, 0.85, 0.55));
-  float wrap = pow(clamp(dot(n, key) * 0.5 + 0.5, 0.0, 1.0), 1.6);
-  float spec = pow(max(dot(reflect(-key, n), v), 0.0), 28.0);
-  float fres = pow(1.0 - max(dot(n, v), 0.0), 3.0);
+  // Soft studio lights from the upper left and lower right; matte satin finish.
+  vec3 key = normalize(vec3(-0.35, 0.65, 0.6));
+  float diff = clamp(dot(n, key), 0.0, 1.0);
+  float shadow = softShadow(p + n * 0.01, key);
+  float sheen = pow(max(dot(reflect(-key, n), v), 0.0), 4.0);
+  float fres = pow(1.0 - max(dot(n, v), 0.0), 1.6);
+  // Lime light from behind, low on the left: a glow along left-facing edges.
+  float leftEdge = clamp(dot(normalize(nl.xy + 1e-4), normalize(vec2(-0.85, -0.3))), 0.0, 1.0);
+  float grain = (hash(gl_FragCoord.xy) - 0.5) * 0.05;
 
   vec3 col;
   if (hit.y < 0.5) {
-    // Satin silver, lime light from the lower left, glowing along the rim.
-    vec3 base = vec3(0.86, 0.865, 0.85);
-    vec3 limeDir = normalize(vec3(-0.85, -0.35, 0.35));
-    float lime = pow(max(dot(nl, limeDir), 0.0), 1.8);
-    col = base * (0.1 + 0.9 * wrap) * ao;
-    col += LIME * lime * 0.55 * (0.4 + 0.6 * ao);
-    col += LIME * fres * smoothstep(0.2, -0.6, nl.x) * 0.5;
-    col += vec3(1.0) * spec * 0.25 * ao;
+    vec3 base = vec3(1.0, 1.0, 0.985);
+    // The leg darkens where it runs under the body and lightens toward its bulb.
+    float db = bodyDist(p);
+    float fold = db > 0.012 ? mix(0.08, 1.0, smoothstep(0.0, 0.42, db)) : 1.0;
+    float lit = diff * mix(0.06, 1.0, shadow) * fold;
+    // A second soft light from the lower right brightens the bulbs' lower faces.
+    vec3 fillDir = normalize(vec3(0.6, -0.45, 0.65));
+    float fill = pow(clamp(dot(n, fillDir), 0.0, 1.0), 2.2) * mix(0.3, 1.0, fold);
+    float light = 0.03 + 1.05 * pow(lit, 1.5) + 0.75 * fill + 0.3 * sheen * shadow * fold;
+    col = base * min(light, 1.15) * mix(0.12, 1.0, ao);
+    // Shaded areas pick up a dark lime bounce; left edges glow lime.
+    col += LIME * (1.0 - shadow * diff) * 0.07 * leftEdge;
+    col += LIME * fres * pow(leftEdge, 1.3) * 1.25;
   } else {
-    // The sphere: lime on its upper right, falling to graphite.
-    vec3 sDir = normalize(vec3(0.7, 0.7, 0.35));
+    // The sphere: lime on its upper right, falling to graphite, lime-rimmed.
+    vec3 sDir = normalize(vec3(0.75, 0.65, 0.45));
     float d = clamp(dot(nl, sDir) * 0.5 + 0.5, 0.0, 1.0);
-    col = mix(vec3(0.16, 0.17, 0.15), LIME, smoothstep(0.35, 1.0, d));
-    col = mix(col, vec3(0.62, 0.64, 0.58), 0.25 * wrap);
-    col += LIME * fres * 0.35;
-    col += vec3(1.0) * spec * 0.15;
+    col = mix(vec3(0.06, 0.065, 0.06), vec3(0.42, 0.44, 0.4), smoothstep(0.1, 0.55, d));
+    col = mix(col, LIME * 1.05, smoothstep(0.4, 0.8, d));
+    col += LIME * fres * pow(leftEdge, 1.3) * 0.7;
+    col += vec3(1.0) * sheen * 0.06;
   }
+  col += grain;
 
   // Premultiplied alpha over the page background.
   gl_FragColor = vec4(col * alpha, alpha);
 }
 `;
 
-export function mountMark3D(canvas: HTMLCanvasElement, onReady: () => void) {
+export function mountMark3D(
+  canvas: HTMLCanvasElement,
+  onReady: () => void,
+  { still = prefersReducedMotion() }: { still?: boolean } = {},
+) {
   const renderer = createRenderer(canvas, FRAGMENT, { maxDpr: 1.75 });
   if (!renderer) return;
 
-  const still = prefersReducedMotion();
   const tilt = { x: 0, y: 0, tx: 0, ty: 0 };
   const start = performance.now();
 
@@ -201,7 +238,7 @@ export function mountMark3D(canvas: HTMLCanvasElement, onReady: () => void) {
     tilt.x += (tilt.tx - tilt.x) * 0.06;
     tilt.y += (tilt.ty - tilt.y) * 0.06;
     renderer.draw({
-      uTime: still ? 2.2 : (now - start) / 1000,
+      uTime: still ? 0 : (now - start) / 1000, // t = 0 is the face-on pose
       uTilt: [tilt.x, tilt.y],
       uShift: labels.matches ? 0.16 : 0,
     });
