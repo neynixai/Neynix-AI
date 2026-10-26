@@ -232,7 +232,7 @@ export const projects: Project[] = [
           period: "per month, excluding GST",
           summary: "For one person. Answers come from a privately hosted language model, and each month comes with its own credits.",
           features: [
-            "Credits for the month, renewed each month",
+            "3,000 credits a month (1 credit = 1,000 tokens), renewed on the day your plan started",
             "Top up any time once your monthly credits are used",
             "Answers from a privately hosted LLM, not a shared cloud AI service",
             "Sign in and ask, with no AI keys to buy or manage",
