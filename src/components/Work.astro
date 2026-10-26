@@ -1,82 +1,165 @@
 ---
 import { Image } from "astro:assets";
+import ArrowLeft from "@lucide/astro/icons/arrow-left";
 import ArrowRight from "@lucide/astro/icons/arrow-right";
-import ProjectStatusBadge from "@/components/ProjectStatusBadge.astro";
-import ProjectTags from "@/components/ProjectTags.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import { href } from "@/lib/paths";
-import { projects } from "@/lib/projects";
+import { projects, statuses } from "@/lib/projects";
 
-// A lone project gets a wide card so the grid does not leave an empty column.
-const wide = projects.length === 1;
+// Arrows and the thumbnail strip only appear once there is more than one project to switch between.
+const many = projects.length > 1;
 ---
 
-<section id="work" aria-labelledby="work-title" class="section-pad border-t border-line bg-obsidian">
-  <div class="container-page">
-    <SectionHeader
-      id="work-title"
-      eyebrow="Engineering in practice"
-      index="04 — Work"
-      title="Ideas, translated into systems."
-      lede="Projects built and in progress, each marked with where it stands today — from proof of concept to hosted. More work will be published here as it progresses."
-    />
+<section id="work" aria-labelledby="work-title" class="section-pad relative overflow-hidden border-t border-line bg-obsidian">
+  <div aria-hidden="true" class="pointer-events-none absolute -right-40 top-0 size-[36rem] rounded-full bg-lime/[0.05] blur-3xl"></div>
 
-    <ul class="mt-14 grid gap-5 md:grid-cols-2">
-      {
-        projects.map((project) => (
-          <li
-            data-tilt="5"
-            class:list={[
-              "reveal group relative flex flex-col overflow-hidden rounded-xl border border-line bg-elevated transition-colors duration-300 will-change-transform hover:border-line-strong",
-              { "md:col-span-2 md:flex-row": wide },
-            ]}
-          >
-            <div
-              class:list={[
-                "relative aspect-[16/10] overflow-hidden border-b border-line bg-obsidian",
-                { "md:w-3/5 md:shrink-0 md:border-r md:border-b-0": wide },
-              ]}
-            >
+  <div class="container-page relative" data-work>
+    <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+      <SectionHeader
+        id="work-title"
+        eyebrow="Engineering in practice"
+        lede="Projects built and in progress, each marked with where it stands today — from proof of concept to hosted. More work will be published here as it progresses."
+      >
+        <Fragment slot="title">Ideas, <span class="text-lime">translated into systems.</span></Fragment>
+      </SectionHeader>
+      <div class="flex shrink-0 flex-col items-start gap-6 md:items-end">
+        {
+          many && (
+            <div class="flex gap-3">
+              <button
+                type="button"
+                data-work-prev
+                aria-label="Previous project"
+                class="grid size-14 place-items-center rounded-full border border-line-strong text-grey transition-colors hover:border-offwhite hover:text-offwhite"
+              >
+                <ArrowLeft aria-hidden="true" class="size-5" stroke-width={1.5} />
+              </button>
+              <button
+                type="button"
+                data-work-next
+                aria-label="Next project"
+                class="grid size-14 place-items-center rounded-full border border-lime text-offwhite shadow-[0_0_20px_rgba(215,255,100,0.2)] transition-colors hover:bg-lime hover:text-obsidian"
+              >
+                <ArrowRight aria-hidden="true" class="size-5" stroke-width={1.5} />
+              </button>
+            </div>
+          )
+        }
+        <p aria-hidden="true" class="eyebrow hidden uppercase tracking-[0.16em] md:block">04 / Work</p>
+      </div>
+    </div>
+
+    {
+      projects.map((project, i) => (
+        <article
+          data-work-panel={i}
+          hidden={i > 0}
+          aria-labelledby={`work-${project.slug}`}
+          class="group relative isolate mt-14 grid overflow-hidden rounded-2xl border border-line bg-[linear-gradient(120deg,#151712_0%,#121411_50%,#1a1f14_100%)] lg:grid-cols-[1.75fr_1fr]"
+        >
+          <div class="relative overflow-hidden p-3 sm:p-5">
+            <div class="relative aspect-[16/10] overflow-hidden rounded-xl border border-line bg-elevated lg:aspect-auto lg:h-full lg:min-h-[26rem]">
               <Image
                 src={project.image}
                 alt={project.imageAlt}
                 widths={[480, 768, 1080, 1440]}
-                sizes={wide ? "(min-width: 768px) 60vw, 100vw" : "(min-width: 768px) 50vw, 100vw"}
-                class="absolute inset-0 size-full object-cover object-left-top transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                sizes="(min-width: 1024px) 60vw, 100vw"
+                class="absolute inset-0 size-full object-cover object-left-top transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               />
             </div>
-            {/* Highlight that follows the pointer while the card tilts. */}
-            <span
-              aria-hidden="true"
-              class="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(28rem_circle_at_var(--glare-x,50%)_var(--glare-y,50%),rgb(215_255_100/0.07),transparent_60%)]"
-            />
-            <div class:list={["flex flex-1 flex-col p-6", { "md:justify-center md:p-10": wide }]}>
-              <p class="eyebrow">{project.category}</p>
-              <h3 class="mt-3 text-title">
-                {/* The link's overlay makes the whole card clickable. */}
-                <a href={href(`/work/${project.slug}/`)} class="after:absolute after:inset-0 after:content-['']">
-                  {project.title}
-                </a>
-              </h3>
-              <p class:list={["mt-3 text-body text-grey", { "flex-1": !wide }]}>{project.summary}</p>
-              <ProjectTags tags={project.tags} class="mt-5" />
-              <p class="mt-6 flex flex-wrap items-center gap-4">
-                <ProjectStatusBadge status={project.status} />
-                <span
-                  aria-hidden="true"
-                  class="inline-flex items-center gap-1.5 text-sm font-medium text-offwhite underline decoration-line-strong underline-offset-4 transition-colors group-hover:decoration-offwhite"
-                >
-                  Read the full story
-                  <ArrowRight
-                    class="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                    stroke-width={1.75}
-                  />
+          </div>
+
+          <div class="relative flex flex-col justify-center p-7 sm:p-10">
+            {/* Lime swoosh in the corner. */}
+            <svg aria-hidden="true" viewBox="0 0 200 260" class="pointer-events-none absolute bottom-0 right-0 -z-10 h-3/4 opacity-70">
+              <defs>
+                <linearGradient id={`wk-swoosh-${i}`} x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#d7ff64" stop-opacity="0.5" />
+                  <stop offset="1" stop-color="#d7ff64" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <path d="M70 10 C 150 30, 200 120, 200 260 L 160 260 C 160 150, 120 60, 70 10 Z" fill={`url(#wk-swoosh-${i})`} />
+              <path d="M40 260 C 90 180, 150 140, 200 130" fill="none" stroke="#d7ff64" stroke-opacity="0.35" />
+            </svg>
+
+            <p class="eyebrow uppercase tracking-[0.16em]">{project.category}</p>
+            <h3 id={`work-${project.slug}`} class="mt-4 font-display text-[2rem] leading-tight tracking-[-0.02em]">
+              {project.title}
+            </h3>
+            <p class="mt-5 text-body text-pretty text-grey">{project.summary}</p>
+            {project.tags.length > 0 && (
+              <ul aria-label="Tags" class="mt-7 flex flex-wrap gap-2.5">
+                {project.tags.map((tag) => (
+                  <li class="rounded-lg border border-line-strong bg-obsidian/60 px-3.5 py-1.5 text-small text-offwhite/85">{tag}</li>
+                ))}
+              </ul>
+            )}
+            <p class="mt-8 flex flex-wrap items-center gap-6">
+              <span class="inline-flex items-center gap-2.5 rounded-full border border-line-strong bg-obsidian/60 px-4 py-2 text-small font-medium">
+                <span aria-hidden="true" class:list={["size-2 rounded-full", statuses[project.status].dot]} />
+                <span class="sr-only">Status: </span>
+                {statuses[project.status].label}
+              </span>
+              <a
+                href={href(`/work/${project.slug}/`)}
+                class="inline-flex items-center gap-2 text-body font-medium text-offwhite underline decoration-line-strong underline-offset-[6px] transition-colors hover:decoration-lime"
+              >
+                Read the full story
+                <ArrowRight aria-hidden="true" class="size-4 transition-transform duration-200 group-hover:translate-x-0.5" stroke-width={1.75} />
+              </a>
+            </p>
+          </div>
+        </article>
+      ))
+    }
+
+    {
+      many && (
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {projects.map((project, i) => (
+            <li>
+              <button
+                type="button"
+                data-work-thumb={i}
+                aria-pressed={i === 0 ? "true" : "false"}
+                class="group/thumb flex w-full items-center gap-4 rounded-xl border border-line bg-elevated/60 p-3 text-left transition-colors hover:border-line-strong aria-pressed:border-lime/60 aria-pressed:shadow-[0_0_24px_rgba(215,255,100,0.08)]"
+              >
+                <span class="relative aspect-[4/3] w-24 shrink-0 overflow-hidden rounded-md border border-line">
+                  <Image src={project.image} alt="" widths={[200, 400]} sizes="96px" class="absolute inset-0 size-full object-cover object-left-top" />
                 </span>
-              </p>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+                <span class="min-w-0 flex-1">
+                  <span class="flex items-center gap-2 text-label text-grey">
+                    <span aria-hidden="true" class:list={["size-1.5 rounded-full", statuses[project.status].dot]} />
+                    {statuses[project.status].label}
+                  </span>
+                  <span class="mt-1 block truncate font-display font-semibold">{project.title}</span>
+                  <span class="block truncate text-label text-grey">{project.category}</span>
+                </span>
+                <span class="grid size-10 shrink-0 place-items-center rounded-full border border-line-strong transition-colors group-hover/thumb:border-lime">
+                  <ArrowRight aria-hidden="true" class="size-4" stroke-width={1.5} />
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </div>
 </section>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>("[data-work]")) {
+    const panels = [...root.querySelectorAll<HTMLElement>("[data-work-panel]")];
+    const thumbs = [...root.querySelectorAll<HTMLButtonElement>("[data-work-thumb]")];
+    if (panels.length < 2) continue;
+    let current = 0;
+    const show = (n: number) => {
+      current = (n + panels.length) % panels.length;
+      panels.forEach((p, i) => (p.hidden = i !== current));
+      thumbs.forEach((t, i) => t.setAttribute("aria-pressed", String(i === current)));
+    };
+    root.querySelector("[data-work-prev]")?.addEventListener("click", () => show(current - 1));
+    root.querySelector("[data-work-next]")?.addEventListener("click", () => show(current + 1));
+    thumbs.forEach((t, i) => t.addEventListener("click", () => show(i)));
+  }
+</script>

@@ -1,21 +1,28 @@
 ---
-/** Eyebrow + heading + optional lede, with an optional index label on the right. */
-type Props = { id: string; eyebrow: string; title?: string; lede?: string; index?: string };
+/**
+ * Lime dash + eyebrow, a heading with an optional lime second line, an optional lede,
+ * and an optional index label ("02 / Philosophy") on the right.
+ */
+type Props = { id: string; eyebrow: string; title?: string; accent?: string; lede?: string; index?: string };
 
-const { id, eyebrow, title, lede, index } = Astro.props;
+const { id, eyebrow, title, accent, lede, index } = Astro.props;
 ---
 
-<div class="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-  <div class="max-w-2xl">
-    <p class="eyebrow">{eyebrow}</p>
-    <h2 id={id} class="mt-4 text-heading">
+<div class="reveal relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+  <div class="max-w-3xl">
+    <p class="flex items-center gap-4">
+      <span aria-hidden="true" class="h-0.5 w-10 bg-lime"></span>
+      <span class="eyebrow uppercase tracking-[0.16em]">{eyebrow}</span>
+    </p>
+    <h2 id={id} class="mt-6 text-heading">
       {title}<slot name="title" />
+      {accent && <span class="block text-lime">{accent}</span>}
     </h2>
-    {lede && <p class="mt-5 max-w-xl text-lede text-pretty text-grey">{lede}</p>}
+    {lede && <p class="mt-6 max-w-xl text-lede text-pretty text-grey">{lede}</p>}
   </div>
   {
     index && (
-      <p aria-hidden="true" class="eyebrow hidden shrink-0 md:block">
+      <p aria-hidden="true" class="eyebrow hidden shrink-0 uppercase tracking-[0.16em] md:block">
         {index}
       </p>
     )

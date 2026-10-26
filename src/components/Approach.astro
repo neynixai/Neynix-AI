@@ -1,54 +1,187 @@
 ---
+import CodeXml from "@lucide/astro/icons/code-xml";
+import MessageSquare from "@lucide/astro/icons/message-square";
+import User from "@lucide/astro/icons/user";
+import Users from "@lucide/astro/icons/users";
+import CheckCheck from "@lucide/astro/icons/check-check";
 import SectionHeader from "@/components/SectionHeader.astro";
 
 const steps = [
-  { title: "Discover", body: "Understand the business problem, existing workflow, users, and constraints." },
-  { title: "Design", body: "Select a suitable architecture, define the scope, and establish a practical plan." },
+  { id: "discover", title: "Discover", body: "Understand the business problem, existing workflow, users, and constraints." },
+  { id: "design", title: "Design", body: "Select a suitable architecture, define the scope, and establish a practical plan." },
   {
+    id: "build",
     title: "Build",
     body: "Develop the solution iteratively, integrating AI, data, APIs, and application logic where useful.",
   },
   {
+    id: "validate",
     title: "Validate",
     body: "Test behavior, evaluate edge cases, and prepare the solution for its intended environment.",
   },
 ];
+
+const journey = [
+  { label: "First conversation", icon: User },
+  { label: "Shared plan", icon: MessageSquare },
+  { label: "Build", icon: CodeXml },
+  { label: "Final review", icon: CheckCheck },
+];
+
+const rhombus = (y: number) => `80,${y} 150,${y + 32} 80,${y + 64} 10,${y + 32}`;
 ---
 
-<section id="approach" aria-labelledby="approach-title" class="section-pad border-t border-line bg-elevated">
-  <div class="container-page">
+<section id="approach" aria-labelledby="approach-title" class="section-pad relative overflow-hidden border-t border-line bg-obsidian">
+  {/* Glass lenses on an orbit behind the header. */}
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 640 420"
+    class="pointer-events-none absolute -right-32 -top-4 hidden w-[44rem] md:block lg:right-0"
+  >
+    <defs>
+      <linearGradient id="ap-lens" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#f5f5f0" stop-opacity="0.22" />
+        <stop offset="0.6" stop-color="#d7ff64" stop-opacity="0.08" />
+        <stop offset="1" stop-color="#d7ff64" stop-opacity="0.35" />
+      </linearGradient>
+      <linearGradient id="ap-rim" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#d7ff64" stop-opacity="0.15" />
+        <stop offset="1" stop-color="#d7ff64" stop-opacity="0.95" />
+      </linearGradient>
+      <radialGradient id="ap-orb" cx="0.35" cy="0.3" r="0.8">
+        <stop offset="0" stop-color="#f5f5f0" stop-opacity="0.5" />
+        <stop offset="0.5" stop-color="#2a3119" />
+        <stop offset="1" stop-color="#d7ff64" />
+      </radialGradient>
+      <filter id="ap-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14" /></filter>
+    </defs>
+    <ellipse cx="380" cy="210" rx="300" ry="180" transform="rotate(-14 380 210)" fill="none" stroke="#d7ff64" stroke-opacity="0.3" stroke-dasharray="3 6" />
+    <ellipse cx="400" cy="200" rx="230" ry="150" transform="rotate(-22 400 200)" fill="none" stroke="#d7ff64" stroke-opacity="0.55" />
+    <ellipse cx="400" cy="230" rx="150" ry="70" transform="rotate(24 400 230)" fill="#d7ff64" opacity="0.18" filter="url(#ap-glow)" />
+    <g class="ap-drift">
+      <ellipse cx="380" cy="240" rx="150" ry="72" transform="rotate(24 380 240)" fill="url(#ap-lens)" stroke="url(#ap-rim)" stroke-width="2" />
+      <ellipse cx="420" cy="180" rx="140" ry="70" transform="rotate(24 420 180)" fill="url(#ap-lens)" stroke="url(#ap-rim)" stroke-width="2" />
+      <ellipse cx="420" cy="180" rx="90" ry="42" transform="rotate(24 420 180)" fill="none" stroke="#f5f5f0" stroke-opacity="0.15" />
+    </g>
+    <circle cx="560" cy="70" r="26" fill="url(#ap-orb)" stroke="#d7ff64" stroke-opacity="0.6" />
+    <circle cx="200" cy="190" r="7" fill="#d7ff64" />
+    <circle cx="170" cy="230" r="4" fill="#d7ff64" opacity="0.6" />
+  </svg>
+
+  <div class="container-page relative">
     <SectionHeader
       id="approach-title"
       eyebrow="Our approach"
-      index="03 — How we work"
-      title="Clear thinking. Careful execution."
+      index="03 / How we work"
+      title="Clear thinking."
+      accent="Careful execution."
       lede="Every project starts with the problem, not the technology. The goal is to build the simplest useful solution that can evolve with your needs."
     />
 
-    <ol class="mt-16 grid gap-0 lg:grid-cols-4 lg:gap-8">
+    <ol class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
       {
         steps.map((step, i) => (
-          <li class="reveal relative grid grid-cols-[3rem_1fr] border-l border-line pb-10 pl-6 last:pb-0 lg:block lg:border-l-0 lg:border-t lg:pb-0 lg:pl-0 lg:pt-7">
-            {/* Step marker on the timeline */}
-            <span aria-hidden="true" class="absolute -left-[3px] top-1 size-[5px] bg-lime lg:-top-[3px] lg:left-0" />
-            <span class="text-small font-medium tabular-nums text-grey">0{i + 1}</span>
-            <div class="lg:mt-6">
-              <h3 class="text-title">{step.title}</h3>
-              <p class="mt-3 max-w-xs text-body text-grey">{step.body}</p>
-            </div>
+          <li class="reveal group relative isolate flex flex-col lg:min-h-80 overflow-hidden rounded-2xl border border-lime/20 bg-[linear-gradient(160deg,#1a1d16_0%,#121411_60%)] p-7 transition-colors duration-500 hover:border-lime/50 lg:overflow-visible">
+            {/* Connector node to the next card (desktop). */}
+            {i < steps.length - 1 && (
+              <span aria-hidden="true" class="absolute -right-10 top-24 hidden h-px w-10 bg-lime/40 lg:block">
+                <span class="absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime shadow-[0_0_10px_rgba(215,255,100,0.8)]" />
+              </span>
+            )}
+
+            <svg aria-hidden="true" viewBox="0 0 160 130" class="pointer-events-none absolute right-4 top-5 -z-10 h-32 w-40 transition-transform duration-700 group-hover:scale-105">
+              {step.id === "discover" && (
+                <g>
+                  <polygon points={rhombus(56)} fill="#f5f5f0" fill-opacity="0.04" stroke="#f5f5f0" stroke-opacity="0.25" />
+                  <polygon points={rhombus(38)} fill="#d7ff64" fill-opacity="0.55" stroke="#e4ff91" stroke-opacity="0.9" style="filter: drop-shadow(0 0 10px rgba(215,255,100,0.5))" />
+                  <polygon points={rhombus(14)} fill="#f5f5f0" fill-opacity="0.07" stroke="#f5f5f0" stroke-opacity="0.35" />
+                </g>
+              )}
+              {step.id === "design" && (
+                <g>
+                  <circle cx="62" cy="64" r="44" fill="#f5f5f0" fill-opacity="0.05" stroke="#f5f5f0" stroke-opacity="0.3" />
+                  <circle cx="102" cy="64" r="44" fill="#f5f5f0" fill-opacity="0.03" stroke="#f5f5f0" stroke-opacity="0.3" />
+                  <path d="M82 25 A 44 44 0 0 1 82 103 A 44 44 0 0 1 82 25 Z" fill="#d7ff64" fill-opacity="0.7" style="filter: drop-shadow(0 0 10px rgba(215,255,100,0.5))" />
+                </g>
+              )}
+              {step.id === "build" && (
+                <g>
+                  <polygon points="80,10 130,36 80,62 30,36" fill="#f5f5f0" fill-opacity="0.06" stroke="#f5f5f0" stroke-opacity="0.3" />
+                  <polygon points="30,36 80,62 80,118 30,92" fill="#f5f5f0" fill-opacity="0.03" stroke="#f5f5f0" stroke-opacity="0.25" />
+                  <polygon points="130,36 80,62 80,118 130,92" fill="#f5f5f0" fill-opacity="0.02" stroke="#f5f5f0" stroke-opacity="0.25" />
+                  <g style="filter: drop-shadow(0 0 12px rgba(215,255,100,0.55))">
+                    <polygon points="88,52 112,64 88,76 64,64" fill="#e4ff91" />
+                    <polygon points="64,64 88,76 88,106 64,94" fill="#a6d330" />
+                    <polygon points="112,64 88,76 88,106 112,94" fill="#7a9e1f" />
+                  </g>
+                </g>
+              )}
+              {step.id === "validate" && (
+                <g>
+                  <defs>
+                    <radialGradient id="ap-val" cx="0.3" cy="0.75" r="0.9">
+                      <stop offset="0" stop-color="#d7ff64" />
+                      <stop offset="0.45" stop-color="#3f5214" />
+                      <stop offset="1" stop-color="#151810" />
+                    </radialGradient>
+                  </defs>
+                  <circle cx="84" cy="66" r="62" fill="none" stroke="#d7ff64" stroke-opacity="0.35" stroke-dasharray="2 4" />
+                  <circle cx="80" cy="68" r="40" fill="url(#ap-val)" stroke="#f5f5f0" stroke-opacity="0.15" />
+                  <circle cx="136" cy="22" r="6" fill="#d7ff64" class="ap-drift" />
+                </g>
+              )}
+            </svg>
+
+            <span class="font-display text-title font-medium tabular-nums text-lime">0{i + 1}</span>
+            <span aria-hidden="true" class="mt-3 block h-px w-5 bg-grey" />
+            <h3 class="mt-20 font-display text-[1.5rem] leading-tight tracking-[-0.02em]">{step.title}</h3>
+            <p class="mt-3 text-body text-pretty text-grey">{step.body}</p>
           </li>
         ))
       }
     </ol>
 
-    <p
-      class="reveal mt-16 flex flex-col gap-2 rounded-xl border border-line bg-obsidian px-6 py-5 text-body text-grey sm:flex-row sm:items-center sm:gap-6"
-    >
-      <span class="shrink-0 text-small font-semibold text-offwhite">Direct collaboration</span>
-      <span>
-        You work with the engineer designing and building your solution — from the first conversation to the final
-        review.
-      </span>
-    </p>
+    <div class="reveal mt-10 flex flex-col gap-8 rounded-2xl border border-line bg-[linear-gradient(90deg,#161813,#111310)] p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex items-center gap-6">
+        <span class="grid size-16 shrink-0 place-items-center rounded-xl border border-line-strong bg-elevated text-lime">
+          <Users aria-hidden="true" class="size-7" stroke-width={1.3} />
+        </span>
+        <div>
+          <h3 class="font-display text-title font-semibold">Direct collaboration</h3>
+          <p class="mt-1 max-w-xl text-body text-grey">
+            You work with the engineer designing and building your solution — from the first conversation to the final
+            review.
+          </p>
+        </div>
+      </div>
+      <ol aria-label="Who you work with at each stage" class="flex items-center lg:border-l lg:border-line lg:pl-10">
+        {
+          journey.map(({ label, icon: Icon }, i) => (
+            <li class="flex items-center">
+              {i > 0 && (
+                <span aria-hidden="true" class="relative h-px w-6 bg-lime/40 sm:w-12">
+                  <span class="absolute left-1/2 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime" />
+                </span>
+              )}
+              <span title={label} class="grid size-12 place-items-center rounded-full border border-line-strong text-offwhite sm:size-14">
+                <Icon aria-hidden="true" class="size-5" stroke-width={1.4} />
+                <span class="sr-only">{label}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
   </div>
 </section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .ap-drift {
+      animation: ap-drift 9s ease-in-out infinite;
+    }
+  }
+  @keyframes ap-drift {
+    50% { translate: 0 -6px; }
+  }
+</style>
