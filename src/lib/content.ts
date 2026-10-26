@@ -12,15 +12,15 @@ export const services = [
     number: "01",
     title: "AI Agents & Automation",
     description:
-      "Build tool-using AI workflows that coordinate tasks, integrate systems, and automate defined business processes with appropriate controls.",
-    capabilities: ["Agent orchestration", "Tool calling", "Workflow automation", "Human approval steps"],
+      "Build AI agents and workflows that automate real business processes and integrate with your tools.",
+    capabilities: ["Agent orchestration", "Tool integration", "Workflow automation", "Human-in-the-loop"],
   },
   {
     id: "llm",
     number: "02",
     title: "LLM Applications & RAG",
     description:
-      "Turn business knowledge into useful AI experiences through retrieval, semantic search, and context-aware applications.",
+      "Turn your data into useful AI experiences with retrieval, semantic search, and context-aware applications.",
     capabilities: [
       "Retrieval-Augmented Generation",
       "Knowledge assistants",
@@ -37,12 +37,18 @@ export const services = [
     capabilities: ["Web applications", "API development", "Backend engineering", "Database integration"],
   },
   {
-    id: "products",
+    id: "execution",
     number: "04",
-    title: "AI Products & Consulting",
-    description:
-      "Explore AI opportunities, validate ideas, and develop prototypes and products around meaningful user problems.",
-    capabilities: ["Technical discovery", "AI prototyping", "MVP development", "Architecture consulting"],
+    title: "Fast & Efficient Execution",
+    description: "We deliver high-quality products quickly—without cutting corners.",
+    capabilities: ["Agile development", "Scalable infrastructure", "Clean architecture", "Ongoing support"],
+  },
+  {
+    id: "consulting",
+    number: "05",
+    title: "Bespoke AI Solutions & Consulting",
+    description: "Explore AI opportunities, validate ideas, and build solutions tailored to your business.",
+    capabilities: ["Technical discovery", "MVP development", "AI prototyping", "Architecture consulting"],
   },
 ] as const;
 

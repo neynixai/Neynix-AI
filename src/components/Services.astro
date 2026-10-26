@@ -1,54 +1,329 @@
 ---
-import Boxes from "@lucide/astro/icons/boxes";
+import ArrowRight from "@lucide/astro/icons/arrow-right";
+import BookOpenText from "@lucide/astro/icons/book-open-text";
+import Clock from "@lucide/astro/icons/clock";
+import Compass from "@lucide/astro/icons/compass";
+import Database from "@lucide/astro/icons/database";
 import FileSearch from "@lucide/astro/icons/file-search";
+import FlaskConical from "@lucide/astro/icons/flask-conical";
+import Gauge from "@lucide/astro/icons/gauge";
+import GitBranch from "@lucide/astro/icons/git-branch";
+import Globe from "@lucide/astro/icons/globe";
+import Layers from "@lucide/astro/icons/layers";
+import LifeBuoy from "@lucide/astro/icons/life-buoy";
 import Network from "@lucide/astro/icons/network";
-import Sparkle from "@lucide/astro/icons/sparkle";
-import SectionHeader from "@/components/SectionHeader.astro";
+import Plug from "@lucide/astro/icons/plug";
+import Rocket from "@lucide/astro/icons/rocket";
+import Search from "@lucide/astro/icons/search";
+import Server from "@lucide/astro/icons/server";
+import UserCheck from "@lucide/astro/icons/user-check";
+import Workflow from "@lucide/astro/icons/workflow";
+import Code from "@lucide/astro/icons/code-xml";
+import Blocks from "@lucide/astro/icons/blocks";
+import { href } from "@/lib/paths";
 import { services } from "@/lib/content";
 
-const icons = { agents: Network, llm: FileSearch, software: Boxes, products: Sparkle };
+const capabilityIcons: Record<string, typeof ArrowRight> = {
+  "Agent orchestration": Network,
+  "Tool integration": Plug,
+  "Workflow automation": Workflow,
+  "Human-in-the-loop": UserCheck,
+  "Retrieval-Augmented Generation": FileSearch,
+  "Knowledge assistants": BookOpenText,
+  "Semantic search": Search,
+  "Evaluation pipelines": Gauge,
+  "Web applications": Globe,
+  "API development": Code,
+  "Backend engineering": Server,
+  "Database integration": Database,
+  "Agile development": Clock,
+  "Scalable infrastructure": Layers,
+  "Clean architecture": GitBranch,
+  "Ongoing support": LifeBuoy,
+  "Technical discovery": Compass,
+  "MVP development": Rocket,
+  "AI prototyping": FlaskConical,
+  "Architecture consulting": Blocks,
+};
+
+/** Isometric cube faces centred on (x, y) with edge length s. */
+function cube(x: number, y: number, s: number) {
+  const w = s * 0.866;
+  const p = (pts: number[][]) => pts.map((pt) => pt.join(",")).join(" ");
+  return {
+    top: p([[x, y - s], [x + w, y - s / 2], [x, y], [x - w, y - s / 2]]),
+    left: p([[x - w, y - s / 2], [x, y], [x, y + s], [x - w, y + s / 2]]),
+    right: p([[x + w, y - s / 2], [x, y], [x, y + s], [x + w, y + s / 2]]),
+  };
+}
+
+const cubes = [
+  { x: 100, y: 52, s: 34 },
+  { x: 168, y: 88, s: 30 },
+  { x: 40, y: 104, s: 30 },
+  { x: 72, y: 196, s: 28 },
+  { x: 162, y: 196, s: 32 },
+  { x: 112, y: 132, s: 44, lit: true },
+].map((c) => ({ ...c, ...cube(c.x, c.y, c.s) }));
+
+const layers = [0, 1, 2, 3].map((i) => ({ y: 34 + i * 38, lit: i === 1 || i === 2 }));
+const rhombus = (y: number) => `110,${y} 210,${y + 50} 110,${y + 100} 10,${y + 50}`;
+
+const wide = new Set(["execution", "consulting"]);
 ---
 
-<section id="services" aria-labelledby="services-title" class="section-pad border-t border-line bg-elevated">
-  <div class="container-page">
-    <SectionHeader
-      id="services-title"
-      eyebrow="What we build"
-      index="01 — Services"
-      lede="From AI-powered workflows to complete applications, we build systems that connect useful intelligence with real business needs."
-    >
-      <Fragment slot="title">Intelligent software.<br class="hidden sm:block" />{" "}Engineered for real work.</Fragment>
-    </SectionHeader>
+<section id="services" aria-labelledby="services-title" class="section-pad relative overflow-hidden border-t border-line bg-obsidian">
+  {/* Soft lime haze behind the grid. */}
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-x-0 top-1/3 h-[60%] bg-[radial-gradient(ellipse_at_center,rgba(215,255,100,0.06),transparent_65%)]"
+  >
+  </div>
 
-    <ul class="mt-14 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+  <div class="container-page relative">
+    <div class="reveal flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+      <div class="max-w-3xl">
+        <div class="flex items-center gap-4">
+          <p class="eyebrow uppercase tracking-[0.12em] text-offwhite/80">01 / Services</p>
+          <span aria-hidden="true" class="h-px w-full max-w-xs flex-1 bg-line-strong"></span>
+        </div>
+        <h2 id="services-title" class="mt-8 text-heading">
+          Intelligent software.<br />
+          <span class="text-lime">Engineered for real work.</span>
+        </h2>
+        <p class="mt-5 max-w-xl text-lede text-pretty text-grey">
+          From AI agents to complete applications, we build systems that connect intelligence with real business
+          needs.
+        </p>
+      </div>
+      <div aria-hidden="true" class="hidden shrink-0 pt-6 md:block">
+        <span class="block h-0.5 w-8 bg-lime"></span>
+        <ul class="eyebrow mt-5 space-y-2 uppercase tracking-[0.14em]">
+          <li>Build</li>
+          <li>Integrate</li>
+          <li>Scale</li>
+        </ul>
+      </div>
+    </div>
+
+    <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-6">
       {
-        services.map((service) => {
-          const Icon = icons[service.id];
+        services.map((service, i) => {
+          const isWide = wide.has(service.id);
           return (
-            <li class="reveal group relative flex flex-col bg-elevated p-6 sm:p-7">
-              {/* Hairline that draws across the top on hover. */}
+            <li
+              class:list={[
+                "reveal group relative isolate flex flex-col overflow-hidden rounded-2xl border border-line bg-[linear-gradient(145deg,#1b1e18_0%,#121411_55%,#151812_100%)] p-7 transition-colors duration-500 hover:border-lime/30 sm:p-8",
+                isWide ? "lg:col-span-3" : "lg:col-span-2",
+                i === 2 && "md:col-span-2 lg:col-span-2",
+              ]}
+            >
+              {/* Corner glow */}
               <span
                 aria-hidden="true"
-                class="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-lime transition-transform duration-500 ease-out group-hover:scale-x-100"
+                class="pointer-events-none absolute -right-24 -top-24 -z-10 size-72 rounded-full bg-lime/[0.07] blur-3xl"
               />
-              <div class="flex items-start justify-between">
-                <Icon
-                  aria-hidden="true"
-                  class="size-7 text-offwhite transition-transform duration-300 group-hover:-translate-y-0.5"
-                  stroke-width={1.25}
-                />
-                <span class="text-small font-medium tabular-nums text-grey">{service.number}</span>
+
+              {/* Illustration */}
+              <div
+                aria-hidden="true"
+                class:list={[
+                  "pointer-events-none absolute -z-10 opacity-60 transition-transform duration-700 ease-out group-hover:scale-[1.03] sm:opacity-100",
+                  isWide
+                    ? "-right-2 top-4 h-[58%] w-[55%] sm:w-[48%]"
+                    : "right-3 top-6 h-40 w-[42%] sm:w-[40%]",
+                ]}
+              >
+                {service.id === "agents" && (
+                  <svg viewBox="0 0 240 240" class="size-full">
+                    <defs>
+                      <radialGradient id="svc-sphere" cx="0.62" cy="0.7" r="0.75">
+                        <stop offset="0" stop-color="#d7ff64" />
+                        <stop offset="0.35" stop-color="#5f7a1c" />
+                        <stop offset="0.75" stop-color="#151a0e" />
+                        <stop offset="1" stop-color="#0c0e0a" />
+                      </radialGradient>
+                      <radialGradient id="svc-orb" cx="0.35" cy="0.3" r="0.8">
+                        <stop offset="0" stop-color="#f1ffc4" />
+                        <stop offset="0.4" stop-color="#d7ff64" />
+                        <stop offset="1" stop-color="#3b4d12" />
+                      </radialGradient>
+                      <linearGradient id="svc-ring" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#d7ff64" stop-opacity="0.1" />
+                        <stop offset="0.5" stop-color="#d7ff64" stop-opacity="0.7" />
+                        <stop offset="1" stop-color="#d7ff64" stop-opacity="0.15" />
+                      </linearGradient>
+                    </defs>
+                    <g class="svc-spin" style="transform-origin: 124px 124px">
+                      <ellipse cx="124" cy="124" rx="108" ry="70" transform="rotate(-50 124 124)" fill="none" stroke="url(#svc-ring)" stroke-width="1.2" />
+                      <circle cx="44" cy="70" r="13" fill="url(#svc-orb)" />
+                      <circle cx="204" cy="78" r="15" fill="url(#svc-orb)" />
+                      <circle cx="200" cy="168" r="14" fill="url(#svc-orb)" />
+                      <circle cx="86" cy="214" r="7" fill="url(#svc-orb)" opacity="0.7" />
+                      <circle cx="104" cy="42" r="5" fill="#d7ff64" />
+                    </g>
+                    <circle cx="124" cy="124" r="62" fill="url(#svc-sphere)" />
+                    <ellipse cx="104" cy="96" rx="22" ry="12" fill="#fff" opacity="0.08" transform="rotate(-30 104 96)" />
+                  </svg>
+                )}
+
+                {service.id === "llm" && (
+                  <svg viewBox="0 0 220 260" class="size-full">
+                    <defs>
+                      <linearGradient id="svc-glass" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#f5f5f0" stop-opacity="0.18" />
+                        <stop offset="1" stop-color="#f5f5f0" stop-opacity="0.03" />
+                      </linearGradient>
+                      <linearGradient id="svc-lit" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#e4ff91" />
+                        <stop offset="0.6" stop-color="#9fcc2c" />
+                        <stop offset="1" stop-color="#3b4d12" />
+                      </linearGradient>
+                      <filter id="svc-glow" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur stdDeviation="6" />
+                      </filter>
+                    </defs>
+                    {Array.from({ length: 6 }, (_, k) => (
+                      <line x1={150 + k * 10} y1="10" x2={150 + k * 10} y2={40 + (k % 3) * 14} stroke="#d7ff64" stroke-opacity="0.35" stroke-dasharray="2 5" />
+                    ))}
+                    {[...layers].reverse().map((l) => (
+                      <g class="svc-float" style={`animation-delay: ${l.y * 20}ms`}>
+                        {l.lit && <polygon points={rhombus(l.y)} fill="#d7ff64" opacity="0.35" filter="url(#svc-glow)" />}
+                        <polygon points={rhombus(l.y + 8)} fill="#0c0e0a" opacity="0.8" />
+                        <polygon
+                          points={rhombus(l.y)}
+                          fill={l.lit ? "url(#svc-lit)" : "url(#svc-glass)"}
+                          stroke={l.lit ? "#e4ff91" : "#f5f5f0"}
+                          stroke-opacity={l.lit ? 0.9 : 0.3}
+                          stroke-width="1"
+                        />
+                      </g>
+                    ))}
+                  </svg>
+                )}
+
+                {service.id === "software" && (
+                  <svg viewBox="0 0 220 250" class="size-full">
+                    <defs>
+                      <filter id="svc-cube-glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="10" />
+                      </filter>
+                    </defs>
+                    {cubes.map((c) => (
+                      <g class={c.lit ? "svc-float" : undefined}>
+                        {c.lit && <circle cx={c.x} cy={c.y} r={c.s * 1.2} fill="#d7ff64" opacity="0.4" filter="url(#svc-cube-glow)" />}
+                        <polygon points={c.left} fill={c.lit ? "#a6d330" : "#20231d"} stroke={c.lit ? "#e4ff91" : "#f5f5f0"} stroke-opacity={c.lit ? 0.6 : 0.14} />
+                        <polygon points={c.right} fill={c.lit ? "#7a9e1f" : "#161814"} stroke={c.lit ? "#e4ff91" : "#f5f5f0"} stroke-opacity={c.lit ? 0.6 : 0.14} />
+                        <polygon points={c.top} fill={c.lit ? "#e4ff91" : "#2c3028"} stroke={c.lit ? "#f5f5f0" : "#f5f5f0"} stroke-opacity={c.lit ? 0.7 : 0.2} />
+                      </g>
+                    ))}
+                    <circle cx="200" cy="40" r="2" fill="#d7ff64" />
+                    <circle cx="20" cy="170" r="1.5" fill="#d7ff64" opacity="0.6" />
+                  </svg>
+                )}
+
+                {service.id === "execution" && (
+                  <svg viewBox="0 0 360 260" class="size-full" preserveAspectRatio="xMaxYMid meet">
+                    <defs>
+                      <linearGradient id="svc-bolt" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#f1ffc4" />
+                        <stop offset="0.45" stop-color="#d7ff64" />
+                        <stop offset="1" stop-color="#4d6416" />
+                      </linearGradient>
+                      <filter id="svc-bolt-glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="12" />
+                      </filter>
+                    </defs>
+                    {[70, 100, 130].map((r) => (
+                      <circle cx="250" cy="130" r={r} fill="none" stroke="#d7ff64" stroke-opacity={0.18 - r / 1200} stroke-dasharray="1 6" />
+                    ))}
+                    {[
+                      [110, 150, 100],
+                      [130, 112, 70],
+                      [120, 176, 90],
+                    ].map(([x, y, len]) => (
+                      <line class="svc-streak" x1={x} y1={y} x2={x + len} y2={y} stroke="#d7ff64" stroke-opacity="0.35" />
+                    ))}
+                    <path d="M278 22 L200 140 L246 140 L214 244 L312 108 L262 108 Z" fill="#d7ff64" opacity="0.35" filter="url(#svc-bolt-glow)" />
+                    <path d="M278 22 L200 140 L246 140 L214 244 L312 108 L262 108 Z" fill="url(#svc-bolt)" stroke="#f1ffc4" stroke-opacity="0.6" stroke-linejoin="round" />
+                    <path d="M278 22 L200 140 L246 140 Z" fill="#fff" opacity="0.12" />
+                  </svg>
+                )}
+
+                {service.id === "consulting" && (
+                  <svg viewBox="0 0 360 220" class="size-full" preserveAspectRatio="xMaxYMid meet">
+                    <defs>
+                      <linearGradient id="svc-ribbon" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0" stop-color="#d7ff64" stop-opacity="0.15" />
+                        <stop offset="0.35" stop-color="#d7ff64" />
+                        <stop offset="0.6" stop-color="#f5f5f0" stop-opacity="0.5" />
+                        <stop offset="1" stop-color="#d7ff64" stop-opacity="0.85" />
+                      </linearGradient>
+                      <filter id="svc-ribbon-glow" x="-20%" y="-50%" width="140%" height="200%">
+                        <feGaussianBlur stdDeviation="8" />
+                      </filter>
+                    </defs>
+                    <path
+                      d="M70 110 C70 40, 160 40, 200 110 S330 180, 330 110 S250 40, 200 110 S70 180, 70 110 Z"
+                      fill="none"
+                      stroke="#d7ff64"
+                      stroke-opacity="0.4"
+                      stroke-width="18"
+                      filter="url(#svc-ribbon-glow)"
+                    />
+                    <path
+                      d="M70 110 C70 40, 160 40, 200 110 S330 180, 330 110 S250 40, 200 110 S70 180, 70 110 Z"
+                      fill="none"
+                      stroke="url(#svc-ribbon)"
+                      stroke-width="14"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      class="svc-trace"
+                      d="M70 110 C70 40, 160 40, 200 110 S330 180, 330 110 S250 40, 200 110 S70 180, 70 110 Z"
+                      fill="none"
+                      stroke="#f1ffc4"
+                      stroke-width="2"
+                      stroke-dasharray="40 600"
+                    />
+                    {Array.from({ length: 40 }, (_, k) => (
+                      <circle cx={20 + ((k * 53) % 330)} cy={30 + ((k * 37) % 170)} r={k % 5 === 0 ? 1.4 : 0.8} fill="#d7ff64" opacity={0.15 + (k % 4) * 0.1} />
+                    ))}
+                  </svg>
+                )}
               </div>
-              <h3 class="mt-10 text-title">{service.title}</h3>
-              <p class="mt-3 text-body text-grey">{service.description}</p>
-              <ul class="mt-6 space-y-2.5 border-t border-line pt-5">
-                {service.capabilities.map((capability) => (
-                  <li class="flex items-center gap-3 text-small text-offwhite/80">
-                    <span aria-hidden="true" class="size-1 shrink-0 bg-grey" />
-                    {capability}
-                  </li>
-                ))}
-              </ul>
+
+              <span class="font-display text-lede font-medium tabular-nums text-lime">{service.number}</span>
+              <span aria-hidden="true" class="mt-1.5 block h-0.5 w-6 bg-lime" />
+              <h3 class:list={["mt-6 text-[1.625rem] leading-tight tracking-[-0.02em]", isWide ? "max-w-xs" : "max-w-[11rem] sm:max-w-[13rem]"]}>
+                {service.title}
+              </h3>
+              <p class:list={["mt-4 text-body text-pretty text-grey", isWide ? "max-w-sm" : "max-w-[16rem]"]}>
+                {service.description}
+              </p>
+
+              <div class="mt-auto flex items-end justify-between gap-6 pt-8">
+                <ul class:list={["grid gap-x-8 gap-y-3", isWide && "sm:grid-cols-2"]}>
+                  {service.capabilities.map((capability) => {
+                    const Icon = capabilityIcons[capability];
+                    return (
+                      <li class="flex items-center gap-3 text-small text-offwhite/85">
+                        <span class="grid size-7 shrink-0 place-items-center rounded-md border border-lime/40 bg-obsidian/60 text-lime">
+                          {Icon && <Icon aria-hidden="true" class="size-3.5" stroke-width={1.75} />}
+                        </span>
+                        {capability}
+                      </li>
+                    );
+                  })}
+                </ul>
+                <a
+                  href={href("/#contact")}
+                  aria-label={`Talk to us about ${service.title}`}
+                  class="grid size-14 shrink-0 place-items-center rounded-full border border-lime/50 bg-obsidian/40 text-offwhite backdrop-blur-sm transition-colors duration-300 hover:border-lime hover:bg-lime hover:text-obsidian"
+                >
+                  <ArrowRight aria-hidden="true" class="size-5 transition-transform duration-300 group-hover:translate-x-0.5" stroke-width={1.5} />
+                </a>
+              </div>
             </li>
           );
         })
@@ -56,3 +331,32 @@ const icons = { agents: Network, llm: FileSearch, software: Boxes, products: Spa
     </ul>
   </div>
 </section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .svc-spin {
+      animation: svc-spin 40s linear infinite;
+    }
+    .svc-float {
+      animation: svc-float 6s ease-in-out infinite;
+    }
+    .svc-trace {
+      animation: svc-trace 6s linear infinite;
+    }
+    .svc-streak {
+      animation: svc-streak 3s ease-in-out infinite;
+    }
+  }
+  @keyframes svc-spin {
+    to { rotate: 360deg; }
+  }
+  @keyframes svc-float {
+    50% { translate: 0 -5px; }
+  }
+  @keyframes svc-trace {
+    to { stroke-dashoffset: -640; }
+  }
+  @keyframes svc-streak {
+    50% { opacity: 0.3; translate: 12px 0; }
+  }
+</style>
