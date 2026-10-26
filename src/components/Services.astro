@@ -251,12 +251,12 @@ const wide = new Set(["execution", "consulting"]);
                 )}
 
                 {service.id === "consulting" && (
-                  <svg viewBox="0 0 360 220" class="size-full" preserveAspectRatio="xMaxYMid meet">
+                  <svg style="filter: brightness(0.85)" viewBox="0 0 360 220" class="size-full" preserveAspectRatio="xMaxYMid meet">
                     <defs>
                       <linearGradient id="svc-ribbon" x1="0" y1="0" x2="1" y2="0">
                         <stop offset="0" stop-color="#d7ff64" stop-opacity="0.15" />
                         <stop offset="0.35" stop-color="#d7ff64" />
-                        <stop offset="0.6" stop-color="#f5f5f0" stop-opacity="0.5" />
+                        <stop offset="0.6" stop-color="#b8e04a" stop-opacity="0.75" />
                         <stop offset="1" stop-color="#d7ff64" stop-opacity="0.85" />
                       </linearGradient>
                       <filter id="svc-ribbon-glow" x="-20%" y="-50%" width="140%" height="200%">
@@ -282,7 +282,7 @@ const wide = new Set(["execution", "consulting"]);
                       class="svc-trace"
                       d="M70 110 C70 40, 160 40, 200 110 S330 180, 330 110 S250 40, 200 110 S70 180, 70 110 Z"
                       fill="none"
-                      stroke="#f1ffc4"
+                      stroke="#e4ff91"
                       stroke-width="2"
                       stroke-dasharray="40 600"
                     />
@@ -292,10 +292,15 @@ const wide = new Set(["execution", "consulting"]);
                   </svg>
                 )}
               </div>
+              {/* Scrim that keeps the text legible where it overlaps the illustration. */}
+              <span
+                aria-hidden="true"
+                class="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(18,20,17,0.92)_0%,rgba(18,20,17,0.7)_38%,transparent_62%)]"
+              />
 
               <span class="font-display text-lede font-medium tabular-nums text-lime">{service.number}</span>
               <span aria-hidden="true" class="mt-1.5 block h-0.5 w-6 bg-lime" />
-              <h3 class:list={["mt-6 text-[1.625rem] leading-tight tracking-[-0.02em]", isWide ? "max-w-xs" : "max-w-[11rem] sm:max-w-[15rem]"]}>
+              <h3 class:list={["mt-6 text-[1.625rem] leading-tight tracking-[-0.02em] [text-shadow:0_1px_12px_rgba(17,19,16,0.9)]", isWide ? "max-w-xs" : "max-w-[11rem] sm:max-w-[15rem]"]}>
                 {service.title}
               </h3>
               <p class:list={["mt-4 text-body text-pretty text-grey", isWide ? "max-w-sm" : "max-w-[16rem]"]}>
