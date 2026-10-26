@@ -64,7 +64,7 @@ export type Project = {
   /** The principles that shape how it is built. */
   principles: Point[];
   /** The plans people can choose, if the project is sold. */
-  pricing?: { intro: string; plans: PricingPlan[]; note?: string };
+  pricing?: { intro: string; plans: PricingPlan[]; refund?: { title: string; points: string[] }; note?: string };
   /** Where it stands today and what comes next. */
   progress: { now: string; next: string[] };
   /** Small print shown at the end of the page. */
@@ -212,14 +212,14 @@ export const projects: Project[] = [
     ],
     pricing: {
       intro:
-        "Start free on the shared copy. Pay for unlimited questions, or for a copy of CA Mode hosted for your team alone.",
+        "Start free on the shared copy. Pay for monthly credits on a privately hosted model, or for a copy of CA Mode hosted for your team alone.",
       plans: [
         {
           name: "Free",
           price: "₹0",
           summary: "Try CA Mode on the shared copy.",
           features: [
-            "50 questions a day, starting again at midnight IST",
+            "10 questions a day, starting again at midnight IST",
             "Finance Agent and Portfolio Analyzer",
             "INDmoney connection, goals and daily portfolio snapshots",
             "History encrypted with your PIN",
@@ -230,12 +230,14 @@ export const projects: Project[] = [
           name: "Individual",
           price: "₹599",
           period: "per month, excluding GST",
-          summary: "For one person. Answers come from an open-source model run with Ollama, which keeps the price low.",
+          summary: "For one person. Answers come from a privately hosted language model, and each month comes with its own credits.",
           features: [
-            "Unlimited questions",
-            "No paid cloud AI service behind your answers",
+            "Credits for the month, renewed each month",
+            "Top up any time once your monthly credits are used",
+            "Answers from a privately hosted LLM, not a shared cloud AI service",
             "Sign in and ask, with no AI keys to buy or manage",
             "Everything in Free",
+            "Full refund within 30 days of paying",
           ],
           cta: { label: "Get Individual", href: "/#contact" },
           featured: true,
@@ -253,10 +255,18 @@ export const projects: Project[] = [
           cta: { label: "Talk to us", href: "/#contact" },
         },
       ],
+      refund: {
+        title: "Refund policy",
+        points: [
+          "Ask within 30 days of paying and we refund the full amount, whatever you have used.",
+          "One refund per user.",
+          "To ask, write to us through the contact section of this site.",
+        ],
+      },
       note: "There is no online checkout yet. Get in touch and we move your existing profile to the new plan, so your chats, goals and snapshots stay where they are. Prices are in Indian rupees and exclude GST.",
     },
     progress: {
-      now: "CA Mode is live: sign in with Google and ask 50 questions a day, free. Both agents, daily snapshots, investigations, goals, broker statements and charts all work today.",
+      now: "CA Mode is live: sign in with Google and ask 10 questions a day, free. Both agents, daily snapshots, investigations, goals, broker statements and charts all work today.",
       next: [
         "Checkout for the Individual plan, so unlimited questions can be bought in the app.",
         "Live answer traces that show each step as it happens, instead of arriving with the finished answer.",

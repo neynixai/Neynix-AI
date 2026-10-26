@@ -186,6 +186,19 @@ const structuredData = {
         project.pricing && (
           <ProjectSection id="pricing" eyebrow="Pricing" title="Plans" lede={project.pricing.intro}>
             <PricingPlans plans={project.pricing.plans} />
+            {project.pricing.refund && (
+              <div class="reveal mt-6 rounded-xl border border-line bg-elevated p-6 sm:p-8">
+                <h3 class="text-title">{project.pricing.refund.title}</h3>
+                <ul class="mt-4 space-y-2 text-body text-grey">
+                  {project.pricing.refund.points.map((point) => (
+                    <li class="flex gap-3">
+                      <span aria-hidden="true" class="mt-[0.7em] size-1 shrink-0 bg-lime" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {project.pricing.note && <p class="mt-6 max-w-2xl text-sm text-grey">{project.pricing.note}</p>}
           </ProjectSection>
         )
