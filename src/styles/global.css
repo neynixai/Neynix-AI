@@ -189,25 +189,28 @@
   .motion-pulse { display: none; }
 }
 
-/* Card illustrations drawn as outlines only — no fills, glows or blurs — until the card is hovered or
-   focused, when the full artwork fades back in. Fills fade through fill-opacity (fill: none can't animate)
-   and glow layers through opacity. */
-.card-art :is(circle, ellipse, polygon, path, rect, line, g) {
+/* Card and heading illustrations drawn as outlines only — no fills, glows or blurs — until their card
+   (or the section heading row) is hovered or focused, when the full artwork fades back in. Fills fade
+   through fill-opacity (fill: none can't animate) and glow layers through opacity. Shapes inside
+   <defs>, masks and patterns are left alone. */
+:is(.card-art, .head-art) :is(circle, ellipse, polygon, path, rect, line, text, g):not(defs *) {
   transition-property: fill-opacity, stroke, stroke-opacity, stroke-width, opacity, filter;
   transition-duration: 0.6s;
   transition-timing-function: var(--ease-out-soft);
   transition-behavior: allow-discrete;
 }
-.group:not(:hover, :focus-within) .card-art :is(circle, ellipse, polygon, path, rect, line) {
+:is(.group:not(:hover, :focus-within) .card-art, section:not(:has(.section-head:hover)) .head-art)
+  :is(circle, ellipse, polygon, path, rect, line, text):not(defs *) {
   fill-opacity: 0 !important;
   stroke: var(--color-lime) !important;
   stroke-opacity: 0.7 !important;
   stroke-width: 1.2px !important;
   vector-effect: non-scaling-stroke;
 }
-.group:not(:hover, :focus-within) .card-art * {
+:is(.group:not(:hover, :focus-within) .card-art, section:not(:has(.section-head:hover)) .head-art) *:not(defs *) {
   filter: none !important;
 }
-.group:not(:hover, :focus-within) .card-art :is([filter], [style*="blur"]) {
+:is(.group:not(:hover, :focus-within) .card-art, section:not(:has(.section-head:hover)) .head-art)
+  :is([filter], [mask], [style*="blur"]):not(defs *) {
   opacity: 0 !important;
 }
