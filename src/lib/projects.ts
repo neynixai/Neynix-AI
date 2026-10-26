@@ -23,7 +23,7 @@ export type Screen = { image: ImageMetadata; alt: string; caption: string };
 /** A paid or free plan, shown in the project page's pricing section. */
 export type PricingPlan = {
   name: string;
-  /** Shown large, e.g. "₹199" or "Contact us". */
+  /** Shown large, e.g. "₹599" or "Contact us". */
   price: string;
   /** Follows the price, e.g. "per month". */
   period?: string;
@@ -228,8 +228,8 @@ export const projects: Project[] = [
         },
         {
           name: "Individual",
-          price: "₹199",
-          period: "per month",
+          price: "₹599",
+          period: "per month, excluding GST",
           summary: "For one person. Answers come from an open-source model run with Ollama, which keeps the price low.",
           features: [
             "Unlimited questions",
@@ -253,7 +253,7 @@ export const projects: Project[] = [
           cta: { label: "Talk to us", href: "/#contact" },
         },
       ],
-      note: "There is no online checkout yet. Get in touch and we move your existing profile to the new plan, so your chats, goals and snapshots stay where they are. Prices are in Indian rupees.",
+      note: "There is no online checkout yet. Get in touch and we move your existing profile to the new plan, so your chats, goals and snapshots stay where they are. Prices are in Indian rupees and exclude GST.",
     },
     progress: {
       now: "CA Mode is live: sign in with Google and ask 50 questions a day, free. Both agents, daily snapshots, investigations, goals, broker statements and charts all work today.",
