@@ -106,7 +106,7 @@ const wide = new Set(["execution", "consulting"]);
       </div>
     </div>
 
-    <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-6">
+    <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:-mx-10 lg:grid-cols-6 xl:-mx-24">
       {
         services.map((service, i) => {
           const isWide = wide.has(service.id);
@@ -128,10 +128,10 @@ const wide = new Set(["execution", "consulting"]);
               <div
                 aria-hidden="true"
                 class:list={[
-                  "pointer-events-none absolute -z-10 opacity-60 transition-transform duration-700 ease-out group-hover:scale-[1.03] sm:opacity-100",
+                  "pointer-events-none absolute -z-10 opacity-75 brightness-125 saturate-110 transition-transform duration-700 ease-out group-hover:scale-[1.03] sm:opacity-100",
                   isWide
                     ? "-right-2 top-4 h-[58%] w-[55%] sm:w-[48%]"
-                    : "right-3 top-6 h-40 w-[42%] sm:w-[40%]",
+                    : "right-3 top-6 h-44 w-[42%] sm:w-[42%]",
                 ]}
               >
                 {service.id === "agents" && (
@@ -140,8 +140,8 @@ const wide = new Set(["execution", "consulting"]);
                       <radialGradient id="svc-sphere" cx="0.62" cy="0.7" r="0.75">
                         <stop offset="0" stop-color="#d7ff64" />
                         <stop offset="0.35" stop-color="#5f7a1c" />
-                        <stop offset="0.75" stop-color="#151a0e" />
-                        <stop offset="1" stop-color="#0c0e0a" />
+                        <stop offset="0.75" stop-color="#2a3418" />
+                        <stop offset="1" stop-color="#1c2212" />
                       </radialGradient>
                       <radialGradient id="svc-orb" cx="0.35" cy="0.3" r="0.8">
                         <stop offset="0" stop-color="#f1ffc4" />
@@ -194,7 +194,7 @@ const wide = new Set(["execution", "consulting"]);
                           points={rhombus(l.y)}
                           fill={l.lit ? "url(#svc-lit)" : "url(#svc-glass)"}
                           stroke={l.lit ? "#e4ff91" : "#f5f5f0"}
-                          stroke-opacity={l.lit ? 0.9 : 0.3}
+                          stroke-opacity={l.lit ? 0.9 : 0.45}
                           stroke-width="1"
                         />
                       </g>
@@ -212,9 +212,9 @@ const wide = new Set(["execution", "consulting"]);
                     {cubes.map((c) => (
                       <g class={c.lit ? "svc-float" : undefined}>
                         {c.lit && <circle cx={c.x} cy={c.y} r={c.s * 1.2} fill="#d7ff64" opacity="0.4" filter="url(#svc-cube-glow)" />}
-                        <polygon points={c.left} fill={c.lit ? "#a6d330" : "#20231d"} stroke={c.lit ? "#e4ff91" : "#f5f5f0"} stroke-opacity={c.lit ? 0.6 : 0.14} />
-                        <polygon points={c.right} fill={c.lit ? "#7a9e1f" : "#161814"} stroke={c.lit ? "#e4ff91" : "#f5f5f0"} stroke-opacity={c.lit ? 0.6 : 0.14} />
-                        <polygon points={c.top} fill={c.lit ? "#e4ff91" : "#2c3028"} stroke={c.lit ? "#f5f5f0" : "#f5f5f0"} stroke-opacity={c.lit ? 0.7 : 0.2} />
+                        <polygon points={c.left} fill={c.lit ? "#a6d330" : "#2f332b"} stroke={c.lit ? "#e4ff91" : "#f5f5f0"} stroke-opacity={c.lit ? 0.6 : 0.14} />
+                        <polygon points={c.right} fill={c.lit ? "#7a9e1f" : "#23261f"} stroke={c.lit ? "#e4ff91" : "#f5f5f0"} stroke-opacity={c.lit ? 0.6 : 0.14} />
+                        <polygon points={c.top} fill={c.lit ? "#e4ff91" : "#41463b"} stroke={c.lit ? "#f5f5f0" : "#f5f5f0"} stroke-opacity={c.lit ? 0.7 : 0.2} />
                       </g>
                     ))}
                     <circle cx="200" cy="40" r="2" fill="#d7ff64" />
@@ -295,7 +295,7 @@ const wide = new Set(["execution", "consulting"]);
 
               <span class="font-display text-lede font-medium tabular-nums text-lime">{service.number}</span>
               <span aria-hidden="true" class="mt-1.5 block h-0.5 w-6 bg-lime" />
-              <h3 class:list={["mt-6 text-[1.625rem] leading-tight tracking-[-0.02em]", isWide ? "max-w-xs" : "max-w-[11rem] sm:max-w-[13rem]"]}>
+              <h3 class:list={["mt-6 text-[1.625rem] leading-tight tracking-[-0.02em]", isWide ? "max-w-xs" : "max-w-[11rem] sm:max-w-[15rem]"]}>
                 {service.title}
               </h3>
               <p class:list={["mt-4 text-body text-pretty text-grey", isWide ? "max-w-sm" : "max-w-[16rem]"]}>
