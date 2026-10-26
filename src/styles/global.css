@@ -188,3 +188,19 @@
   }
   .motion-pulse { display: none; }
 }
+
+/* Card illustrations drawn as outlines only: no fills, glows or blurs — just thin lime strokes. */
+.card-art :is(circle, ellipse, polygon, path, rect, line) {
+  fill: none !important;
+  stroke: var(--color-lime) !important;
+  stroke-opacity: 0.7 !important;
+  stroke-width: 1.2px !important;
+  vector-effect: non-scaling-stroke;
+}
+.card-art * {
+  filter: none !important;
+}
+.card-art [filter],
+.card-art [style*="blur"] {
+  display: none;
+}
