@@ -49,46 +49,6 @@ const rhombus = (y: number) => `90,${y} 170,${y + 40} 90,${y + 80} 10,${y + 40}`
 ---
 
 <section aria-labelledby="philosophy-title" class="section-pad relative overflow-hidden bg-obsidian">
-  {/* Planet, moon and orbit behind the header. */}
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 600 480"
-    class="head-art pointer-events-none absolute -right-16 top-0 hidden w-[22rem] opacity-50 md:block lg:right-[7%] xl:w-[25rem]"
-  >
-    <defs>
-      <radialGradient id="ph-planet" cx="0.8" cy="0.75" r="0.9">
-        <stop offset="0" stop-color="#d7ff64" stop-opacity="0.55" />
-        <stop offset="0.25" stop-color="#5b7420" stop-opacity="0.5" />
-        <stop offset="0.6" stop-color="#151810" />
-        <stop offset="1" stop-color="#0e100c" />
-      </radialGradient>
-      <radialGradient id="ph-moon" cx="0.35" cy="0.3" r="0.8">
-        <stop offset="0" stop-color="#2a3119" />
-        <stop offset="0.6" stop-color="#55701b" />
-        <stop offset="1" stop-color="#d7ff64" />
-      </radialGradient>
-      <linearGradient id="ph-rim" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0.3" stop-color="#d7ff64" stop-opacity="0" />
-        <stop offset="0.85" stop-color="#d7ff64" stop-opacity="0.9" />
-      </linearGradient>
-      <pattern id="ph-dots" width="22" height="22" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="1" fill="#d7ff64" opacity="0.35" />
-      </pattern>
-      <radialGradient id="ph-dots-fade" cx="0.5" cy="0.3" r="0.6">
-        <stop offset="0" stop-color="#fff" />
-        <stop offset="1" stop-color="#fff" stop-opacity="0" />
-      </radialGradient>
-      <mask id="ph-dots-mask"><rect width="600" height="480" fill="url(#ph-dots-fade)" /></mask>
-    </defs>
-    <rect x="80" y="0" width="420" height="300" fill="url(#ph-dots)" mask="url(#ph-dots-mask)" />
-    <circle cx="290" cy="270" r="170" fill="url(#ph-planet)" />
-    <circle cx="290" cy="270" r="170" fill="none" stroke="url(#ph-rim)" stroke-width="2" />
-    <path d="M150 140 C 260 20, 420 20, 470 120 S 450 360, 380 430" fill="none" stroke="#d7ff64" stroke-opacity="0.55" stroke-width="1.2" />
-    <g class="ph-bob">
-      <circle cx="430" cy="70" r="46" fill="url(#ph-moon)" />
-      <circle cx="430" cy="70" r="46" fill="none" stroke="#d7ff64" stroke-opacity="0.4" />
-    </g>
-  </svg>
   <div aria-hidden="true" class="pointer-events-none absolute -left-40 top-1/2 size-[30rem] rounded-full bg-lime/[0.04] blur-3xl"></div>
 
   <div class="container-page relative">
