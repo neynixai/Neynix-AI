@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import ArrowUpRight from "@lucide/astro/icons/arrow-up-right";
 import founderPortrait from "@/assets/brand/founder-nishaanth.webp";
+import SectionHeader from "@/components/SectionHeader.astro";
 import { GITHUB_URL, LINKEDIN_URL, siteConfig } from "@/config/site";
 
 const parts = [
@@ -28,32 +29,78 @@ const links = [
 ].filter((link) => link.href);
 ---
 
-<section id="about" aria-labelledby="about-title" class="section-pad border-t border-line bg-elevated">
-  <div class="container-page grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-    <div class="reveal">
-      <p class="eyebrow">The story behind the name</p>
-      <h2 id="about-title" class="mt-4 text-heading">More than a name. A mindset.</h2>
-      <p class="mt-6 max-w-md text-lede text-pretty text-grey">
-        NEYNIX brings together three ideas: the determination to keep going, the ambition to build something of your
-        own, and the X factor that comes from thinking differently.
-      </p>
+<section id="about" aria-labelledby="about-title" class="section-pad relative overflow-hidden border-t border-line bg-obsidian">
+  {/* Concentric arcs behind the header. */}
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 520 420"
+    class="pointer-events-none absolute -right-32 -top-10 hidden w-[32rem] md:block lg:right-[4%]"
+  >
+    <defs>
+      <radialGradient id="ab-core" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#d7ff64" stop-opacity="0.55" />
+        <stop offset="0.5" stop-color="#d7ff64" stop-opacity="0.12" />
+        <stop offset="1" stop-color="#d7ff64" stop-opacity="0" />
+      </radialGradient>
+      <linearGradient id="ab-arc" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#d7ff64" stop-opacity="0" />
+        <stop offset="1" stop-color="#d7ff64" stop-opacity="0.8" />
+      </linearGradient>
+    </defs>
+    <circle cx="300" cy="200" r="150" fill="url(#ab-core)" />
+    {[60, 100, 140, 180].map((r, k) => (
+      <circle
+        cx="300"
+        cy="200"
+        r={r}
+        fill="none"
+        stroke={k % 2 ? "#f5f5f0" : "url(#ab-arc)"}
+        stroke-opacity={k % 2 ? 0.1 : 1}
+        stroke-dasharray={k === 3 ? "2 6" : undefined}
+      />
+    ))}
+    <g class="ab-spin" style="transform-origin: 300px 200px">
+      <circle cx="440" cy="130" r="7" fill="#d7ff64" />
+      <circle cx="200" cy="300" r="4" fill="#d7ff64" opacity="0.6" />
+    </g>
+    <text x="300" y="222" text-anchor="middle" font-family="Space Grotesk Variable, sans-serif" font-weight="600" font-size="64" fill="#f5f5f0" fill-opacity="0.9" letter-spacing="-3">NX</text>
+  </svg>
 
-      <figure class="mt-12 max-w-md border-t border-line pt-8">
-        <figcaption class="eyebrow">Founder</figcaption>
-        <div class="mt-5 flex items-end gap-5">
-          <Image
-            src={founderPortrait}
-            alt={`Portrait of ${siteConfig.founder}, founder of ${siteConfig.name}`}
-            widths={[128, 256]}
-            sizes="128px"
-            class="w-28 shrink-0 rounded-lg object-cover grayscale transition-[filter] duration-500 hover:grayscale-0 sm:w-32"
-          />
-          <div class="pb-1">
-            <p class="font-display text-title font-semibold">{siteConfig.founder}</p>
-            <p class="mt-1 text-sm text-grey">{siteConfig.founderTitle}</p>
+  <div class="container-page relative">
+    <SectionHeader
+      id="about-title"
+      eyebrow="The story behind the name"
+      index="About"
+      title="More than a name."
+      accent="A mindset."
+      lede="NEYNIX brings together three ideas: the determination to keep going, the ambition to build something of your own, and the X factor that comes from thinking differently."
+    />
+
+    <div class="mt-16 grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
+      {/* Founder card */}
+      <figure class="reveal relative isolate flex flex-col overflow-hidden rounded-2xl border border-lime/20 bg-[linear-gradient(160deg,#1a1d16_0%,#121411_60%)] p-7 sm:p-8">
+        <span aria-hidden="true" class="pointer-events-none absolute -left-20 -top-20 -z-10 size-64 rounded-full bg-lime/[0.08] blur-3xl"></span>
+        <figcaption class="flex items-center gap-3">
+          <span aria-hidden="true" class="h-0.5 w-6 bg-lime"></span>
+          <span class="eyebrow uppercase tracking-[0.16em]">Founder</span>
+        </figcaption>
+        <div class="mt-7 flex items-center gap-5 sm:gap-6">
+          <div class="relative shrink-0">
+            <span aria-hidden="true" class="absolute -inset-1.5 rounded-2xl border border-lime/40 shadow-[0_0_24px_rgba(215,255,100,0.18)]"></span>
+            <Image
+              src={founderPortrait}
+              alt={`Portrait of ${siteConfig.founder}, founder of ${siteConfig.name}`}
+              widths={[160, 320]}
+              sizes="144px"
+              class="relative w-24 rounded-xl object-cover grayscale transition-[filter] duration-500 hover:grayscale-0 sm:w-36"
+            />
+          </div>
+          <div>
+            <p class="font-display text-[1.25rem] font-semibold leading-tight whitespace-nowrap sm:text-[1.5rem] tracking-[-0.02em]">{siteConfig.founder}</p>
+            <p class="mt-1 text-small text-lime">{siteConfig.founderTitle}</p>
           </div>
         </div>
-        <div class="mt-6 space-y-3 text-body text-grey">
+        <div class="mt-7 space-y-3 border-t border-line pt-6 text-body text-grey">
           <p>
             An AI engineer with two years of experience in product development. {siteConfig.founder} started{" "}
             {siteConfig.name} to help small businesses go digital and put new technology like AI to practical use.
@@ -62,14 +109,14 @@ const links = [
         </div>
         {
           links.length > 0 && (
-            <ul class="mt-5 flex gap-5 text-sm">
+            <ul class="mt-auto flex flex-wrap gap-3 pt-7">
               {links.map((link) => (
                 <li>
                   <a
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1 font-medium text-offwhite underline-offset-4 hover:underline"
+                    class="inline-flex items-center gap-2 rounded-full border border-line-strong bg-obsidian/60 px-4 py-2 text-small font-medium text-offwhite transition-colors hover:border-lime hover:text-lime"
                   >
                     {link.label}
                     <ArrowUpRight aria-hidden="true" class="size-3.5" stroke-width={1.5} />
@@ -81,37 +128,57 @@ const links = [
           )
         }
       </figure>
-    </div>
 
-    <div>
-      <ul class="grid border-y border-line sm:grid-cols-3 sm:divide-x sm:divide-line">
-        {
-          parts.map((part) => (
-            <li class="reveal flex gap-6 border-b border-line py-7 last:border-b-0 sm:flex-col sm:gap-0 sm:border-b-0 sm:px-6 sm:py-8 sm:first:pl-0 sm:last:pr-0">
-              <span
-                aria-hidden="true"
-                class="w-20 shrink-0 font-display text-[clamp(2.5rem,2rem+2vw,3.5rem)] font-semibold leading-none tracking-[-0.04em] sm:w-auto"
-              >
-                {part.key}
-              </span>
-              <div class="sm:mt-8">
-                <h3 class="text-base">
+      {/* NEY · NI · X */}
+      <div class="flex flex-col gap-5">
+        <ul class="grid gap-5 sm:grid-cols-3">
+          {
+            parts.map((part, i) => (
+              <li class="reveal group relative isolate flex flex-col overflow-hidden rounded-2xl border border-line bg-[linear-gradient(160deg,#181a15_0%,#111310_70%)] p-6 transition-colors duration-500 hover:border-lime/40 sm:overflow-visible">
+                {i < parts.length - 1 && (
+                  <span aria-hidden="true" class="absolute -right-5 top-14 hidden h-px w-5 bg-lime/40 sm:block">
+                    <span class="absolute left-1/2 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-lime shadow-[0_0_8px_rgba(215,255,100,0.8)]" />
+                  </span>
+                )}
+                <span class="text-label font-medium tabular-nums text-lime">0{i + 1}</span>
+                <span
+                  aria-hidden="true"
+                  class="mt-5 font-display text-[clamp(2.75rem,2.2rem+2vw,3.75rem)] font-semibold leading-none tracking-[-0.04em] text-transparent [-webkit-text-stroke:1px_rgba(215,255,100,0.75)] transition-colors duration-500 group-hover:text-lime"
+                >
+                  {part.key}
+                </span>
+                <h3 class="mt-8 font-display text-title font-semibold">
                   <span class="sr-only">{part.key} —{" "}</span>
                   {part.title}
                 </h3>
                 <p class="mt-2 text-small text-grey">{part.body}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-      <p class="reveal mt-8 max-w-xl text-body text-offwhite/80">
-        Together, they represent the mindset behind NEYNIX AI: ambitious thinking, independent engineering, and the
-        determination to turn ideas into useful technology.
-      </p>
-      <p class="mt-4 text-xs text-grey">
-        The name is a personal tribute. NEYNIX AI is independent and not affiliated with or endorsed by Neymar.
-      </p>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="reveal relative isolate flex-1 overflow-hidden rounded-2xl border border-line bg-[linear-gradient(90deg,#161813,#111310)] p-7 sm:p-8">
+          <span aria-hidden="true" class="pointer-events-none absolute -bottom-24 -right-16 -z-10 size-64 rounded-full bg-lime/[0.07] blur-3xl"></span>
+          <p class="max-w-xl font-display text-[1.25rem] leading-snug tracking-[-0.01em] text-offwhite">
+            Together, they represent the mindset behind NEYNIX AI: <span class="text-lime">ambitious thinking, independent
+            engineering, and the determination to turn ideas into useful technology.</span>
+          </p>
+          <p class="mt-5 text-xs text-grey">
+            The name is a personal tribute. NEYNIX AI is independent and not affiliated with or endorsed by Neymar.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .ab-spin {
+      animation: ab-spin 50s linear infinite;
+    }
+  }
+  @keyframes ab-spin {
+    to { rotate: 360deg; }
+  }
+</style>
