@@ -7,7 +7,7 @@ import { projectTypes } from "@/lib/content";
 import { LIMITS } from "@/lib/contact-validation";
 
 const fieldClass =
-  "mt-2 block w-full rounded-md border border-line-input bg-elevated px-3.5 py-3 text-base text-offwhite placeholder:text-grey transition-colors focus:border-offwhite focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime aria-invalid:border-danger";
+  "mt-2 block w-full rounded-lg border border-line-input bg-obsidian/70 px-4 py-3 text-base text-offwhite placeholder:text-grey transition-colors focus:border-lime focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime aria-invalid:border-danger";
 ---
 
 <div data-contact>
@@ -66,7 +66,7 @@ const fieldClass =
     <div class="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center">
       <button
         type="submit"
-        class="group inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-md border border-lime bg-lime px-5 text-sm font-medium text-obsidian transition-colors hover:border-lime-hover hover:bg-lime-hover disabled:cursor-wait disabled:opacity-70"
+        class="group inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-md border border-lime bg-lime px-5 shadow-[0_0_24px_rgba(215,255,100,0.25)] text-sm font-medium text-obsidian transition-colors hover:border-lime-hover hover:bg-lime-hover disabled:cursor-wait disabled:opacity-70"
       >
         <span data-label-idle class="inline-flex items-center gap-2">
           Send message
@@ -85,7 +85,7 @@ const fieldClass =
     </div>
   </form>
 
-  <div data-contact-sent hidden role="status" tabindex="-1" class="rounded-xl border border-line-strong bg-elevated p-8">
+  <div data-contact-sent hidden role="status" tabindex="-1" class="rounded-xl border border-lime/30 bg-obsidian/70 p-8">
     <Check aria-hidden="true" class="size-6 text-lime" stroke-width={1.5} />
     <p class="mt-4 font-display text-title font-semibold">Thanks — your message has been sent.</p>
     <p class="mt-2 text-body text-grey">You&rsquo;ll get a reply at the email address you provided.</p>

@@ -3,6 +3,7 @@ import ChartLine from "@lucide/astro/icons/chart-line";
 import CodeXml from "@lucide/astro/icons/code-xml";
 import Layers from "@lucide/astro/icons/layers";
 import Users from "@lucide/astro/icons/users";
+import SectionHeader from "@/components/SectionHeader.astro";
 
 const reasons = [
   {
@@ -28,28 +29,90 @@ const reasons = [
 ];
 ---
 
-<section aria-labelledby="why-title" class="section-pad border-t border-line bg-obsidian">
-  <div class="container-page">
-    <div class="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <div>
-        <p class="eyebrow">Why NEYNIX AI</p>
-        <h2 id="why-title" class="mt-4 max-w-3xl text-heading">Independent by design. Ambitious by nature.</h2>
-      </div>
-      <p aria-hidden="true" class="eyebrow hidden shrink-0 md:block">05 — Why NEYNIX</p>
-    </div>
+<section aria-labelledby="why-title" class="section-pad relative overflow-hidden border-t border-line bg-obsidian">
+  {/* Rising signal: a glowing arc with nodes climbing to the top right. */}
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 560 360"
+    class="pointer-events-none absolute -right-28 -top-4 hidden w-[34rem] md:block lg:right-[3%]"
+  >
+    <defs>
+      <linearGradient id="why-arc" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#d7ff64" stop-opacity="0" />
+        <stop offset="0.6" stop-color="#d7ff64" stop-opacity="0.6" />
+        <stop offset="1" stop-color="#e4ff91" />
+      </linearGradient>
+      <radialGradient id="why-glow" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#d7ff64" stop-opacity="0.45" />
+        <stop offset="1" stop-color="#d7ff64" stop-opacity="0" />
+      </radialGradient>
+      <pattern id="why-grid" width="28" height="28" patternUnits="userSpaceOnUse">
+        <path d="M28 0H0V28" fill="none" stroke="#f5f5f0" stroke-opacity="0.05" />
+      </pattern>
+      <radialGradient id="why-fade" cx="0.6" cy="0.4" r="0.6">
+        <stop offset="0" stop-color="#fff" />
+        <stop offset="1" stop-color="#fff" stop-opacity="0" />
+      </radialGradient>
+      <mask id="why-mask"><rect width="560" height="360" fill="url(#why-fade)" /></mask>
+    </defs>
+    <rect width="560" height="360" fill="url(#why-grid)" mask="url(#why-mask)" />
+    <circle cx="470" cy="70" r="90" fill="url(#why-glow)" />
+    <path d="M40 330 C 200 320, 300 260, 360 180 S 440 80, 470 70" fill="none" stroke="url(#why-arc)" stroke-width="2.5" />
+    <path d="M40 330 C 200 320, 300 260, 360 180 S 440 80, 470 70" fill="none" stroke="#d7ff64" stroke-opacity="0.25" stroke-width="10" style="filter: blur(6px)" />
+    {[
+      [180, 312, 3],
+      [300, 248, 4],
+      [380, 150, 5],
+    ].map(([cx, cy, r]) => (
+      <circle cx={cx} cy={cy} r={r} fill="#d7ff64" opacity="0.8" />
+    ))}
+    <g class="why-pulse" style="transform-origin: 470px 70px">
+      <circle cx="470" cy="70" r="20" fill="none" stroke="#d7ff64" stroke-opacity="0.5" />
+    </g>
+    <circle cx="470" cy="70" r="9" fill="#e4ff91" />
+  </svg>
 
-    <ul class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+  <div class="container-page relative">
+    <SectionHeader
+      id="why-title"
+      eyebrow="Why NEYNIX AI"
+      index="05 / Why NEYNIX"
+      title="Independent by design."
+      accent="Ambitious by nature."
+    />
+
+    <ul class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {
-        reasons.map(({ title, body, icon: Icon }) => (
-          <li class="reveal flex gap-4 lg:flex-col">
-            <Icon aria-hidden="true" class="mt-0.5 size-6 shrink-0" stroke-width={1.4} />
-            <div>
-              <h3 class="text-title">{title}</h3>
-              <p class="mt-2 text-body text-grey">{body}</p>
+        reasons.map(({ title, body, icon: Icon }, i) => (
+          <li class="reveal group relative isolate flex flex-col overflow-hidden rounded-2xl border border-line bg-[linear-gradient(160deg,#1a1d16_0%,#111310_65%)] p-7 transition-colors duration-500 hover:border-lime/40">
+            <span
+              aria-hidden="true"
+              class="pointer-events-none absolute -right-16 -top-16 -z-10 size-44 rounded-full bg-lime/[0.06] blur-2xl transition-colors duration-500 group-hover:bg-lime/[0.14]"
+            />
+            <div class="flex items-start justify-between">
+              <span class="grid size-14 place-items-center rounded-xl border border-lime/40 bg-obsidian/60 text-lime shadow-[0_0_20px_rgba(215,255,100,0.08)] transition-shadow duration-500 group-hover:shadow-[0_0_28px_rgba(215,255,100,0.22)]">
+                <Icon aria-hidden="true" class="size-6" stroke-width={1.4} />
+              </span>
+              <span class="font-display text-title font-medium tabular-nums text-lime">0{i + 1}</span>
             </div>
+            <h3 class="mt-12 font-display text-[1.375rem] leading-tight tracking-[-0.02em]">{title}</h3>
+            <p class="mt-3 flex-1 text-body text-pretty text-grey">{body}</p>
+            <span aria-hidden="true" class="mt-8 block h-px w-full origin-left scale-x-[0.25] bg-lime/60 transition-transform duration-500 group-hover:scale-x-100" />
           </li>
         ))
       }
     </ul>
   </div>
 </section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .why-pulse {
+      animation: why-pulse 3.5s ease-out infinite;
+    }
+  }
+  @keyframes why-pulse {
+    from { scale: 0.6; opacity: 1; }
+    to { scale: 2.2; opacity: 0; }
+  }
+</style>

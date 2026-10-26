@@ -1,4 +1,7 @@
 ---
+import FileText from "@lucide/astro/icons/file-text";
+import ShieldCheck from "@lucide/astro/icons/shield-check";
+import Users from "@lucide/astro/icons/users";
 import ButtonLink from "@/components/ButtonLink.astro";
 import ContactForm from "@/components/ContactForm.astro";
 import { CONTACT_EMAIL, LINKEDIN_URL, WEB3FORMS_ACCESS_KEY } from "@/config/site";
@@ -13,6 +16,13 @@ const primary = formEnabled
     : LINKEDIN_URL
       ? { href: LINKEDIN_URL, target: "_blank", rel: "noopener noreferrer" }
       : null;
+// What a useful first message covers, from the form's own guidance.
+const briefPoints = [
+  { label: "The problem", icon: FileText },
+  { label: "Who it’s for", icon: Users },
+  { label: "Any constraints you already know about", icon: ShieldCheck },
+];
+
 const showEmailButton = Boolean(CONTACT_EMAIL) && primary?.href !== `mailto:${CONTACT_EMAIL}`;
 
 /** Soft topographic lines — a quiet nod to depth without generic AI imagery. */
@@ -47,8 +57,14 @@ const contours = Array.from({ length: 14 }, (_, i) => {
 
     <div class="container-page section-pad grid items-center gap-14 lg:min-h-[34rem] lg:grid-cols-[1.2fr_1fr]">
       <div class="reveal">
-        <p class="eyebrow">Have an idea worth building?</p>
-        <h2 id="contact-title" class="mt-4 text-heading">Let&rsquo;s make it real.</h2>
+        <p class="flex items-center gap-4">
+          <span aria-hidden="true" class="h-0.5 w-10 bg-lime"></span>
+          <span class="eyebrow uppercase tracking-[0.16em]">06 / Contact</span>
+        </p>
+        <h2 id="contact-title" class="mt-6 text-heading">
+          Have an idea worth building?
+          <span class="block text-lime">Let&rsquo;s make it real.</span>
+        </h2>
         <p class="mt-6 max-w-lg text-lede text-pretty text-grey">
           Have an AI idea, an automation challenge, or a software project in mind? Let&rsquo;s discuss what a practical
           solution could look like.
@@ -90,12 +106,23 @@ const contours = Array.from({ length: 14 }, (_, i) => {
   {
     formEnabled && (
       <div id="contact-form" class="container-page pb-[clamp(4.5rem,3rem+6vw,8.5rem)]">
-        <div class="grid gap-10 border-t border-line pt-14 lg:grid-cols-[0.8fr_1.2fr]">
+        <div class="reveal relative isolate grid gap-10 overflow-hidden rounded-2xl border border-lime/20 bg-[linear-gradient(150deg,#1a1d16_0%,#111310_55%,#151912_100%)] p-7 sm:p-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+          <span aria-hidden="true" class="pointer-events-none absolute -left-24 -top-24 -z-10 size-72 rounded-full bg-lime/[0.08] blur-3xl" />
+          <span aria-hidden="true" class="pointer-events-none absolute -bottom-32 -right-24 -z-10 size-80 rounded-full bg-lime/[0.05] blur-3xl" />
           <div>
-            <h3 class="text-[1.5rem] leading-tight tracking-[-0.02em]">Tell us about your project</h3>
-            <p class="mt-3 max-w-sm text-body text-grey">
-              A few sentences is enough — the problem, who it&rsquo;s for, and any constraints you already know about.
-            </p>
+            <span aria-hidden="true" class="block h-0.5 w-8 bg-lime" />
+            <h3 class="mt-6 font-display text-[1.75rem] leading-tight tracking-[-0.02em]">Tell us about your project</h3>
+            <p class="mt-3 max-w-sm text-body text-grey">A few sentences is enough. It helps to cover:</p>
+            <ul class="mt-7 space-y-3">
+              {briefPoints.map(({ label, icon: Icon }) => (
+                <li class="flex items-center gap-3 text-small text-offwhite/85">
+                  <span class="grid size-8 shrink-0 place-items-center rounded-md border border-lime/40 bg-obsidian/60 text-lime">
+                    <Icon aria-hidden="true" class="size-4" stroke-width={1.6} />
+                  </span>
+                  {label}
+                </li>
+              ))}
+            </ul>
           </div>
           <ContactForm />
         </div>
