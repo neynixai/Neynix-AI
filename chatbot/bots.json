@@ -1,7 +1,7 @@
 {
   "neynix": {
     "name": "NEYNIX AI",
-    "url": "https://neynixai.github.io/Neynix-AI/",
+    "url": "https://neynixai.github.io/",
     "origins": ["https://neynixai.github.io", "http://localhost:3000"],
     "theme": "dark",
     "accent": "#d7ff64",

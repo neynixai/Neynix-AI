@@ -20,8 +20,12 @@ files from the source image). `npm run build` writes the static site to `dist/`.
 
 The site is fully static (`output: "static"` in `astro.config.mjs`).
 `.github/workflows/deploy.yml` builds it on every push to `main` and publishes
-`dist/` to GitHub Pages at `https://<owner>.github.io/<repo>/` — the workflow
-passes the `/<repo>` base path to the build automatically.
+`dist/` to GitHub Pages. The repository is named `neynixai.github.io`, so the
+site is served at the root, https://neynixai.github.io/. Google takes a site's
+favicon and name from the root of its hostname, so the site must stay there
+(or move to a custom domain). Under any other repository name the site would
+be served at `https://<owner>.github.io/<repo>/`, and the workflow passes that
+`/<repo>` base path to the build automatically.
 
 One-time setup (repository admin): **Settings → Pages → Build and deployment →
 Source: GitHub Actions**.

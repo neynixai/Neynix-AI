@@ -76,7 +76,7 @@ for (const id of selected) {
 }
 
 async function crawl(start, maxPages) {
-  // Only pages under the start URL's directory, e.g. /Neynix-AI/ on GitHub Pages.
+  // Only pages under the start URL's directory, e.g. /<repo>/ on a GitHub Pages project site.
   const scope = new URL(start.pathname.endsWith("/") ? start.pathname : start.pathname.replace(/[^/]*$/, ""), start);
   const disallow = await robotsDisallow(start.origin);
   const inScope = (u) =>

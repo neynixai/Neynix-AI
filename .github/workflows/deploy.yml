@@ -36,7 +36,7 @@ jobs:
       - name: Build static site
         run: npm run build
         env:
-          # Serve from /<repo> on <owner>.github.io
+          # Empty for the <owner>.github.io repo (served at the root), /<repo> otherwise
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL || steps.pages.outputs.base_url }}
           # Optional — set as repository variables to show contact links / form.
