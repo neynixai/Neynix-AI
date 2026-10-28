@@ -17,6 +17,12 @@ export default defineConfig({
   ...(siteUrl ? { site: new URL(siteUrl).origin } : {}),
   base,
   trailingSlash: "always",
+  // The site used to live at /Neynix-AI/; keep those links (and search
+  // results) working until Google has moved over to the root URLs.
+  redirects: {
+    "/Neynix-AI": "/",
+    "/Neynix-AI/work/[slug]": "/work/[slug]",
+  },
   // Port 3000 matches the chatbot's allowed local origin (chatbot/bots.json).
   server: { port: 3000 },
   vite: { plugins: [tailwindcss()] },
