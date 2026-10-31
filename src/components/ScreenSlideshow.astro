@@ -10,8 +10,6 @@ type Props = { screens: Screen[]; label: string; class?: string };
 
 const { screens, label, class: className } = Astro.props;
 
-/** Each screen enters with its own effect, taken in this order. */
-const effects = ["rise", "unfold", "iris", "focus"];
 /** How long each screen stays before the next one, shown by its step's progress bar. */
 const INTERVAL_MS = 6000;
 const control =
@@ -26,7 +24,7 @@ const control =
   style={`--interval: ${INTERVAL_MS}ms`}
 >
   <div class="relative">
-    {/* The screens sit on top of each other; the script brings each one in with its effect. */}
+    {/* The screens sit on top of each other; the script brings each one into focus over the last. */}
     <ul
       data-stage
       tabindex="0"
@@ -37,7 +35,6 @@ const control =
         screens.map((screen, i) => (
           <li
             data-slide
-            data-effect={effects[i % effects.length]}
             data-state={i === 0 ? "current" : undefined}
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${screens.length}: ${screen.title}`}
@@ -108,12 +105,7 @@ const control =
 
 <style>
   [data-slide] {
-    --enter-ease: var(--ease-out-soft);
     visibility: hidden;
-  }
-  /* Reveals read better at an even pace than with the soft ease's quick start. */
-  :is([data-effect="unfold"], [data-effect="iris"]) {
-    --enter-ease: cubic-bezier(0.65, 0, 0.35, 1);
   }
   [data-slide][data-state] {
     visibility: visible;
@@ -122,52 +114,13 @@ const control =
     z-index: 2;
   }
 
-  /* Effects run from the first change on, so the opening screen is simply there. */
+  /* The new screen sharpens out of a blur while the last one sinks back. Effects run from the
+     first change on, so the opening screen is simply there. */
   [data-animate] [data-slide][data-state] {
-    animation-duration: 1s;
-    animation-timing-function: var(--enter-ease);
-    animation-fill-mode: both;
+    animation: screen-focus 1s var(--ease-out-soft) both;
   }
   [data-animate] [data-slide][data-state="previous"] {
     animation-name: screen-recede;
-  }
-  [data-animate] [data-effect="rise"][data-state="current"] {
-    animation-name: screen-rise;
-  }
-  [data-animate] [data-effect="unfold"][data-state="current"] {
-    animation-name: screen-unfold;
-  }
-  [data-animate] [data-effect="iris"][data-state="current"] {
-    animation-name: screen-iris;
-  }
-  [data-animate] [data-effect="focus"][data-state="current"] {
-    animation-name: screen-focus;
-  }
-
-  /* Lime lines that travel with the reveal: the unfold's lower edge and the iris's rim. */
-  [data-animate] [data-effect="unfold"][data-state="current"]::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    height: 2px;
-    translate: 0 -100%;
-    background: var(--color-lime);
-    box-shadow: 0 0 18px 3px rgb(215 255 100 / 0.5);
-    animation: screen-scan 1s var(--enter-ease) both;
-  }
-  [data-animate] [data-effect="iris"][data-state="current"]::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    /* The iris's final diameter: circle(75%) of a 16:10 box spans 125% of its width. */
-    width: 125%;
-    aspect-ratio: 1;
-    translate: -50% -50%;
-    border: 2px solid var(--color-lime);
-    border-radius: 50%;
-    animation: screen-ring 1s var(--enter-ease) both;
   }
 
   [data-progress] {
@@ -192,27 +145,6 @@ const control =
     }
   }
 
-  @keyframes screen-rise {
-    from { opacity: 0; transform: translateY(14%) scale(0.92); }
-  }
-  @keyframes screen-unfold {
-    from { clip-path: inset(0 0 100% 0); }
-    to { clip-path: inset(0); }
-  }
-  @keyframes screen-scan {
-    from { top: 0; }
-    80% { opacity: 1; }
-    to { top: 100%; opacity: 0; }
-  }
-  @keyframes screen-iris {
-    from { clip-path: circle(0% at 50% 50%); }
-    to { clip-path: circle(75% at 50% 50%); }
-  }
-  @keyframes screen-ring {
-    from { scale: 0; }
-    80% { opacity: 1; }
-    to { scale: 1; opacity: 0; }
-  }
   @keyframes screen-focus {
     from { opacity: 0; transform: scale(1.15); filter: blur(18px); }
   }
