@@ -89,20 +89,20 @@ export const projects: Project[] = [
       "Ask your portfolio anything. Get answers built from your real numbers, worked out in code, and locked with your own PIN.",
     image: caModeScreenshot,
     imageAlt:
-      "CA Mode home screen: net worth, P&L and goal cards, recent chats, and a portfolio overview with a 7-day trend and market insights.",
+      "CA Mode dashboard in dark mode: portfolio value, total invested, today's change and returns, an asset allocation ring, a one-year performance chart, top holdings, goals, AI insights and quick actions.",
     status: "hosted",
     liveUrl: "https://129-225-97-229.sslip.io/",
     screens: [
       {
         image: caModeChat,
-        alt: "CA Mode chat: Finance Agent, running on the local Ollama model, explains the difference between an SIP and a lumpsum investment.",
+        alt: "CA Mode chat: Finance Agent, running on the local Ollama model, works out the monthly investment needed for a house down payment goal.",
         title: "Ask in plain language",
         caption:
           "Finance Agent answers general finance questions with an open-source model run with Ollama, not a cloud AI service. It never sees your account.",
       },
       {
         image: caModeAnswerTrace,
-        alt: "The end of a CA Mode answer with its trace expanded: the request was classified, the local model answered, and a completeness check passed.",
+        alt: "A CA Mode answer with its trace expanded: the request was classified, saved goals were used, the goal was calculated in code, the figures were checked and a completeness check passed.",
         title: "See how it answered",
         caption:
           "Open the trace under any answer to see how the question was routed, which model answered, and the checks the answer passed.",
