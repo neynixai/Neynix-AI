@@ -9,8 +9,13 @@ import type { Screen } from "@/lib/projects";
 type Props = { screens: Screen[]; label: string; class?: string };
 
 const { screens, label, class: className } = Astro.props;
+
+/** Each screen enters with its own effect, taken in this order. */
+const effects = ["rise", "unfold", "iris", "focus"];
+/** How long each screen stays before the next one, shown by its step's progress bar. */
+const INTERVAL_MS = 6000;
 const control =
-  "inline-flex size-10 items-center justify-center rounded-full border border-line-strong text-offwhite transition-colors hover:border-offwhite";
+  "inline-flex size-9 items-center justify-center rounded-full text-offwhite transition-colors hover:bg-offwhite/10";
 ---
 
 <section
@@ -18,159 +23,286 @@ const control =
   aria-roledescription="carousel"
   aria-label={label}
   class:list={["reveal", className]}
+  style={`--interval: ${INTERVAL_MS}ms`}
 >
-  {/* A scroll-snapping track: swipe and trackpad scrolling work without the script. */}
-  <ul
-    data-track
-    tabindex="0"
-    aria-live="off"
-    class="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain rounded-xl border border-line bg-elevated [scrollbar-width:none] focus-visible:outline-offset-4 [&::-webkit-scrollbar]:hidden"
-  >
-    {
-      screens.map((screen, i) => (
-        <li
-          aria-roledescription="slide"
-          aria-label={`${i + 1} of ${screens.length}`}
-          class="relative aspect-[16/10] w-full shrink-0 snap-start"
-        >
-          <Image
-            src={screen.image}
-            alt={screen.alt}
-            widths={[640, 1136, 1600, 2272]}
-            sizes="(min-width: 1216px) 1136px, 100vw"
-            class="absolute inset-0 size-full object-cover object-left-top"
-          />
-        </li>
-      ))
-    }
-  </ul>
-
-  <div class="mt-5 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-    <div class="grid max-w-xl">
+  <div class="relative">
+    {/* The screens sit on top of each other; the script brings each one in with its effect. */}
+    <ul
+      data-stage
+      tabindex="0"
+      aria-live="off"
+      class="grid touch-pan-y overflow-hidden rounded-xl border border-line bg-elevated focus-visible:outline-offset-4"
+    >
       {
         screens.map((screen, i) => (
-          <p
-            data-caption
-            class:list={[
-              "col-start-1 row-start-1 text-body text-grey transition-opacity duration-300",
-              { "opacity-0": i !== 0 },
-            ]}
+          <li
+            data-slide
+            data-effect={effects[i % effects.length]}
+            data-state={i === 0 ? "current" : undefined}
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${screens.length}: ${screen.title}`}
             aria-hidden={i !== 0 ? "true" : undefined}
+            class="relative col-start-1 row-start-1 aspect-[16/10] overflow-hidden"
           >
-            {screen.caption}
-          </p>
+            <Image
+              src={screen.image}
+              alt={screen.alt}
+              widths={[640, 1136, 1600, 2272]}
+              sizes="(min-width: 1216px) 1136px, 100vw"
+              draggable="false"
+              class="absolute inset-0 size-full object-cover object-left-top"
+            />
+          </li>
         ))
       }
-    </div>
+    </ul>
 
-    <div class="flex shrink-0 items-center gap-3">
+    <div
+      class="absolute bottom-3 right-3 z-10 flex items-center gap-0.5 rounded-full border border-line-strong bg-obsidian/85 p-1 backdrop-blur-sm sm:bottom-4 sm:right-4"
+    >
       <button type="button" data-pause aria-label="Pause slideshow" class={control}>
         <Pause data-icon="pause" aria-hidden="true" class="size-4" stroke-width={1.75} />
         <Play data-icon="play" aria-hidden="true" class="hidden size-4" stroke-width={1.75} />
       </button>
-      <button type="button" data-prev aria-label="Previous screen" class={control}>
+      <button type="button" data-prev aria-label="Previous screen" class:list={[control, "max-sm:hidden"]}>
         <ChevronLeft aria-hidden="true" class="size-4" stroke-width={1.75} />
       </button>
-      <div class="flex items-center gap-2">
-        {
-          screens.map((_, i) => (
-            <button
-              type="button"
-              data-dot
-              aria-label={`Show screen ${i + 1}`}
-              aria-current={i === 0 ? "true" : undefined}
-              class="group flex size-6 items-center justify-center"
-            >
-              <span class="h-1.5 w-1.5 rounded-full bg-line-strong transition-all duration-300 group-hover:bg-grey group-aria-[current=true]:w-5 group-aria-[current=true]:bg-lime" />
-            </button>
-          ))
-        }
-      </div>
-      <button type="button" data-next aria-label="Next screen" class={control}>
+      <button type="button" data-next aria-label="Next screen" class:list={[control, "max-sm:hidden"]}>
         <ChevronRight aria-hidden="true" class="size-4" stroke-width={1.75} />
       </button>
     </div>
   </div>
+
+  {/* What each screen shows. The current step's bar fills until the next screen comes in. */}
+  <ol class="mt-8 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      screens.map((screen, i) => (
+        <li class="group relative pt-5">
+          <h3 class="text-base">
+            <button
+              type="button"
+              data-step
+              aria-current={i === 0 ? "true" : undefined}
+              class="flex items-center gap-3 text-left text-grey transition-colors duration-300 after:absolute after:inset-0 after:-m-2 after:rounded-lg hover:text-offwhite focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-lime focus-visible:after:outline-solid aria-[current=true]:text-offwhite"
+            >
+              <span aria-hidden="true" class="absolute inset-x-0 top-0 h-0.5 overflow-hidden rounded-full bg-line">
+                <span data-progress class="block h-full bg-lime" />
+              </span>
+              <span
+                aria-hidden="true"
+                class="inline-flex size-7 shrink-0 items-center justify-center rounded-md border border-line-strong text-xs font-semibold transition-colors duration-300 group-has-[[aria-current=true]]:border-lime group-has-[[aria-current=true]]:bg-lime group-has-[[aria-current=true]]:text-obsidian"
+              >
+                {i + 1}
+              </span>
+              {screen.title}
+            </button>
+          </h3>
+          <p class="mt-3 text-small text-grey transition-colors duration-300 group-has-[[aria-current=true]]:text-offwhite/75">
+            {screen.caption}
+          </p>
+        </li>
+      ))
+    }
+  </ol>
 </section>
 
+<style>
+  [data-slide] {
+    --enter-ease: var(--ease-out-soft);
+    visibility: hidden;
+  }
+  /* Reveals read better at an even pace than with the soft ease's quick start. */
+  :is([data-effect="unfold"], [data-effect="iris"]) {
+    --enter-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  [data-slide][data-state] {
+    visibility: visible;
+  }
+  [data-slide][data-state="current"] {
+    z-index: 2;
+  }
+
+  /* Effects run from the first change on, so the opening screen is simply there. */
+  [data-animate] [data-slide][data-state] {
+    animation-duration: 1s;
+    animation-timing-function: var(--enter-ease);
+    animation-fill-mode: both;
+  }
+  [data-animate] [data-slide][data-state="previous"] {
+    animation-name: screen-recede;
+  }
+  [data-animate] [data-effect="rise"][data-state="current"] {
+    animation-name: screen-rise;
+  }
+  [data-animate] [data-effect="unfold"][data-state="current"] {
+    animation-name: screen-unfold;
+  }
+  [data-animate] [data-effect="iris"][data-state="current"] {
+    animation-name: screen-iris;
+  }
+  [data-animate] [data-effect="focus"][data-state="current"] {
+    animation-name: screen-focus;
+  }
+
+  /* Lime lines that travel with the reveal: the unfold's lower edge and the iris's rim. */
+  [data-animate] [data-effect="unfold"][data-state="current"]::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    translate: 0 -100%;
+    background: var(--color-lime);
+    box-shadow: 0 0 18px 3px rgb(215 255 100 / 0.5);
+    animation: screen-scan 1s var(--enter-ease) both;
+  }
+  [data-animate] [data-effect="iris"][data-state="current"]::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* The iris's final diameter: circle(75%) of a 16:10 box spans 125% of its width. */
+    width: 125%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border: 2px solid var(--color-lime);
+    border-radius: 50%;
+    animation: screen-ring 1s var(--enter-ease) both;
+  }
+
+  [data-progress] {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  /* The bar is the timer: the script moves on when it finishes filling. */
+  [aria-current="true"] [data-progress] {
+    animation: screen-progress var(--interval) linear forwards paused;
+  }
+  [data-running] [aria-current="true"] [data-progress] {
+    animation-play-state: running;
+  }
+  [data-stopped] [aria-current="true"] [data-progress] {
+    animation: none;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* Keep the timer's length when the visitor turns autoplay on; screens still change without effects. */
+    [aria-current="true"] [data-progress] {
+      animation-duration: var(--interval) !important;
+    }
+  }
+
+  @keyframes screen-rise {
+    from { opacity: 0; transform: translateY(14%) scale(0.92); }
+  }
+  @keyframes screen-unfold {
+    from { clip-path: inset(0 0 100% 0); }
+    to { clip-path: inset(0); }
+  }
+  @keyframes screen-scan {
+    from { top: 0; }
+    80% { opacity: 1; }
+    to { top: 100%; opacity: 0; }
+  }
+  @keyframes screen-iris {
+    from { clip-path: circle(0% at 50% 50%); }
+    to { clip-path: circle(75% at 50% 50%); }
+  }
+  @keyframes screen-ring {
+    from { scale: 0; }
+    80% { opacity: 1; }
+    to { scale: 1; opacity: 0; }
+  }
+  @keyframes screen-focus {
+    from { opacity: 0; transform: scale(1.15); filter: blur(18px); }
+  }
+  @keyframes screen-recede {
+    to { transform: scale(0.94); filter: brightness(0.4); }
+  }
+  @keyframes screen-progress {
+    to { transform: none; }
+  }
+</style>
+
 <script>
-  const INTERVAL_MS = 5000;
+  const SWIPE_PX = 40;
 
   for (const root of document.querySelectorAll<HTMLElement>("[data-slideshow]")) {
-    const track = root.querySelector<HTMLElement>("[data-track]")!;
-    const slides = [...track.children] as HTMLElement[];
-    const captions = [...root.querySelectorAll<HTMLElement>("[data-caption]")];
-    const dots = [...root.querySelectorAll<HTMLButtonElement>("[data-dot]")];
+    const stage = root.querySelector<HTMLElement>("[data-stage]")!;
+    const slides = [...stage.children] as HTMLElement[];
+    const steps = [...root.querySelectorAll<HTMLButtonElement>("[data-step]")];
     const pauseButton = root.querySelector<HTMLButtonElement>("[data-pause]")!;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let index = 0;
-    let timer = 0;
     // Stopped by the pause button (or reduced motion); held while hovered, focused or off-screen.
     let stopped = reduceMotion;
     let hovered = false;
     let focused = false;
     let visible = false;
 
-    const show = (i: number, behavior: ScrollBehavior = reduceMotion ? "auto" : "smooth") => {
+    const show = (i: number) => {
       const next = (i + slides.length) % slides.length;
-      track.scrollTo({ left: next * track.clientWidth, behavior });
-    };
-
-    const mark = (i: number) => {
-      if (i === index) return;
-      index = i;
-      captions.forEach((caption, n) => {
-        caption.classList.toggle("opacity-0", n !== i);
-        caption.toggleAttribute("aria-hidden", n !== i);
+      if (next === index) return;
+      root.dataset.animate = "";
+      slides.forEach((slide, n) => {
+        if (n === next) slide.dataset.state = "current";
+        else if (n === index) slide.dataset.state = "previous";
+        else delete slide.dataset.state;
+        if (n === next) slide.removeAttribute("aria-hidden");
+        else slide.setAttribute("aria-hidden", "true");
       });
-      dots.forEach((dot, n) => (n === i ? dot.setAttribute("aria-current", "true") : dot.removeAttribute("aria-current")));
+      steps.forEach((step, n) => (n === next ? step.setAttribute("aria-current", "true") : step.removeAttribute("aria-current")));
+      index = next;
     };
 
-    const schedule = () => {
-      window.clearInterval(timer);
-      if (!stopped && !hovered && !focused && visible) timer = window.setInterval(() => show(index + 1), INTERVAL_MS);
-    };
+    const update = () => root.toggleAttribute("data-running", !stopped && !hovered && !focused && visible);
 
     const setStopped = (value: boolean) => {
       stopped = value;
+      root.toggleAttribute("data-stopped", value);
       pauseButton.setAttribute("aria-label", value ? "Play slideshow" : "Pause slideshow");
-      // Announce slide changes only when they are the visitor's own.
-      track.setAttribute("aria-live", value ? "polite" : "off");
+      // Announce screen changes only when they are the visitor's own.
+      stage.setAttribute("aria-live", value ? "polite" : "off");
       pauseButton.querySelector('[data-icon="pause"]')!.classList.toggle("hidden", value);
       pauseButton.querySelector('[data-icon="play"]')!.classList.toggle("hidden", !value);
-      schedule();
+      update();
     };
 
-    // The slide in view decides the index, so swipes and scrolls stay in sync.
-    let frame = 0;
-    track.addEventListener("scroll", () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => mark(Math.round(track.scrollLeft / track.clientWidth)));
+    // The current step's progress bar finishing is what moves the slideshow on.
+    root.addEventListener("animationend", (e) => {
+      if ((e.target as Element).matches("[data-progress]")) show(index + 1);
     });
 
-    root.querySelector("[data-prev]")!.addEventListener("click", () => (show(index - 1), schedule()));
-    root.querySelector("[data-next]")!.addEventListener("click", () => (show(index + 1), schedule()));
-    dots.forEach((dot, i) => dot.addEventListener("click", () => (show(i), schedule())));
+    root.querySelector("[data-prev]")!.addEventListener("click", () => show(index - 1));
+    root.querySelector("[data-next]")!.addEventListener("click", () => show(index + 1));
+    steps.forEach((step, i) => step.addEventListener("click", () => show(i)));
     pauseButton.addEventListener("click", () => setStopped(!stopped));
 
-    track.addEventListener("keydown", (e) => {
+    stage.addEventListener("keydown", (e) => {
       if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
       e.preventDefault();
       show(index + (e.key === "ArrowRight" ? 1 : -1));
     });
 
-    root.addEventListener("pointerenter", () => ((hovered = true), schedule()));
-    root.addEventListener("pointerleave", () => ((hovered = false), schedule()));
-    root.addEventListener("focusin", () => ((focused = true), schedule()));
+    // Swipe sideways on the screen to change it; vertical drags still scroll the page.
+    let startX = 0;
+    let startY = 0;
+    stage.addEventListener("pointerdown", (e) => ((startX = e.clientX), (startY = e.clientY)));
+    stage.addEventListener("pointerup", (e) => {
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > SWIPE_PX && Math.abs(dx) > Math.abs(e.clientY - startY)) show(index + (dx < 0 ? 1 : -1));
+    });
+
+    root.addEventListener("pointerenter", () => ((hovered = true), update()));
+    root.addEventListener("pointerleave", () => ((hovered = false), update()));
+    root.addEventListener("focusin", () => ((focused = true), update()));
     root.addEventListener("focusout", (e) => {
       if (root.contains(e.relatedTarget as Node)) return;
       focused = false;
-      schedule();
+      update();
     });
-    new IntersectionObserver(([entry]) => ((visible = entry.isIntersecting), schedule()), { threshold: 0.4 }).observe(root);
-    // Keep the current slide aligned when the width changes.
-    new ResizeObserver(() => show(index, "auto")).observe(track);
+    new IntersectionObserver(([entry]) => ((visible = entry.isIntersecting), update()), { threshold: 0.4 }).observe(root);
 
     setStopped(stopped);
   }

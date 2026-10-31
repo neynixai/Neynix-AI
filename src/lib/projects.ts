@@ -17,8 +17,8 @@ export const statuses: Record<ProjectStatus, { label: string; dot: string }> = {
 
 type Point = { title: string; body: string };
 
-/** A screenshot shown in the project page's gallery. */
-export type Screen = { image: ImageMetadata; alt: string; caption: string };
+/** A screenshot shown in the project page's gallery, with the title and explanation listed beside it. */
+export type Screen = { image: ImageMetadata; alt: string; title: string; caption: string };
 
 /** A paid or free plan, shown in the project page's pricing section. */
 export type PricingPlan = {
@@ -96,22 +96,30 @@ export const projects: Project[] = [
       {
         image: caModeChat,
         alt: "CA Mode chat: Finance Agent, running on the local Ollama model, explains the difference between an SIP and a lumpsum investment.",
-        caption: "Finance Agent answers a general question using an open-source model run with Ollama, not a cloud AI service.",
+        title: "Ask in plain language",
+        caption:
+          "Finance Agent answers general finance questions with an open-source model run with Ollama, not a cloud AI service. It never sees your account.",
       },
       {
         image: caModeAnswerTrace,
         alt: "The end of a CA Mode answer with its trace expanded: the request was classified, the local model answered, and a completeness check passed.",
-        caption: "Every answer shows how it was made: how the question was routed, which model answered, and the checks it passed.",
+        title: "See how it answered",
+        caption:
+          "Open the trace under any answer to see how the question was routed, which model answered, and the checks the answer passed.",
       },
       {
         image: caModeGoals,
         alt: "CA Mode Goals page: a home down payment goal with its projection, ways to close the gap and the kinds of investment that suit its timeline.",
-        caption: "Goals are projected in code under your own return assumption, with ways to close any gap.",
+        title: "Goals worked out in code",
+        caption:
+          "Each goal is projected in code under your own return assumption, with ways to close any gap and the kinds of investment that suit its timeline.",
       },
       {
         image: caModePlanning,
         alt: "CA Mode SIP calculator: monthly investment, expected return and years, with the estimated value and a year-by-year chart.",
-        caption: "Planning tools for SIP, lumpsum, goal, loan EMI and income tax calculations.",
+        title: "Plan with calculators",
+        caption:
+          "SIP, lumpsum, goal, loan EMI and income tax calculators run in your browser. They assume a steady return, so every result is an estimate.",
       },
     ],
     why: {
