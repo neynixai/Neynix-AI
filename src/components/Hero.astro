@@ -1,9 +1,11 @@
 ---
+import { Image } from "astro:assets";
 import Bot from "@lucide/astro/icons/bot";
 import Cpu from "@lucide/astro/icons/cpu";
 import Workflow from "@lucide/astro/icons/workflow";
+import mark3dStill from "@/assets/brand/mark-3d.webp";
 import ButtonLink from "@/components/ButtonLink.astro";
-import LogoMark from "@/components/LogoMark.astro";
+import { siteConfig } from "@/config/site";
 
 const focusAreas = [
   { label: "AI engineering", icon: Cpu },
@@ -83,13 +85,21 @@ const focusAreas = [
         <circle cx="10" cy="200" r="2.5" fill="#d7ff64" />
       </svg>
 
-      {/* The 3D mark fades in over the flat one once WebGL has drawn a frame. */}
+      {/*
+        The 3D mark fades in over a still of its opening pose (a real image, so search
+        engines can use it as the page thumbnail). From sm up the shader's uShift moves
+        the mark 8% of the canvas left, so the still moves with it.
+      */}
       <div data-mark-3d class="group/mark absolute inset-[4%]">
-        <div
-          class="absolute inset-y-[16%] left-[10%] right-[22%] flex items-center justify-center transition-opacity duration-700 group-data-[ready]/mark:opacity-0"
-        >
-          <LogoMark class="h-auto w-full" />
-        </div>
+        <Image
+          src={mark3dStill}
+          alt={`${siteConfig.name} logo mark in 3D`}
+          widths={[480, 840, 1260]}
+          sizes="(min-width: 1024px) 36rem, (min-width: 640px) 30rem, 22rem"
+          loading="eager"
+          fetchpriority="high"
+          class="absolute inset-0 size-full transition-opacity duration-300 sm:-translate-x-[8%] group-data-[ready]/mark:opacity-0 group-data-[ready]/mark:delay-1000"
+        />
         <canvas
           class="absolute inset-0 size-full opacity-0 transition-opacity duration-1000 [filter:drop-shadow(-8px_4px_24px_rgb(215_255_100/0.22))] group-data-[ready]/mark:opacity-100"
         ></canvas>

@@ -66,6 +66,10 @@ in `src/lib/content.ts`.
   app icons (the mark on a dark tile).
 - `public/og-image.png` — social preview (1200×630): a capture of the 3D mark
   with the wordmark and tagline.
+- `src/assets/brand/mark-3d.webp` — a still of the hero's 3D mark in its
+  opening pose (shader at t = 0, no tilt, `uShift` 0; transparent). It shows
+  until WebGL draws and is the image search engines can use as the home
+  page's thumbnail. Recapture it if the shape or shader lighting changes.
 
 `npm run assets` regenerates the SVG master and icons from `src/lib/mark.ts`.
 
